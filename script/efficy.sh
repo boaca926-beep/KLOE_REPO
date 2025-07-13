@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # input folder
-sample_size=small # norm_TUFO small_TUFO
-syst_type=evtcls
+sample_size=small # norm_TUFO, small_TUFO
+syst_type=filfo # evtcls, filfo
 exp_type=TUFO # UFO
 input_path=../../input_${sample_size}_${syst_type}_${exp_type}
 #echo $input_path

@@ -3,7 +3,7 @@
 ## Specify DATA or UFO
 sample_size=small # norm; small; mini
 #sample_path=../path_${sample_size}/
-syst_type=evtcls
+syst_type=filfo
 sample_path=../../path_${sample_size}/ 
 
 exp_type=TUFO # UFO

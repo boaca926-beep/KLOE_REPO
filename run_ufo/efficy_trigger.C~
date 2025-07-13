@@ -17,7 +17,7 @@ double binomial_err(double nb_true, double nb_gen) {
   return error;
 }
 
-int efficy_filfo() {
+int efficy_evtcls() {
 
   cout << "Calculate efficiency ..." << endl; 
 
@@ -74,8 +74,8 @@ int efficy_filfo() {
 
     H1DLIST[0] -> Fill(m3pi);
   
-    if (filfo_indx == 0) continue;
-    evnt_filfo ++;
+    if (evtcls_indx == 0) continue;
+    evnt_evtcls ++;
 
     H1DLIST[1] -> Fill(m3pi);
   
@@ -89,10 +89,10 @@ int efficy_filfo() {
 
   //h1d_IM3pi -> Draw();
 
-  efficy_cut = evnt_filfo / evnt_sel;
+  efficy_cut = evnt_evtcls / evnt_sel;
 
   cout << "evnt_sel = " << evnt_sel << "\n"
-       << "evnt_filfo = " << evnt_filfo << "\n"
+       << "evnt_evtcls = " << evnt_evtcls << "\n"
        << "efficy_cut = " << efficy_cut << endl;
 
   TRESULT -> Fill();

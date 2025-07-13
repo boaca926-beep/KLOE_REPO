@@ -17,7 +17,7 @@ double binomial_err(double nb_true, double nb_gen) {
   return error;
 }
 
-int efficy() {
+int efficy_trigger() {
 
   cout << "Calculate efficiency ..." << endl; 
 
@@ -31,7 +31,7 @@ int efficy() {
   int evtcls_indx = -1, trigger_indx = -1, filfo_indx = -1;
   
   double evnt_sel = 0.; // number of events after selection
-  double evnt_evtcls = 0.; // number of events after event classification
+  double evnt_trigger = 0.; // number of events after trigger
   
   double m3pi = 0.;
   double efficy_cut = 0.;
@@ -42,7 +42,7 @@ int efficy() {
   TRESULT -> SetAutoSave(0);
 
   TRESULT -> Branch("Br_evnt_sel", &evnt_sel, "Br_evnt_sel/D");
-  TRESULT -> Branch("Br_evnt_evtcls", &evnt_evtcls, "Br_evnt_evtcls/D");
+  TRESULT -> Branch("Br_evnt_trigger", &evnt_trigger, "Br_evnt_trigger/D");
   TRESULT -> Branch("Br_efficy_cut", &efficy_cut, "Br_efficy_cut/D");
 
   // initialize histos
@@ -74,14 +74,14 @@ int efficy() {
 
     H1DLIST[0] -> Fill(m3pi);
   
-    if (evtcls_indx == 0) continue;
-    evnt_evtcls ++;
+    if (trigger_indx == 0) continue;
+    evnt_trigger ++;
 
     H1DLIST[1] -> Fill(m3pi);
   
-    //cout << evtcls_indx << endl;
-    //cout << filfo_indx << endl;
-    //cout << trigger_indx << endl;
+    //if (evtcls_indx == 0) cout << evtcls_indx << endl;
+    //if (filfo_indx == 0) cout << filfo_indx << endl;
+    //if (trigger_indx == 0) cout << trigger_indx << endl;
   
     //cout << m3pi << endl;
     
@@ -89,10 +89,10 @@ int efficy() {
 
   //h1d_IM3pi -> Draw();
 
-  efficy_cut = evnt_evtcls / evnt_sel;
+  efficy_cut = evnt_trigger / evnt_sel;
 
   cout << "evnt_sel = " << evnt_sel << "\n"
-       << "evnt_evtcls = " << evnt_evtcls << "\n"
+       << "evnt_trigger = " << evnt_trigger << "\n"
        << "efficy_cut = " << efficy_cut << endl;
 
   TRESULT -> Fill();

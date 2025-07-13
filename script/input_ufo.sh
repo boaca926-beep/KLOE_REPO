@@ -3,7 +3,7 @@
 ## Specify DATA or UFO
 sample_size=small # norm; small; mini
 #sample_path=../path_${sample_size}/
-syst_type=filfo
+syst_type=trigger
 sample_path=../../path_${sample_size}/ 
 
 exp_type=TUFO # UFO

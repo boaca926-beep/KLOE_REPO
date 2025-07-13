@@ -1,0 +1,204 @@
+
+Processing plot_script.C...
+../../syst/path_output.txt
+0, egammamin = 5, eeg_sfw = 0.413506+/-0.153924
+1, egammamin = 10, eeg_sfw = 0.666457+/-0.199581
+2, egammamin = 15, eeg_sfw = 0.358595+/-0.128118
+3, egammamin = 20, eeg_sfw = 0.251951+/-0.123686
+4, egammamin = 25, eeg_sfw = 0.309599+/-0.107946
+0.354554+/-0.126452
+Uncorr. error
+0, 0.413506 +/- 0.0853135
+1, 0.666457 +/- 0.153031
+2, 0.358595 +/- 0
+3, 0.251951 +/- 0.0334048
+4, 0.309599 +/- 0.0690058
+(int) 0
+
+Processing plot_script.C...
+../../syst/path_output.txt
+0, egammamin = 5, eeg_sfw = 0.413506+/-0.153924
+1, egammamin = 10, eeg_sfw = 0.666457+/-0.199581
+2, egammamin = 15, eeg_sfw = 0.358595+/-0.128118
+3, egammamin = 20, eeg_sfw = 0.251951+/-0.123686
+4, egammamin = 25, eeg_sfw = 0.309599+/-0.107946
+0.354554+/-0.126452
+Uncorr. error
+0, 0.413506 +/- 0.0853135
+1, 0.666457 +/- 0.153031
+2, 0.358595 +/- 0
+3, 0.251951 +/- 0.0334048
+4, 0.309599 +/- 0.0690058
+(int) 0
+
+Processing plot_script.C...
+../../syst/path_output.txt
+0, Zv = 6.38647e-310,  = 0.413506+/-0.153924
+1, Zv = 6.38647e-310,  = 0.666457+/-0.199581
+2, Zv = 6.38647e-310,  = 0.358595+/-0.128118
+3, Zv = 6.38647e-310,  = 0.251951+/-0.123686
+4, Zv = 6.38647e-310,  = 0.309599+/-0.107946
+0.354554+/-0.126452
+Uncorr. error
+0, 0.413506 +/- 0.0853135
+1, 0.666457 +/- 0.153031
+2, 0.358595 +/- 0
+3, 0.251951 +/- 0.0334048
+4, 0.309599 +/- 0.0690058
+(int) 0
+
+Processing plot_script.C...
+../../syst_Zvmax/path_output.txt
+classnm = TTree, objnm = TRESULT, 31630
+classnm = TTree, objnm = TSFW2D, 35787
+0, Zvmax = 6.95251e-310,  = 0.403105+/-0.279299
+classnm = TTree, objnm = TRESULT, 31473
+classnm = TTree, objnm = TSFW2D, 35636
+1, Zvmax = 6.95251e-310,  = 0.751976+/-0.449537
+classnm = TTree, objnm = TRESULT, 31519
+classnm = TTree, objnm = TSFW2D, 35689
+2, Zvmax = 6.95251e-310,  = 0.471508+/-0.236435
+classnm = TTree, objnm = TRESULT, 31538
+classnm = TTree, objnm = TSFW2D, 35697
+3, Zvmax = 6.95251e-310,  = 0.516716+/-0.333905
+classnm = TTree, objnm = TRESULT, 31526
+classnm = TTree, objnm = TSFW2D, 35674
+4, Zvmax = 6.95251e-310,  = 0.451559+/-0.303884
+0.484139+/-0.104117
+Uncorr. error
+0, 0.403105 +/- 0.148681
+1, 0.751976 +/- 0.382337
+2, 0.471508 +/- 0
+3, 0.516716 +/- 0.235777
+4, 0.451559 +/- 0.190902
+(int) 0
+
+Processing plot_script.C...
+../../syst_Zvmax/path_output.txt
+classnm = TTree, objnm = TRESULT, 32387
+classnm = TTree, objnm = TSFW2D, 36551
+0, Zvmax = 6.95303e-310,  = 0.425572+/-0.209875
+classnm = TTree, objnm = TRESULT, 32374
+classnm = TTree, objnm = TSFW2D, 36538
+1, Zvmax = 6.95303e-310,  = 0.241952+/-0.164844
+classnm = TTree, objnm = TRESULT, 32377
+classnm = TTree, objnm = TSFW2D, 36545
+2, Zvmax = 6.95303e-310,  = 0.583558+/-0.296952
+classnm = TTree, objnm = TRESULT, 32418
+classnm = TTree, objnm = TSFW2D, 36584
+3, Zvmax = 6.95303e-310,  = 0.41356+/-0.211366
+classnm = TTree, objnm = TRESULT, 32394
+classnm = TTree, objnm = TSFW2D, 36548
+4, Zvmax = 6.95303e-310,  = 0.593914+/-0.28979
+0.39485+/-0.148534
+Uncorr. error
+0, 0.425572 +/- 0.210079
+1, 0.241952 +/- 0.246996
+2, 0.583558 +/- 0
+3, 0.41356 +/- 0.208579
+4, 0.593914 +/- 0.0648262
+(int) 0
+
+Processing plot_script.C...
+../../syst_Zvmax/path_output.txt
+classnm = TTree, objnm = TRESULT, 32387
+classnm = TTree, objnm = TSFW2D, 36551
+0, Zvmax = 9.8,  = 0.425572+/-0.209875
+classnm = TTree, objnm = TRESULT, 32374
+classnm = TTree, objnm = TSFW2D, 36538
+1, Zvmax = 9.9,  = 0.241952+/-0.164844
+classnm = TTree, objnm = TRESULT, 32377
+classnm = TTree, objnm = TSFW2D, 36545
+2, Zvmax = 10,  = 0.583558+/-0.296952
+classnm = TTree, objnm = TRESULT, 32418
+classnm = TTree, objnm = TSFW2D, 36584
+3, Zvmax = 10.1,  = 0.41356+/-0.211366
+classnm = TTree, objnm = TRESULT, 32394
+classnm = TTree, objnm = TSFW2D, 36548
+4, Zvmax = 10.2,  = 0.593914+/-0.28979
+0.39485+/-0.148534
+Uncorr. error
+0, 0.425572 +/- 0.210079
+1, 0.241952 +/- 0.246996
+2, 0.583558 +/- 0
+3, 0.41356 +/- 0.208579
+4, 0.593914 +/- 0.0648262
+(int) 0
+
+Processing plot_script.C...
+../../syst_Zvmax/path_output.txt
+classnm = TTree, objnm = TRESULT, 32387
+classnm = TTree, objnm = TSFW2D, 36551
+0, Zvmax = 9.8,  = 0.425572+/-0.209875
+classnm = TTree, objnm = TRESULT, 32374
+classnm = TTree, objnm = TSFW2D, 36538
+1, Zvmax = 9.9,  = 0.241952+/-0.164844
+classnm = TTree, objnm = TRESULT, 32377
+classnm = TTree, objnm = TSFW2D, 36545
+2, Zvmax = 10,  = 0.583558+/-0.296952
+classnm = TTree, objnm = TRESULT, 32418
+classnm = TTree, objnm = TSFW2D, 36584
+3, Zvmax = 10.1,  = 0.41356+/-0.211366
+classnm = TTree, objnm = TRESULT, 32394
+classnm = TTree, objnm = TSFW2D, 36548
+4, Zvmax = 10.2,  = 0.593914+/-0.28979
+0.39485+/-0.148534
+Uncorr. error
+0, 0.425572 +/- 0.210079
+1, 0.241952 +/- 0.246996
+2, 0.583558 +/- 0
+3, 0.41356 +/- 0.208579
+4, 0.593914 +/- 0.0648262
+(int) 0
+
+Processing plot_script.C...
+../../syst_Zvmax/path_output.txt
+classnm = TTree, objnm = TRESULT, 32387
+classnm = TTree, objnm = TSFW2D, 36551
+0, Zvmax = 9.8, eeg_sfw = 0.425572+/-0.209875
+classnm = TTree, objnm = TRESULT, 32374
+classnm = TTree, objnm = TSFW2D, 36538
+1, Zvmax = 9.9, eeg_sfw = 0.241952+/-0.164844
+classnm = TTree, objnm = TRESULT, 32377
+classnm = TTree, objnm = TSFW2D, 36545
+2, Zvmax = 10, eeg_sfw = 0.583558+/-0.296952
+classnm = TTree, objnm = TRESULT, 32418
+classnm = TTree, objnm = TSFW2D, 36584
+3, Zvmax = 10.1, eeg_sfw = 0.41356+/-0.211366
+classnm = TTree, objnm = TRESULT, 32394
+classnm = TTree, objnm = TSFW2D, 36548
+4, Zvmax = 10.2, eeg_sfw = 0.593914+/-0.28979
+0.39485+/-0.148534
+Uncorr. error
+0, 0.425572 +/- 0.210079
+1, 0.241952 +/- 0.246996
+2, 0.583558 +/- 0
+3, 0.41356 +/- 0.208579
+4, 0.593914 +/- 0.0648262
+(int) 0
+
+Processing plot_script.C...
+../../syst_Zvmax/path_output.txt
+classnm = TTree, objnm = TRESULT, 32387
+classnm = TTree, objnm = TSFW2D, 36551
+0, Zvmax = 9.8, eeg_sfw = 0.425572+/-0.209875
+classnm = TTree, objnm = TRESULT, 32374
+classnm = TTree, objnm = TSFW2D, 36538
+1, Zvmax = 9.9, eeg_sfw = 0.241952+/-0.164844
+classnm = TTree, objnm = TRESULT, 32377
+classnm = TTree, objnm = TSFW2D, 36545
+2, Zvmax = 10, eeg_sfw = 0.583558+/-0.296952
+classnm = TTree, objnm = TRESULT, 32418
+classnm = TTree, objnm = TSFW2D, 36584
+3, Zvmax = 10.1, eeg_sfw = 0.41356+/-0.211366
+classnm = TTree, objnm = TRESULT, 32394
+classnm = TTree, objnm = TSFW2D, 36548
+4, Zvmax = 10.2, eeg_sfw = 0.593914+/-0.28979
+0.39485+/-0.148534
+Uncorr. error
+0, 0.425572 +/- 0.1299
+1, 0.241952 +/- 0
+2, 0.583558 +/- 0.246996
+3, 0.41356 +/- 0.132295
+4, 0.593914 +/- 0.238337
+(int) 0

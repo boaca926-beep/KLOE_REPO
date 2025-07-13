@@ -1,0 +1,12 @@
+//const TString rootFile = "../../path_mini/ufo_path";
+//const TString sampleFile = "../../analysis_mini_TDATA/input/ufo";
+const TString outputCut = "/home/bo/Desktop/analysis_root_v6/crx3pi_UFOKslCut/output/";
+//const TString sig_path = "../../analysis_mini_TDATA/input/";
+//const TString outputGen = "../../analysis_mini_TDATA/gen/";
+const TString outputHist = "/home/bo/Desktop/analysis_root_v6/crx3pi_UFOKslCut/output/";
+//const TString outputSfw2D = "../../analysis_mini_TDATA/sfw2d/";
+//const TString outputSfw1D = "../../analysis_mini_TDATA/sfw1d/";
+const TString outputOmega = "./";
+//const TString data_type = "ufo";
+const TString exp_type = "TUFO";
+double gsf = 0.0114359;

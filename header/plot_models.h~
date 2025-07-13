@@ -1,0 +1,8 @@
+//
+double GetBB_new(double sigma_max, double Mass_V) {
+
+  double BB = sigma_max * 1e-6 / crx_scale * Mass_V * Mass_V / 12. / pi;
+
+  return BB;
+
+}

@@ -1,0 +1,12 @@
+const TString rootFile = "../../path_mini/ufo_path";
+const TString sampleFile = "../../analysis_mini_TDATA/input/ufo";
+const TString outputCut = "../../analysis_mini_TDATA/cut/";
+const TString sig_path = "../../analysis_mini_TDATA/input/";
+const TString outputGen = "../../analysis_mini_TDATA/gen/";
+const TString outputHist = "../../analysis_mini_TDATA/hist/";
+const TString outputSfw2D = "../../analysis_mini_TDATA/sfw2d/";
+const TString outputSfw1D = "../../analysis_mini_TDATA/sfw1d/";
+const TString outputOmega = "../../analysis_mini_TDATA/omega_fit/";
+const TString data_type = "ufo";
+const TString exp_type = "TDATA";
+double gsf = 1;

@@ -1,0 +1,12 @@
+const TString rootFile = "";
+const TString sampleFile = "";
+const TString outputCut = "";
+const TString sig_path = "";
+const TString outputGen = "";
+const TString outputHist = "";
+const TString outputSfw2D = "";
+const TString outputSfw1D = "";
+const TString outputOmega = "";
+const TString data_type = "";
+const TString exp_type = "TDATA";
+double gsf = 1;

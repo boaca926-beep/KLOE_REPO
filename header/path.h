@@ -1,0 +1,12 @@
+const TString rootFile = "../../path_small/sig_path";
+const TString sampleFile = "../../input_small_evtcls_TUFO/input/sig";
+const TString outputCut = "";
+const TString sig_path = "../../input_small_evtcls_TUFO/input/";
+const TString outputGen = "../../input_small_evtcls_TUFO/gen/";
+const TString outputHist = "../../input_small_evtcls_TUFO/hist/";
+const TString outputSfw2D = "../../input_small_evtcls_TUFO/sfw2d/";
+const TString outputSfw1D = "../../input_small_evtcls_TUFO/sfw1d/";
+const TString outputOmega = "../../input_small_evtcls_TUFO/omega_fit/";
+const TString data_type = "";
+const TString exp_type = "TUFO";
+double gsf = 0.0114359;

@@ -1,0 +1,42 @@
+Results for the project are stored at ../project_results
+./err_propa: error progapation
+./ufo_test: recover ufo results at /home/bo/Desktop/analysis_root_v6/crx3pi_UFOKslCut/
+
+# 1.0 analysis.sh
+# 1.1 vertex_TDATA (analysis_vertex_TDATA, done)
+# 1.2 norm_TUFO (analysis_norm_TUFO, ongoing !!!!!)
+# 1.3 norm_TDATA (analysis_norm_TDATA, planned)
+
+# 2.0 analysis_vmd.sh
+# 2.2 mini_TDATA_vmd (planned) needs analysis_mini_TDATA (done)
+# 2.1 norm_TDATA_vmd (planned)
+
+# 4.0 presel_syst.sh
+"sample_size=norm # Sample size
+ vari_indx=0 # Variable index: 0: egammamin 1: Zvmax 2: Rhovmax
+ step_nb=2 # Number of variations (one side)
+ exp_type=TDATA # TDATA 
+ gsf=1 # TDATA"
+# 4.1 Rhovmax (planned)
+# 4.2 egammamin (planned)
+# 4.3 Zvmax (planned)
+
+# 5.0 select_cut_syst.sh
+"step_nb=2"
+# 5.1 select_cut_syst_norm_TDATA, plot_select_cut_syst.sh ("file_type=vertex_TDATA") 
+#     chi2   () (chi2_syst_vertex_TDATA.pdf, ongoing!!!! locally)
+#     angle  () (angle_syst_vertex_TDATA.pdf)
+#     deltaE () (deltaE_syst_vertex_TDATA.pdf)
+#     beta   () (beta_syst_vertex_TDATA.pdf)
+
+# 6.0 plot_omega_compr.sh
+"vertex vs. norm" need 1.1 and 1.3
+# run/test_models.C (add plots, done)
+"vmd vs. norm"
+
+# Progress (LOCAL)
+# . pre-syst ongoing
+# .1 egammamin ongoing, check if norm or vertex
+# .2 Zvx       planned, check if norm or vertex
+# .3 Rhov      planned, check if norm or vertex
+# .4 Tsigma    planned, check if norm or vertex

@@ -1,0 +1,151 @@
+double vmd_crx3pi_fcn(double *m, double *par) {// VMD 3pi cross section model function
+
+  double M_V = par[0];
+  double M_V2 = M_V * M_V;
+  double M_phi_GeV = M_phi * .001;
+
+  double Gamma_V = par[1];
+
+  double BB = par[2];
+  double Sigma_V = 12 * pi * BB / M_V / M_V * 1e6 * crx_scale;
+
+  double Sigma_bg = par[3];
+  
+  // Get omega, phi amplitude
+  double M_V_GeV = M_V * .001;
+  double m_GeV = m[0] * .001;
+
+  double F3pi_V = F3pi_num_fun(&M_V_GeV, &M_V_GeV); 
+  double F3pi_m = F3pi_num_fun(&m_GeV, &m_GeV); // m variable
+  double F3pi_phi = F3pi_num_fun(&M_phi_GeV, &M_phi_GeV);
+
+  //cout << "F3pi_V = " << F3pi_V << ", F3pi_m = " << F3pi_m << ", F3pi_phi = " << F3pi_phi << endl; 
+    
+  double Gamma_Vs = Gamma_omegas_fcn(m[0], M_V, F3pi_V, Sigma_V, Gamma_V, F3pi_m);
+
+  double N1 = M_V * M_V * Gamma_V * TMath::Sqrt(Sigma_V * M_V / F3pi_V);
+  //double N1 = m[0] * m[0] * Gamma_V * TMath::Sqrt(Sigma_V * m[0] / F3pi_V); // equivalent to bw with F3pi = 1, and Gamma_Vs -> Gamma_V in term "b" 
+  
+  double a = m[0] * m[0] - M_V2;
+  double b = m[0] * Gamma_Vs;
+
+  double A = (N1 * a) / (a * a + b * b);
+  double B = (N1 * b) / (a * a + b * b);
+  
+  //cout << Amp_V.Rho2() << ", " << N1 * N1 / (a * a + b * b) << ", " << A * A + B * B << endl;
+  //cout << F3pi_V << endl;
+
+  double Amp_V_par[5] = {M_V, F3pi_V, Gamma_V, Sigma_V, F3pi_m};
+  TComplex Amp_V = Amp_omega_fcn(&m[0], Amp_V_par);
+
+  /*
+  double F3pi_phi = F3pi_num_fun(&M_phi_GeV, &M_phi_GeV);
+  TComplex Amp_phi = Amp_phi_fcn(&m[0], &F3pi_phi);
+
+  TComplex phase = TMath::Cos(phase_angle) + TMath::Sin(phase_angle) * TComplex::I();
+  */
+  
+  double Gamma_phis = Gamma_phis_fcn(m[0], F3pi_phi);
+
+
+  double N2 =  M_phi * M_phi * Gamma_phi * TMath::Sqrt(Sigma_phi * M_phi / F3pi_phi);
+  //double N2 = m[0] * m[0] * Gamma_phi * TMath::Sqrt(Sigma_phi * m[0] / F3pi_phi);
+  double c = m[0] * m[0] - M_phi * M_phi;
+  double d = m[0] * Gamma_phis;
+
+  double C = (N2 * c) / (c * c + d * d);
+  double D = (N2 * d) / (c * c + d * d);
+
+  //cout << "Gamma_Vs = " << Gamma_Vs << ", Gamma_phis = " << Gamma_phis << endl;
+ 
+  //cout << Amp_phi.Rho2() << ", " << N2 * N2 / (c * c + d * d) << ", " << C * C + D * D << endl;
+
+  
+  //cout << phase_angle << endl;
+  
+  double E = TMath::Cos(phase_angle);
+  double F = TMath::Sin(phase_angle);
+
+  double G = C * E - D * F;
+  double H = D * E + C * F ;
+  
+  //cout << "|phase|² = " << phase.Rho2() << endl;
+ 
+  //TComplex Amp_bkg = Amp_bkg_fcn(Sigma_bg); //TMath::Power(M_V, 3 / 2) * TMath::Sqrt(Sigma_bg / F3pi_V) + TComplex::I() * 0.;
+
+  double K = TMath::Power(M_V, 3 / 2) * TMath::Sqrt(Sigma_bg / F3pi_V);
+  double L = 0.;
+  
+  //cout << Amp_bkg.Rho2() << endl;
+  //cout << "Sigma_bg = " << endl;
+  //cout << "|Amp_V|² = " << Amp_V.Rho2() << ", |Amp_phi|² = " << Amp_phi.Rho2() << ", |Amp_bkg|² = " << Amp_bkg.Rho2() << endl;
+
+  double AmpSum_Rho2 = (A + G) * (A + G) + (B + H) * (B + H);
+  //double AmpSum_Rho2 = (A) * (A) + (B) * (B);
+  //double AmpSum_Rho2 = (G) * (G) + (H) * (H);
+
+  
+  //cout << "AmpSum_Rho2 = " << AmpSum_Rho2 << ", AmpSum_Rho2 (checked) = " << (Amp_V + phase * Amp_phi + Amp_bkg).Rho2() << endl;
+  
+  //double vmd_crx3pi = F3pi_m / TMath::Power(m[0], 3) * (Amp_V).Rho2(); // 3pi cross section
+  //double vmd_crx3pi = F3pi_m / TMath::Power(m[0], 3) * (Amp_V + phase * Amp_phi).Rho2(); // 3pi cross section
+  
+  double vmd_crx3pi = F3pi_m / TMath::Power(m[0], 3) * AmpSum_Rho2; 
+
+  // test bw 
+  TComplex denomin(m[0] * m[0] - M_V * M_V, M_V * Gamma_V);
+  double denomin_sqr = denomin.Rho2();
+  
+  
+  double crx3pi_bw = Sigma_V * (m[0] * m[0]) * (Gamma_V * Gamma_V) / denomin_sqr;
+
+
+  /*
+  cout << "vmd_crx3pi = " << vmd_crx3pi << endl;
+  cout << "m = " << m[0] << ", Gamma_V = " << Gamma_V << ", M_V = " << M_V << ", BB = " << BB << ", Sigma_V = " << Sigma_V << ", crx3pi_bw = " << crx3pi_bw << ", denomin.Rho2 = " << denomin.Rho2() << "\n\n";
+  */
+  
+  
+  //cout << vmd_crx3pi_phi << ", vmd_crx3pi = " << vmd_crx3pi << ", m = " << m[0] << ", Amp_phi.Im = " << Amp_phi.Im() << ", phase.Im = " << phase.Im() << endl;
+  //cout << (Amp_phi * phase).Rho2() << ", " << Amp_phi.Rho2() << ", " << AmpSum_Rho2 << endl;
+  
+  //cout << "vmd_crx3pi: F3pi_s = " << F3pi_m << endl;
+  //cout << "m_GeV = " << m_GeV  << ", F3pi_m = " << F3pi_m << " [GeV/c2], |Amp_omega|² = " << Amp_V.Rho2() << ", |Amp_phi|² = " << Amp_phi.Rho2() << ", |Amp_bkg|² = " << Amp_bkg.Rho2() << endl;
+
+  /*
+  cout << "M_V = " << M_V_GeV << ", s_sqrt = " << s_sqrt << "\n"
+       << "F3pi_1 = " << F3pi_1 << ", F3pi_2 = " << F3pi_2 << "\n"
+       << "F3pi_2 / F3pi_1 = " << F3pi_2 / F3pi_1 << "\n"
+       << "F3pi_V = " << F3pi_V << ", F3pi_m = " << F3pi_m << endl;  
+  */
+  
+  return vmd_crx3pi;
+  
+}
+
+double bw_crx3pi_fcn(double *m, double *par) {// Breit-Wigner 3pi cross section model function
+
+  double M_V = par[0]; // Vector meson mass
+  double M_V2 = M_V * M_V; // Vector meson mass squared
+    
+  double Gamma_V = par[1]; // Width
+  double Gamma_V2 = Gamma_V * Gamma_V;
+
+  double Sigma_V = par[2]; // Peak cross section
+
+  double m2 = m[0] * m[0]; // Mass squared
+
+  //TComplex Amp_bw = M_V * Gamma_V / (M_V2 - m2 - TComplex::I() * m[0] * Gamma_V); // Amplitude
+
+  double Amp_bw_Rho2 = m2 * Gamma_V2 / (TMath::Power(M_V2 - m2, 2) + TMath::Power(m[0] * Gamma_V, 2));
+    
+  //cout << "|Amp_bw|² = " << Amp_bw.Rho2() << ", Amp_bw_Rho2 = " << Amp_bw_Rho2 << endl;
+  
+  double bw_crx3pi = Sigma_V * Amp_bw_Rho2;
+
+  //cout << bw_crx3pi << endl;
+  
+  return bw_crx3pi;
+  
+}
+

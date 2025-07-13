@@ -1,0 +1,231 @@
+#include "cut_opti.h"
+#include "../plot.h"
+
+double XLIST[1000];
+double YLIST[1000];
+
+double XNOMI[1];
+double YNOMI[1];
+
+double XOPT[1];
+double YOPT[1];
+
+
+int cut_opti(const TString ytit = "") {
+
+  gErrorIgnoreLevel = kError;
+  TGaxis::SetMaxDigits(3);
+  //gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);  
+
+  cout << "Optimizing cut ....\n";
+
+  const TString syst_path = "./input_" + cut_name + "/path";
+
+  cout << "cut variable: " << cut_name << "\n"
+       << "norm_indx = " << step_nb << "\n"
+       << "syst_path = " << syst_path << "\n\n";
+
+  //
+  double SSB_ratio_tmp = 0., cut_tmp = 0.;
+  
+  // loop over all input root files
+  string line;
+  int file_indx = 0;
+
+  ifstream filelist(syst_path); 
+
+  if (filelist.is_open()) {
+    while (!filelist.eof()) {
+      if (getline(filelist, line, '\n')) {
+	if (line[0] != '!') {
+
+	  // get cut info
+	  // input root file name
+	  TFile* hist_input = new TFile(line.data());
+	  
+	  TString fname(line.data());
+
+	  /*
+	  cout << "\nCUT INFO " << "\n"
+	       << "file_indx = " << file_indx << ", " << fname << endl;
+	  */
+	  
+	  TTree* TCutInfo = (TTree*)hist_input -> Get("TCutInfo");
+  
+	  TIter next_tree(hist_input -> GetListOfKeys());
+	  TString objnm_tree, classnm_tree;
+
+	  int i = 0;
+	  TKey *key;
+	  
+	  while ( (key = (TKey *) next_tree() ) ) {// start cutlist_tree while loop
+    
+	    objnm_tree   = key -> GetName();
+	    classnm_tree = key -> GetClassName();
+	    key -> GetSeekKey();
+
+	    //cout << " tree" << i << ": classnm = " << classnm_tree << ", objnm = " << objnm_tree << endl;
+
+
+	  }
+
+	  // fill branches
+
+	  TTree *TCRX3PI = (TTree *) hist_input -> Get("TCRX3PI");
+
+	  for (Int_t irow = 0; irow < TCRX3PI -> GetEntries(); irow++) {// begin for loop
+	    
+	    TCRX3PI -> GetEntry(irow);
+
+	    SSB_ratio_tmp = TCRX3PI -> GetLeaf("Br_SSB_ratio") -> GetValue(0);
+	    cut_tmp = TCRX3PI -> GetLeaf("Br_cut_value") -> GetValue(0);
+
+	    
+	  }
+
+	  YLIST[file_indx] = SSB_ratio_tmp;
+	  
+	  XLIST[file_indx] = cut_tmp;
+	  
+
+	  cout << "file_indx = " << file_indx << ", SSB_ratio_tmp = " << SSB_ratio_tmp << "\n"
+	       << "cut_tmp = " << cut_tmp << "\n";
+	  
+	  //
+	  file_indx ++;
+
+	  
+	}
+      }
+    }
+  }
+
+  
+  // search maximum
+  double y_max = 0.;
+  double frac = 0.;
+  int indx_opt = 0, indx_nomi = 0;
+
+  //cout << file_indx << endl;
+  
+  for (int i = 0; i < file_indx; i ++) {
+
+    if (YLIST[i] > y_max) {
+
+      y_max = YLIST[i];
+      indx_opt = i;
+
+    }
+
+    if (XLIST[i] == cut_nomi) {
+
+      indx_nomi = i;
+      
+    }
+
+    cout << i << ", " << XLIST[i] << "\n";
+
+  }
+
+  XNOMI[0] = XLIST[indx_nomi]; 
+  YNOMI[0] = YLIST[indx_nomi];
+
+  XOPT[0] = XLIST[indx_opt]; 
+  YOPT[0] = YLIST[indx_opt];
+
+  frac = (YOPT[0] - YNOMI[0]) / YNOMI[0] * 100.;
+  
+  cout << "cut_nomi = " << cut_nomi << "\n"
+       << "y_max = " << YNOMI[0] << " at " << XNOMI[0] << "\n"
+       << "(YOPT[0] - YNOMI[0]) / YNOMI[0] * 100. = " << frac << "\n";
+  
+  TGraph *gf = new TGraph(file_indx, XLIST, YLIST);
+
+  //gf -> SetTitle("systmatics");
+  gf -> SetName("gf_" + cut_name);
+  gf -> SetMarkerStyle(20);
+  gf -> SetMarkerSize(1.1);
+  gf -> SetLineColor(0);
+  gf -> SetMarkerColor(kBlack);
+  gf -> GetXaxis() -> SetTitle(cut_symb + " " + cut_unit);
+  gf -> GetXaxis() -> CenterTitle();
+  gf -> GetXaxis() -> SetTitleOffset(1.);
+  gf -> GetXaxis() -> SetLabelSize(0.04);
+  gf -> GetXaxis() -> SetTitleSize(0.06);
+  
+  gf -> GetYaxis() -> SetTitleOffset(1.2);
+  gf -> GetYaxis() -> SetRangeUser(0., YNOMI[0] * (1 + 0.3));
+  gf -> GetYaxis() -> SetTitle(y_title + " " + y_unit);
+  gf -> GetYaxis() -> SetRangeUser(yrange_min, yrange_max); 
+  gf -> GetYaxis() -> CenterTitle();
+  gf -> GetYaxis() -> SetLabelSize(0.04);
+  gf -> GetYaxis() -> SetTitleSize(0.06);
+ 
+  TGraph *gf_opt = new TGraph(1, XOPT, YOPT);
+  gf_opt -> SetName("gf_opt");
+  gf_opt -> SetMarkerStyle(20);
+  gf_opt -> SetMarkerSize(1.1);
+  gf_opt -> SetMarkerColor(kRed);
+
+  TGraph *gf_nomi = new TGraph(1, XNOMI, YNOMI);
+  gf_nomi -> SetName("gf_nomi");
+  gf_nomi -> SetMarkerStyle(20);
+  gf_nomi -> SetMarkerSize(1.1);
+  gf_nomi -> SetMarkerColor(kBlue);
+ 
+  gf -> RemovePoint(indx_opt);
+  gf -> RemovePoint(indx_nomi);
+
+  // plot
+  char display1[50], display2[50], display3[50], display4[50];
+
+  TPaveText *pt1 = new TPaveText(0.25, 0.84, 0.6, 0.89, "NDC");
+  TPaveText *pt2 = new TPaveText(0.25, 0.75, 0.6, 0.80, "NDC");
+  TPaveText *pt3 = new TPaveText(0.7, 0.2, 0.8, 0.3, "NDC");
+  TPaveText *pt4 = new TPaveText(0.5, 0.18, 0.8, 0.60, "NDC");
+
+  PteAttr(pt1); pt1 -> SetTextSize(0.06);
+  PteAttr(pt2); pt2 -> SetTextSize(0.06);
+
+  //PteAttr(pt3);
+  //pt3 -> AddText("(a)");
+  //pt3 -> AddText("(b)");
+  //pt3 -> AddText("(c)");
+  pt3 -> AddText("(d)");
+  pt3 -> SetTextSize(0.1);
+  pt3 -> SetFillColor(0);
+  pt3 -> SetTextAlign(12);
+  
+  PteAttr(pt4);
+  
+  sprintf(display1, "nomi.=%0.3g at %0.3g", YNOMI[0], XNOMI[0]);
+  sprintf(display2, "max=%0.3g at %0.3g", YOPT[0], XOPT[0]);
+  sprintf(display3, "step=%0.3g", step_size);
+  sprintf(display4, "#frac{max-nom.}{nom.} [%%] = %.3g", frac);
+  
+  TText *text1 = pt1 -> AddText(display1); text1 -> SetTextColor(kBlue);
+  TText *text2 = pt2 -> AddText(display2); text2 -> SetTextColor(kRed);
+  //TText *text3 = pt3 -> AddText(display3); text3 -> SetTextColor(kBlack);
+  TText *text4 = pt4 -> AddText(display4); text4 -> SetTextColor(kBlack);
+
+  TCanvas *cv = new TCanvas("cv", "", 0, 0, 700, 700);
+  cv -> SetBottomMargin(0.15);//0.007
+  cv -> SetLeftMargin(0.15);
+
+  gf -> Draw("AP");
+  gf_opt -> Draw("P");
+  gf_nomi -> Draw("P");
+
+  //pt1 -> Draw("Same");
+  //pt2 -> Draw("Same");
+  pt3 -> Draw("Same");
+  //pt4 -> Draw("Same");
+
+  //save
+  cv -> SaveAs("./plot_output/cut_opti_" + cut_name + ".pdf");
+  
+
+  return 0;
+  
+}

@@ -1,0 +1,18 @@
+
+Processing result_script.C...
+Extract omega parameters ...
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+[0]: hsig_true
+[1]: hsig_gen
+gsf = 1, exp_type = TDATA
+nb_data = 4.0985e+06

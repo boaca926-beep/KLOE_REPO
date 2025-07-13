@@ -1,0 +1,35 @@
+
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+classnm = TList, objnm = HIM3pi_fit, 228
+classnm = TList, objnm = HSFW2D, 12850
+classnm = TList, objnm = HSFW1D, 408670
+classnm = TList, objnm = HSIG, 411531
+classnm = TList, objnm = HIM3pi_crx, 413681
+[0]: h1d_IM3pi_TEEG
+[1]: h1d_IM3pi_TEEG_TRUE
+[2]: h1d_IM3pi_TDATA
+[3]: h1d_IM3pi_TDATA_TRUE
+[4]: h1d_IM3pi_TISR3PI_SIG
+[5]: h1d_IM3pi_TISR3PI_SIG_TRUE
+[6]: h1d_IM3pi_TOMEGAPI
+[7]: h1d_IM3pi_TOMEGAPI_TRUE
+[8]: h1d_IM3pi_TKPM
+[9]: h1d_IM3pi_TKPM_TRUE
+[10]: h1d_IM3pi_TKSL
+[11]: h1d_IM3pi_TKSL_TRUE
+[12]: h1d_IM3pi_T3PIGAM
+[13]: h1d_IM3pi_T3PIGAM_TRUE
+[14]: h1d_IM3pi_TRHOPI
+[15]: h1d_IM3pi_TRHOPI_TRUE
+[16]: h1d_IM3pi_TETAGAM
+[17]: h1d_IM3pi_TETAGAM_TRUE
+[18]: h1d_IM3pi_TBKGREST
+[19]: h1d_IM3pi_TBKGREST_TRUE
+[20]: h1d_IM3pi_TUFO
+[21]: h1d_IM3pi_TUFO_TRUE
+[0]: hsig_true
+[1]: hsig_gen
+gsf = 1, exp_type = TDATA
+nb_data = 4.0985e+06

@@ -1,0 +1,62 @@
+#!/bin/bash
+
+cut_opti=cut_opti.h #input file name
+
+CUT_NAME=("chi2" "deltaE" "angle" "beta")
+CUT_SYMB=("#chi^{2}_{7C}" "E_{diff}" "#angle_{#gamma#gamma}" "#beta\_{#pi}")
+CUT_UNIT=("" "[MeV]" "[#circ]" "")
+CUT_NOMI=(36 -150 140 1.98)
+STEP_SIZE=(2 1.92 0.8 0.00355)  #step size is reolution, check at ../resol
+Y_MIN=(0 200 200 0)
+Y_MAX=(400 350 350 400)
+
+syst_indx=2
+
+cut_name=${CUT_NAME[$syst_indx]} #cut name
+cut_symb=${CUT_SYMB[$syst_indx]} #cut symb
+cut_unit=${CUT_UNIT[$syst_indx]} #cut unit
+cut_nomi=${CUT_NOMI[$syst_indx]} #cut nomi
+step_size=${STEP_SIZE[$syst_indx]} #step size
+
+y_min=${Y_MIN[$syst_indx]} #y min
+y_max=${Y_MAX[$syst_indx]} #y max
+
+sed -i 's/\(const TString cut_name =\)\(.*\)/\1 "'$cut_name'";/' $cut_opti
+sed -i 's/\(const TString cut_symb =\)\(.*\)/\1 "'$cut_symb'";/' $cut_opti
+sed -i 's/\(const TString cut_unit =\)\(.*\)/\1 "'$cut_unit'";/' $cut_opti
+sed -i 's/\(const double cut_nomi =\)\(.*\)/\1 '$cut_nomi';/' $cut_opti
+
+sed -i 's/\(const double step_size =\)\(.*\)/\1 '$step_size';/' $cut_opti
+
+sed -i 's/\(const double yrange_min =\)\(.*\)/\1 '$y_min';/' $cut_opti
+sed -i 's/\(const double yrange_max =\)\(.*\)/\1 '$y_max';/' $cut_opti
+
+
+# change y axis attribute
+y_title="S\/#sqrt{S+B}"
+y_unit=""
+
+sed -i 's/\(const TString y_title =\)\(.*\)/\1 "'$y_title'";/' $cut_opti
+sed -i 's/\(const TString y_unit =\)\(.*\)/\1 "'$y_unit'";/' $cut_opti
+
+
+input=input_${cut_name}
+
+rm $input/path
+
+for i in $(ls -1v $input/crx3pi*.root)
+
+do echo $i >> $input/path
+   #echo $i
+  
+done
+
+cut_opti_script=cut_opti_script.C
+echo '#include <iostream>' > $cut_opti_script
+echo "void cut_opti_script() {" >> $cut_opti_script
+echo '  gROOT->ProcessLine(".L cut_opti.C");' >> $cut_opti_script
+echo "  gROOT->ProcessLine(cut_opti());" >> $cut_opti_script
+echo '}' >> $cut_opti_script
+root -l -n -q -b $cut_opti_script
+rm $cut_opti_script
+

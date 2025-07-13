@@ -1,0 +1,5 @@
+#include err_type_test.h
+
+int err_type_test(){
+
+}

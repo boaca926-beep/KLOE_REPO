@@ -1,0 +1,280 @@
+
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+classnm = TList, objnm = HIM3pi_fit, 276
+classnm = TList, objnm = HSFW2D, 13002
+classnm = TList, objnm = HSFW1D, 408715
+classnm = TList, objnm = HSIG, 411620
+classnm = TList, objnm = HIM3pi_crx, 413751
+[0]: h1d_IM3pi_TISR3PI_SIG
+[1]: h1d_IM3pi_TISR3PI_SIG_TRUE
+[2]: h1d_IM3pi_TOMEGAPI
+[3]: h1d_IM3pi_TOMEGAPI_TRUE
+[4]: h1d_IM3pi_TKPM
+[5]: h1d_IM3pi_TKPM_TRUE
+[6]: h1d_IM3pi_TKSL
+[7]: h1d_IM3pi_TKSL_TRUE
+[8]: h1d_IM3pi_T3PIGAM
+[9]: h1d_IM3pi_T3PIGAM_TRUE
+[10]: h1d_IM3pi_TRHOPI
+[11]: h1d_IM3pi_TRHOPI_TRUE
+[12]: h1d_IM3pi_TETAGAM
+[13]: h1d_IM3pi_TETAGAM_TRUE
+[14]: h1d_IM3pi_TBKGREST
+[15]: h1d_IM3pi_TBKGREST_TRUE
+[16]: h1d_IM3pi_TDATA
+[17]: h1d_IM3pi_TDATA_TRUE
+[18]: h1d_IM3pi_TEEG
+[19]: h1d_IM3pi_TEEG_TRUE
+[20]: h1d_IM3pi_TUFO
+[21]: h1d_IM3pi_TUFO_TRUE
+[0]: hsig_true
+[1]: hsig_gen
+gsf = 1, exp_type = TDATA
+nb_data = 4.09851e+06
+classnm = TTree, objnm = TISR3PI_SIG, 1999277009
+classnm = TTree, objnm = TOMEGAPI, 4537324280
+classnm = TTree, objnm = TKPM, 4537798382
+classnm = TTree, objnm = TKSL, 4563953027
+classnm = TTree, objnm = T3PIGAM, 4564404946
+classnm = TTree, objnm = TRHOPI, 4564534081
+classnm = TTree, objnm = TETAGAM, 4575118665
+classnm = TTree, objnm = TBKGREST, 4575531688
+classnm = TTree, objnm = TDATA, 7139684976
+classnm = TTree, objnm = TEEG, 7148167313
+classnm = TTree, objnm = TUFO, 7176929197
+nb_eeg = 45691.8
+nb_omegapi = 149913
+nb_ksl = 433068
+nb_etagam = 3.26151e+06
+nb_mcrest = 53818.5
+1
+binszie = 242, x range(380, 1020) MeV/c^2
+bin indx = 119, m3pi = 693.388, m3pi_lower = 692.066, m3pi_upper = 694.711
+evnt_eeg_err = 39.6145, nb_data_sum = 4.09856e+06, event_eeg = 282, nb_eeg_sum = 27386, feeg = 0.0111458+/-9.31008e-05
+evnt_ksl_err = 77.9659, nb_data_sum = 4.09856e+06, event_ksl = 5652, nb_ksl_sum = 417565, fksl = 0.105657+/-0.000190273
+evnt_omegapi_err = 34.6699, nb_data_sum = 4.09856e+06, event_omegapi = 773, nb_omegapi_sum = 120233, fomegapi = 0.0365811+/-0.000144108
+evnt_etagam_err = 20.9417, nb_data_sum = 4.09856e+06, event_etagam = 424, nb_etagam_sum = 3.20691e+06, fetagam = 0.795766+/-0.000307769
+evnt_mcrest_err = 59.9423, nb_data_sum = 4.09856e+06, event_mcrest = 155, nb_mcrest_sum = 11187, fmcrest = 0.0131417+/-0.00011005
+
+	evnt_data = 8002 +/- 89.4539
+	evnt_eeg = 470.396 +/- 39.6145
+	evnt_ksl = 5861.46 +/- 77.9659
+	evnt_omgapi = 963.923 +/- 34.6699
+	evnt_etagam = 431.216 +/- 20.9417
+	evnt_mcrest = 746.275 +/- 59.9423
+	evnt_bkgsum = 8473.27
+	nb_isr3pi_obs = -471.274+/-144.512
+	efficy = 0.118836+/-0.00170611
+	Lumi_tot 1.72447e+06, gsf = 1, Lumi_int = 1.72447e+06
+	isrlumi_apprx = 454.336
+
+Perform cross section fit ...
+1605.71 [nb]
+mass_omega = 782.65, Gam_omega = 8.49, BB = 6.70343e-05
+1606.53
+ PARAMETER DEFINITIONS:
+    NO.   NAME         VALUE      STEP SIZE      LIMITS
+     1 M_V          7.82650e+02  1.00000e-02    0.00000e+00  1.00000e+03
+     2 Gam_V        8.49000e+00  1.00000e-02    0.00000e+00  1.00000e+02
+     3 BB           6.70343e-05  1.00000e-02    0.00000e+00  1.00000e+00
+ MINUIT WARNING IN PARAMETR
+ ============== VARIABLE3 BROUGHT BACK INSIDE LIMITS.
+ **********
+ **    1 **SET ERRDEF         0.5
+ **********
+ **********
+ **    2 **MIGRAD         500
+ **********
+ FIRST CALL TO USER FUNCTION AT NEW START POINT, WITH IFLAG=4.
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1453.47, N3PI_SMEAR = 168.975+/-5.36259
+
+ START MIGRAD MINIMIZATION.  STRATEGY  1.  CONVERGENCE WHEN EDM .LT. 5.00e-05
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1453.47, N3PI_SMEAR = 168.974+/-5.36257
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1453.48, N3PI_SMEAR = 168.975+/-5.3626
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1453.47, N3PI_SMEAR = 168.974+/-5.36256
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1453.48, N3PI_SMEAR = 168.975+/-5.36261
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1453.51, N3PI_SMEAR = 168.979+/-5.36271
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1453.44, N3PI_SMEAR = 168.971+/-5.36246
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1453.54, N3PI_SMEAR = 168.983+/-5.36284
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1453.4, N3PI_SMEAR = 168.967+/-5.36233
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1635.52, N3PI_SMEAR = 190.139+/-6.03426
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1282.16, N3PI_SMEAR = 149.059+/-4.73053
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1471.19, N3PI_SMEAR = 171.035+/-5.42797
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1435.86, N3PI_SMEAR = 166.927+/-5.2976
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1455.24, N3PI_SMEAR = 169.18+/-5.36911
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1451.71, N3PI_SMEAR = 168.769+/-5.35607
+
+ FCN=42.1325 FROM MIGRAD    STATUS=INITIATE       14 CALLS          15 TOTAL
+                     EDM= unknown      STRATEGY= 1      NO ERROR MATRIX       
+  EXT PARAMETER               CURRENT GUESS       STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  M_V          7.82650e+02   1.00000e-02   2.42458e-05  -2.21164e+04
+   2  Gam_V        8.49000e+00   1.00000e-02   3.58767e-04   3.91303e+03
+   3  BB           6.70343e-05   1.00000e-02   9.95272e-02   2.18835e+05
+                               ERR DEF= 0.5
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1316.96, N3PI_SMEAR = 153.102+/-4.85865
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1379.8, N3PI_SMEAR = 160.409+/-5.09063
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1379.8, N3PI_SMEAR = 160.408+/-5.09061
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1379.81, N3PI_SMEAR = 160.409+/-5.09065
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1379.85, N3PI_SMEAR = 160.414+/-5.09078
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1379.76, N3PI_SMEAR = 160.404+/-5.09048
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1379.97, N3PI_SMEAR = 160.429+/-5.09125
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1379.63, N3PI_SMEAR = 160.389+/-5.09001
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1379.93, N3PI_SMEAR = 160.423+/-5.09109
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1379.68, N3PI_SMEAR = 160.394+/-5.09017
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1385.07, N3PI_SMEAR = 161.02+/-5.1098
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1389.58, N3PI_SMEAR = 161.543+/-5.12619
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1389.57, N3PI_SMEAR = 161.542+/-5.12617
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1389.58, N3PI_SMEAR = 161.543+/-5.1262
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1389.62, N3PI_SMEAR = 161.547+/-5.12633
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1389.54, N3PI_SMEAR = 161.538+/-5.12604
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1389.7, N3PI_SMEAR = 161.557+/-5.12665
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1389.45, N3PI_SMEAR = 161.528+/-5.12572
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1396.82, N3PI_SMEAR = 162.385+/-5.15289
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1425.81, N3PI_SMEAR = 165.755+/-5.25971
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1443.21, N3PI_SMEAR = 167.778+/-5.32384
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1443.21, N3PI_SMEAR = 167.777+/-5.32383
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1443.22, N3PI_SMEAR = 167.778+/-5.32386
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1443.25, N3PI_SMEAR = 167.782+/-5.32398
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1443.18, N3PI_SMEAR = 167.774+/-5.32371
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1443.35, N3PI_SMEAR = 167.793+/-5.32434
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1443.08, N3PI_SMEAR = 167.762+/-5.32335
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.45, N3PI_SMEAR = 167.922+/-5.32843
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.45, N3PI_SMEAR = 167.922+/-5.32841
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.46, N3PI_SMEAR = 167.923+/-5.32845
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.49, N3PI_SMEAR = 167.927+/-5.32857
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.41, N3PI_SMEAR = 167.918+/-5.32829
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.59, N3PI_SMEAR = 167.938+/-5.32892
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.32, N3PI_SMEAR = 167.907+/-5.32794
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.63, N3PI_SMEAR = 167.943+/-5.32908
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.62, N3PI_SMEAR = 167.942+/-5.32906
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.63, N3PI_SMEAR = 167.943+/-5.32909
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.67, N3PI_SMEAR = 167.947+/-5.32922
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.59, N3PI_SMEAR = 167.938+/-5.32894
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.76, N3PI_SMEAR = 167.958+/-5.32957
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.49, N3PI_SMEAR = 167.927+/-5.32858
+
+ MIGRAD MINIMIZATION HAS CONVERGED.
+ MIGRAD WILL VERIFY CONVERGENCE AND ERROR MATRIX.
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.63, N3PI_SMEAR = 167.943+/-5.32908
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.62, N3PI_SMEAR = 167.942+/-5.32906
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.63, N3PI_SMEAR = 167.943+/-5.32909
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.67, N3PI_SMEAR = 167.947+/-5.32922
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.59, N3PI_SMEAR = 167.938+/-5.32894
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.76, N3PI_SMEAR = 167.958+/-5.32957
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.49, N3PI_SMEAR = 167.927+/-5.32858
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.63, N3PI_SMEAR = 167.942+/-5.32907
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.63, N3PI_SMEAR = 167.943+/-5.32909
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.64, N3PI_SMEAR = 167.943+/-5.32911
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.62, N3PI_SMEAR = 167.942+/-5.32905
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.7, N3PI_SMEAR = 167.95+/-5.32932
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.56, N3PI_SMEAR = 167.935+/-5.32883
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.66, N3PI_SMEAR = 167.946+/-5.3292
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.76, N3PI_SMEAR = 167.958+/-5.32955
+
+rec bin = 119, m3pi = 693.388, nb_sig = 0+/-0, nb_sig_smeared = 4159, nb_sig_smeared_efficy = 4159+/-0, nb_sig_true = 4275, nb_sig_gen = 35974, N3PI_PRE = 1444.8, N3PI_SMEAR = 167.963+/-5.32971
+
+ COVARIANCE MATRIX CALCULATED SUCCESSFULLY
+ FCN=12.6371 FROM MIGRAD    STATUS=CONVERGED      71 CALLS          72 TOTAL
+                     EDM=1.77438e-08    STRATEGY= 1      ERROR MATRIX ACCURATE 
+  EXT PARAMETER                                   STEP         FIRST   
+  NO.   NAME      VALUE            ERROR          SIZE      DERIVATIVE 
+   1  M_V          7.82727e+02   3.98090e-02   2.86571e-07  -1.16861e+00
+   2  Gam_V        8.66417e+00   1.20741e-01   4.10391e-06  -3.27826e-02
+   3  BB           6.41105e-05   7.00629e-07   7.41378e-07  -1.07017e+00
+                               ERR DEF= 0.5
+ EXTERNAL ERROR MATRIX.    NDIM=  25    NPAR=  3    ERR DEF=0.5
+  1.585e-03  2.427e-04 -1.058e-09 
+  2.427e-04  1.458e-02 -7.817e-08 
+ -1.058e-09 -7.817e-08  4.909e-13 
+ PARAMETER  CORRELATION COEFFICIENTS  
+       NO.  GLOBAL      1      2      3
+        1  0.05537   1.000  0.050 -0.038
+        2  0.92414   0.050  1.000 -0.924
+        3  0.92406  -0.038 -0.924  1.000
+1.72447e+06
+0, 144, 762.149, 1564.5+/-160.506, 1646.68+/-26.8253
+1, 145, 764.793, 1991.75+/-160.678, 2107.07+/-36.079
+2, 146, 767.438, 2825.01+/-163.691, 2733.52+/-40.9759
+3, 147, 770.083, 3817.76+/-165.684, 3678.17+/-31.2839
+4, 148, 772.727, 5157.62+/-169.645, 5233.06+/-45.8967
+5, 149, 775.372, 7682.77+/-177.957, 7882.66+/-66.0235
+6, 150, 778.017, 11739.6+/-186.843, 11773+/-82.9969
+7, 151, 780.661, 15908.8+/-202.369, 15811.7+/-96.8471
+8, 152, 783.306, 17671.5+/-205.616, 17364.4+/-112.108
+9, 153, 785.95, 15057.7+/-198.756, 15264.2+/-70.7721
+10, 154, 788.595, 10794.1+/-189.715, 11091.8+/-55.6818
+11, 155, 791.24, 7578.63+/-182.375, 7432.89+/-43.8453
+12, 156, 793.884, 5144.02+/-181.178, 4941.65+/-49.7395
+13, 157, 796.529, 3787.89+/-180.859, 3518.79+/-30.9065
+14, 158, 799.174, 2490.86+/-181.78, 2626.37+/-24.4293
+(int) 0

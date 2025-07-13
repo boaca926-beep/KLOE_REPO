@@ -1,0 +1,481 @@
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+gsf = 1
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+classnm = TList, objnm = HIM3pi_fit, 228
+classnm = TList, objnm = HSFW2D, 12850
+classnm = TList, objnm = HSFW1D, 408670
+classnm = TList, objnm = HSIG, 411531
+classnm = TList, objnm = HIM3pi_crx, 413681
+[0]: hsig_true
+[1]: hsig_gen
+gsf = 1
+nb_data = 4.0985e+06
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+nb_eeg = 9829.09
+nb_omegapi = 108694
+nb_ksl = 380064
+nb_etagam = 3.25873e+06
+nb_mcrest = 14898.4
+1
+binszie = 242, x range(380, 1020) MeV/c^2
+bin indx = 119, m3pi = 693.388, m3pi_lower = 692.066, m3pi_upper = 694.711
+evnt_eeg_err = 8.63611, nb_data_sum = 8806, event_eeg = 290, nb_eeg_sum = 84, feeg = 0.00342062+/-0.00116316
+evnt_ksl_err = 68.0576, nb_data_sum = 8806, event_ksl = 5591, nb_ksl_sum = 883, fksl = 0.091267+/-0.00472683
+evnt_omegapi_err = 24.7906, nb_data_sum = 8806, event_omegapi = 752, nb_omegapi_sum = 262, fomegapi = 0.0268968+/-0.00277287
+evnt_etagam_err = 21.047, nb_data_sum = 8806, event_etagam = 429, nb_etagam_sum = 6879, fetagam = 0.793793+/-0.0070684
+evnt_mcrest_err = 16.9703, nb_data_sum = 8806, event_mcrest = 162, nb_mcrest_sum = 15, fmcrest = 0.00227114+/-0.000802938
+
+	evnt_data = 8041 +/- 89.6716
+	evnt_eeg = 103.993 +/- 8.63611
+	evnt_ksl = 5088.87 +/- 68.0576
+	evnt_omgapi = 679.824 +/- 24.7906
+	evnt_etagam = 435.933 +/- 21.047
+	evnt_mcrest = 215.996 +/- 16.9703
+	evnt_bkgsum = 6524.61
+	nb_isr3pi_obs = 1516.39+/-118.714
+	efficy = 0.118836+/-0.00170611
+	Lumi_tot 1.72447e+06, gsf = 1, Lumi_int = 1.72447e+06
+	isrlumi_apprx = 454.336
+
+Perform cross section fit ...
+1605.71 [nb]
+ PARAMETER DEFINITIONS:
+    NO.   NAME         VALUE      STEP SIZE      LIMITS
+     1 M_V          7.82650e+02  1.00000e-02    0.00000e+00  1.00000e+03
+     2 Gam_V        8.49000e+00  1.00000e-02    0.00000e+00  1.00000e+02
+     3 BB           6.70343e-05  1.00000e-02    0.00000e+00  1.00000e+00
+ MINUIT WARNING IN PARAMETR
+ ============== VARIABLE3 BROUGHT BACK INSIDE LIMITS.
+ **********
+ **    1 **SET ERRDEF         0.5
+ **********
+(int) 0
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+classnm = TList, objnm = HIM3pi_fit, 228
+classnm = TList, objnm = HSFW2D, 12850
+classnm = TList, objnm = HSFW1D, 408670
+classnm = TList, objnm = HSIG, 411531
+classnm = TList, objnm = HIM3pi_crx, 413681
+[0]: hsig_true
+[1]: hsig_gen
+gsf = 1
+nb_data = 4.0985e+06
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+nb_eeg = 9829.09
+nb_omegapi = 108694
+nb_ksl = 380064
+nb_etagam = 3.25873e+06
+nb_mcrest = 14898.4
+1
+binszie = 242, x range(380, 1020) MeV/c^2
+bin indx = 119, m3pi = 693.388, m3pi_lower = 692.066, m3pi_upper = 694.711
+evnt_eeg_err = 8.63611, nb_data_sum = 8806, event_eeg = 290, nb_eeg_sum = 84, feeg = 0.00342062+/-0.00116316
+evnt_ksl_err = 68.0576, nb_data_sum = 8806, event_ksl = 5591, nb_ksl_sum = 883, fksl = 0.091267+/-0.00472683
+evnt_omegapi_err = 24.7906, nb_data_sum = 8806, event_omegapi = 752, nb_omegapi_sum = 262, fomegapi = 0.0268968+/-0.00277287
+evnt_etagam_err = 21.047, nb_data_sum = 8806, event_etagam = 429, nb_etagam_sum = 6879, fetagam = 0.793793+/-0.0070684
+evnt_mcrest_err = 16.9703, nb_data_sum = 8806, event_mcrest = 162, nb_mcrest_sum = 15, fmcrest = 0.00227114+/-0.000802938
+
+	evnt_data = 8041 +/- 89.6716
+	evnt_eeg = 103.993 +/- 8.63611
+	evnt_ksl = 5088.87 +/- 68.0576
+	evnt_omgapi = 679.824 +/- 24.7906
+	evnt_etagam = 435.933 +/- 21.047
+	evnt_mcrest = 215.996 +/- 16.9703
+	evnt_bkgsum = 6524.61
+	nb_isr3pi_obs = 1516.39+/-118.714
+	efficy = 0.118836+/-0.00170611
+	Lumi_tot 1.72447e+06, gsf = 1, Lumi_int = 1.72447e+06
+	isrlumi_apprx = 454.336
+
+Perform cross section fit ...
+1605.71 [nb]
+ PARAMETER DEFINITIONS:
+    NO.   NAME         VALUE      STEP SIZE      LIMITS
+     1 M_V          7.82650e+02  1.00000e-02    0.00000e+00  1.00000e+03
+     2 Gam_V        8.49000e+00  1.00000e-02    0.00000e+00  1.00000e+02
+     3 BB           6.70343e-05  1.00000e-02    0.00000e+00  1.00000e+00
+ MINUIT WARNING IN PARAMETR
+ ============== VARIABLE3 BROUGHT BACK INSIDE LIMITS.
+ **********
+ **    1 **SET ERRDEF         0.5
+ **********
+(int) 0
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+../../crx3pi_UFOKslCut/output/
+(int) 0
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+../../crx3pi_UFOKslCut/output/
+(int) 0
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+[0]: h1d_IM3pi_TEEG
+[1]: h1d_IM3pi_TEEG_TRUE
+[2]: h1d_IM3pi_TDATA
+[3]: h1d_IM3pi_TDATA_TRUE
+[4]: h1d_IM3pi_TISR3PI_SIG
+[5]: h1d_IM3pi_TISR3PI_SIG_TRUE
+[6]: h1d_IM3pi_TOMEGAPI
+[7]: h1d_IM3pi_TOMEGAPI_TRUE
+[8]: h1d_IM3pi_TKPM
+[9]: h1d_IM3pi_TKPM_TRUE
+[10]: h1d_IM3pi_TKSL
+[11]: h1d_IM3pi_TKSL_TRUE
+[12]: h1d_IM3pi_T3PIGAM
+[13]: h1d_IM3pi_T3PIGAM_TRUE
+[14]: h1d_IM3pi_TRHOPI
+[15]: h1d_IM3pi_TRHOPI_TRUE
+[16]: h1d_IM3pi_TETAGAM
+[17]: h1d_IM3pi_TETAGAM_TRUE
+[18]: h1d_IM3pi_TBKGREST
+[19]: h1d_IM3pi_TBKGREST_TRUE
+[20]: h1d_IM3pi_TUFO
+[21]: h1d_IM3pi_TUFO_TRUE
+[0]: hsig_true
+[1]: hsig_gen
+gsf = 1
+nb_data = 4.0985e+06
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+nb_eeg = 9829.09
+nb_omegapi = 108694
+nb_ksl = 380064
+nb_etagam = 3.25873e+06
+nb_mcrest = 14898.4
+1
+binszie = 242, x range(380, 1020) MeV/c^2
+bin indx = 119, m3pi = 693.388, m3pi_lower = 692.066, m3pi_upper = 694.711
+evnt_eeg_err = 8.63611, nb_data_sum = 8806, event_eeg = 290, nb_eeg_sum = 84, feeg = 0.00342062+/-0.00116316
+evnt_ksl_err = 68.0576, nb_data_sum = 8806, event_ksl = 5591, nb_ksl_sum = 883, fksl = 0.091267+/-0.00472683
+evnt_omegapi_err = 24.7906, nb_data_sum = 8806, event_omegapi = 752, nb_omegapi_sum = 262, fomegapi = 0.0268968+/-0.00277287
+evnt_etagam_err = 21.047, nb_data_sum = 8806, event_etagam = 429, nb_etagam_sum = 6879, fetagam = 0.793793+/-0.0070684
+evnt_mcrest_err = 16.9703, nb_data_sum = 8806, event_mcrest = 162, nb_mcrest_sum = 15, fmcrest = 0.00227114+/-0.000802938
+
+	evnt_data = 8041 +/- 89.6716
+	evnt_eeg = 103.993 +/- 8.63611
+	evnt_ksl = 5088.87 +/- 68.0576
+	evnt_omgapi = 679.824 +/- 24.7906
+	evnt_etagam = 435.933 +/- 21.047
+	evnt_mcrest = 215.996 +/- 16.9703
+	evnt_bkgsum = 6524.61
+	nb_isr3pi_obs = 1516.39+/-118.714
+	efficy = 0.118836+/-0.00170611
+	Lumi_tot 1.72447e+06, gsf = 1, Lumi_int = 1.72447e+06
+	isrlumi_apprx = 454.336
+
+Perform cross section fit ...
+1605.71 [nb]
+ PARAMETER DEFINITIONS:
+    NO.   NAME         VALUE      STEP SIZE      LIMITS
+     1 M_V          7.82650e+02  1.00000e-02    0.00000e+00  1.00000e+03
+     2 Gam_V        8.49000e+00  1.00000e-02    0.00000e+00  1.00000e+02
+     3 BB           6.70343e-05  1.00000e-02    0.00000e+00  1.00000e+00
+ MINUIT WARNING IN PARAMETR
+ ============== VARIABLE3 BROUGHT BACK INSIDE LIMITS.
+ **********
+ **    1 **SET ERRDEF         0.5
+ **********
+1.72447e+06
+(int) 0
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+[0]: h1d_IM3pi_TEEG
+[1]: h1d_IM3pi_TEEG_TRUE
+[2]: h1d_IM3pi_TDATA
+[3]: h1d_IM3pi_TDATA_TRUE
+[4]: h1d_IM3pi_TISR3PI_SIG
+[5]: h1d_IM3pi_TISR3PI_SIG_TRUE
+[6]: h1d_IM3pi_TOMEGAPI
+[7]: h1d_IM3pi_TOMEGAPI_TRUE
+[8]: h1d_IM3pi_TKPM
+[9]: h1d_IM3pi_TKPM_TRUE
+[10]: h1d_IM3pi_TKSL
+[11]: h1d_IM3pi_TKSL_TRUE
+[12]: h1d_IM3pi_T3PIGAM
+[13]: h1d_IM3pi_T3PIGAM_TRUE
+[14]: h1d_IM3pi_TRHOPI
+[15]: h1d_IM3pi_TRHOPI_TRUE
+[16]: h1d_IM3pi_TETAGAM
+[17]: h1d_IM3pi_TETAGAM_TRUE
+[18]: h1d_IM3pi_TBKGREST
+[19]: h1d_IM3pi_TBKGREST_TRUE
+[20]: h1d_IM3pi_TUFO
+[21]: h1d_IM3pi_TUFO_TRUE
+[0]: hsig_true
+[1]: hsig_gen
+gsf = 1
+nb_data = 4.0985e+06
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+[0]: h1d_IM3pi_TEEG
+[1]: h1d_IM3pi_TEEG_TRUE
+[2]: h1d_IM3pi_TDATA
+[3]: h1d_IM3pi_TDATA_TRUE
+[4]: h1d_IM3pi_TISR3PI_SIG
+[5]: h1d_IM3pi_TISR3PI_SIG_TRUE
+[6]: h1d_IM3pi_TOMEGAPI
+[7]: h1d_IM3pi_TOMEGAPI_TRUE
+[8]: h1d_IM3pi_TKPM
+[9]: h1d_IM3pi_TKPM_TRUE
+[10]: h1d_IM3pi_TKSL
+[11]: h1d_IM3pi_TKSL_TRUE
+[12]: h1d_IM3pi_T3PIGAM
+[13]: h1d_IM3pi_T3PIGAM_TRUE
+[14]: h1d_IM3pi_TRHOPI
+[15]: h1d_IM3pi_TRHOPI_TRUE
+[16]: h1d_IM3pi_TETAGAM
+[17]: h1d_IM3pi_TETAGAM_TRUE
+[18]: h1d_IM3pi_TBKGREST
+[19]: h1d_IM3pi_TBKGREST_TRUE
+[20]: h1d_IM3pi_TUFO
+[21]: h1d_IM3pi_TUFO_TRUE
+[0]: hsig_true
+[1]: hsig_gen
+gsf = 1
+nb_data = 4.0985e+06
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+nb_eeg = 9829.09
+nb_omegapi = 108694
+nb_ksl = 380064
+nb_etagam = 3.25873e+06
+nb_mcrest = 14898.4
+1
+binszie = 242, x range(380, 1020) MeV/c^2
+bin indx = 119, m3pi = 693.388, m3pi_lower = 692.066, m3pi_upper = 694.711
+evnt_eeg_err = 8.63611, nb_data_sum = 8806, event_eeg = 290, nb_eeg_sum = 84, feeg = 0.00342062+/-0.00116316
+evnt_ksl_err = 68.0576, nb_data_sum = 8806, event_ksl = 5591, nb_ksl_sum = 883, fksl = 0.091267+/-0.00472683
+evnt_omegapi_err = 24.7906, nb_data_sum = 8806, event_omegapi = 752, nb_omegapi_sum = 262, fomegapi = 0.0268968+/-0.00277287
+evnt_etagam_err = 21.047, nb_data_sum = 8806, event_etagam = 429, nb_etagam_sum = 6879, fetagam = 0.793793+/-0.0070684
+evnt_mcrest_err = 16.9703, nb_data_sum = 8806, event_mcrest = 162, nb_mcrest_sum = 15, fmcrest = 0.00227114+/-0.000802938
+
+	evnt_data = 8041 +/- 89.6716
+	evnt_eeg = 103.993 +/- 8.63611
+	evnt_ksl = 5088.87 +/- 68.0576
+	evnt_omgapi = 679.824 +/- 24.7906
+	evnt_etagam = 435.933 +/- 21.047
+	evnt_mcrest = 215.996 +/- 16.9703
+	evnt_bkgsum = 6524.61
+	nb_isr3pi_obs = 1516.39+/-118.714
+	efficy = 0.118836+/-0.00170611
+	Lumi_tot 1.72447e+06, gsf = 1, Lumi_int = 1.72447e+06
+	isrlumi_apprx = 454.336
+
+Perform cross section fit ...
+1605.71 [nb]
+ PARAMETER DEFINITIONS:
+    NO.   NAME         VALUE      STEP SIZE      LIMITS
+     1 M_V          7.82650e+02  1.00000e-02    0.00000e+00  1.00000e+03
+     2 Gam_V        8.49000e+00  1.00000e-02    0.00000e+00  1.00000e+02
+     3 BB           6.70343e-05  1.00000e-02    0.00000e+00  1.00000e+00
+ MINUIT WARNING IN PARAMETR
+ ============== VARIABLE3 BROUGHT BACK INSIDE LIMITS.
+ **********
+ **    1 **SET ERRDEF         0.5
+ **********
+1.72447e+06
+(int) 0
+
+Processing omega_fit_script.C...
+
+Processing omega_fit_script.C...
+Extract omega parameters ...
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+[0]: h1d_IM3pi_TEEG
+[1]: h1d_IM3pi_TEEG_TRUE
+[2]: h1d_IM3pi_TDATA
+[3]: h1d_IM3pi_TDATA_TRUE
+[4]: h1d_IM3pi_TISR3PI_SIG
+[5]: h1d_IM3pi_TISR3PI_SIG_TRUE
+[6]: h1d_IM3pi_TOMEGAPI
+[7]: h1d_IM3pi_TOMEGAPI_TRUE
+[8]: h1d_IM3pi_TKPM
+[9]: h1d_IM3pi_TKPM_TRUE
+[10]: h1d_IM3pi_TKSL
+[11]: h1d_IM3pi_TKSL_TRUE
+[12]: h1d_IM3pi_T3PIGAM
+[13]: h1d_IM3pi_T3PIGAM_TRUE
+[14]: h1d_IM3pi_TRHOPI
+[15]: h1d_IM3pi_TRHOPI_TRUE
+[16]: h1d_IM3pi_TETAGAM
+[17]: h1d_IM3pi_TETAGAM_TRUE
+[18]: h1d_IM3pi_TBKGREST
+[19]: h1d_IM3pi_TBKGREST_TRUE
+[20]: h1d_IM3pi_TUFO
+[21]: h1d_IM3pi_TUFO_TRUE
+[0]: hsig_true
+[1]: hsig_gen
+gsf = 1
+nb_data = 4.0985e+06
+classnm = TTree, objnm = TEEG, 1859649
+classnm = TTree, objnm = TDATA, 452418907
+classnm = TTree, objnm = TISR3PI_SIG, 903714455
+classnm = TTree, objnm = TOMEGAPI, 1410071542
+classnm = TTree, objnm = TKPM, 1410169610
+classnm = TTree, objnm = TKSL, 1410243655
+classnm = TTree, objnm = T3PIGAM, 1410343078
+classnm = TTree, objnm = TRHOPI, 1410371302
+classnm = TTree, objnm = TETAGAM, 1417863043
+classnm = TTree, objnm = TBKGREST, 1417960007
+classnm = TTree, objnm = TUFO, 1422911217
+nb_eeg = 9829.09
+nb_omegapi = 108694
+nb_ksl = 380064
+nb_etagam = 3.25873e+06
+nb_mcrest = 14898.4
+1
+binszie = 242, x range(380, 1020) MeV/c^2
+bin indx = 119, m3pi = 693.388, m3pi_lower = 692.066, m3pi_upper = 694.711
+evnt_eeg_err = 8.63611, nb_data_sum = 8806, event_eeg = 290, nb_eeg_sum = 84, feeg = 0.00342062+/-0.00116316
+evnt_ksl_err = 68.0576, nb_data_sum = 8806, event_ksl = 5591, nb_ksl_sum = 883, fksl = 0.091267+/-0.00472683
+evnt_omegapi_err = 24.7906, nb_data_sum = 8806, event_omegapi = 752, nb_omegapi_sum = 262, fomegapi = 0.0268968+/-0.00277287
+evnt_etagam_err = 21.047, nb_data_sum = 8806, event_etagam = 429, nb_etagam_sum = 6879, fetagam = 0.793793+/-0.0070684
+evnt_mcrest_err = 16.9703, nb_data_sum = 8806, event_mcrest = 162, nb_mcrest_sum = 15, fmcrest = 0.00227114+/-0.000802938
+
+	evnt_data = 8041 +/- 89.6716
+	evnt_eeg = 103.993 +/- 8.63611
+	evnt_ksl = 5088.87 +/- 68.0576
+	evnt_omgapi = 679.824 +/- 24.7906
+	evnt_etagam = 435.933 +/- 21.047
+	evnt_mcrest = 215.996 +/- 16.9703
+	evnt_bkgsum = 6524.61
+	nb_isr3pi_obs = 1516.39+/-118.714
+	efficy = 0.118836+/-0.00170611
+	Lumi_tot 1.72447e+06, gsf = 1, Lumi_int = 1.72447e+06
+	isrlumi_apprx = 454.336
+
+Perform cross section fit ...
+1605.71 [nb]
+ PARAMETER DEFINITIONS:
+    NO.   NAME         VALUE      STEP SIZE      LIMITS
+     1 M_V          7.82650e+02  1.00000e-02    0.00000e+00  1.00000e+03
+     2 Gam_V        8.49000e+00  1.00000e-02    0.00000e+00  1.00000e+02
+     3 BB           6.70343e-05  1.00000e-02    0.00000e+00  1.00000e+00
+ MINUIT WARNING IN PARAMETR
+ ============== VARIABLE3 BROUGHT BACK INSIDE LIMITS.
+ **********
+ **    1 **SET ERRDEF         0.5
+ **********
+1.72447e+06
+(int) 0

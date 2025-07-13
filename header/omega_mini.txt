@@ -1,0 +1,9 @@
+const double Mass_omega_fit_mini=784.908;
+const double Mass_omega_err_fit_mini=1.03054;
+const double Gam_omega_fit_mini=19.1515;
+const double Gam_omega_err_fit_mini=3.69038;
+const double BB_fit_mini=9.53952e-08;
+const double BB_err_fit_mini=1.27029e-08;
+const double Lumi_int_fit_mini=1.72447e+06;
+const double chi2_sum_mini=8.5184;
+const int ndf_mini=12;

@@ -1,0 +1,6 @@
+double get_syst_errII(){
+
+  double list[2]  = {0., 0.};
+
+  return list;
+}

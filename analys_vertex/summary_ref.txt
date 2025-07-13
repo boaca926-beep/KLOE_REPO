@@ -1,0 +1,24 @@
+SUMMARY
+evnt_sum = 20492: evnt_sig = 20275, evnt_bkg = 217
+evnt_sum = 20492: evnt_pre_filtred = 15563, passed = 4929
+etagam evnts: evnt_phi5 = 0
+Pre-selected = 4929, streamed = 3017, unstr = 1912
+evnt_trig = 4904, trigger_indx = 1
+evnt_filfo = 3007, filfo_indx = 1
+evnt str2 = 1119, evtcls_indx = 1
+, fiduial_indx = -1
+evnt_trk = 1088
+evnt_class = 688
+evnt_final = 452
+
+test_indx = 0
+
+find 0 correct pi0 photons = 3
+find 1 correct pi0 photons = 50
+find 2 correct pi0 photons = 399
+
+PARMETERS
+egammamin = 15
+Zvmax = 10
+Rhovmax = 4
+nb_sigma_T_clust = 3

@@ -1,0 +1,115 @@
+TFile *f_hist = new TFile(outputHist + "hist.root"); 
+TFile *f_cut = new TFile(outputCut + "tree_pre.root");  
+TFile *f_out = new TFile(outputOmega + "omega_fit.root", "recreate");
+
+TTree* TRESULT = new TTree("TRESULT", "recreate");
+TTree* TCRX3PI = new TTree("TCRX3PI", "recreate");
+TTree* TINPUT = new TTree("TINPUT", "recreate");
+
+TList *HIM3pi_fit = (TList *) f_hist -> Get("HIM3pi_fit");
+TList *HSIG = (TList *) f_hist -> Get("HSIG");
+
+//
+double binomial_err(double nb_true, double nb_gen) {
+  double error = 0.;
+  double ratio = 0.; 
+
+  if (nb_gen != 0.) {
+    ratio = nb_true / nb_gen;
+    error = TMath::Sqrt(ratio * (1. - ratio) / nb_gen);
+  }
+   
+  //cout << "true = " << nb_true << ", gen = " << nb_gen << ", ratio = " << ratio << ", error = " << error << endl;
+
+  return error;
+}
+
+//
+double get_ratio(double nb_true, double nb_gen) {
+
+  double ratio = 0.;
+  
+  if (nb_gen != 0.) {
+
+    ratio = nb_true / nb_gen;
+    
+  }
+  
+  return ratio;
+}
+
+
+//
+TH2D *getCorrMatrix(int bins, double xmin, double xmax) {
+
+  TTree *TISR3PI_SIG = (TTree*)f_cut -> Get("TISR3PI_SIG");
+
+  // create corrlation matrix
+  TH2D *h2d_corr = new TH2D("", "", bins, xmin, xmax, bins, xmin, xmax);
+  
+  //cout << "correlation matrix is created!!! " << TISR3PI_SIG -> GetName() << endl;
+
+  double IM3pi_true = 0.;
+  double IM3pi_corred = 0.;
+  double PARA[5] = {frac, smallBias, smallSigma, wideBias, wideSigma};
+  
+  for (Int_t irow = 0; irow < TISR3PI_SIG -> GetEntries(); irow++) {// loop chain
+
+    TISR3PI_SIG -> GetEntry(irow);
+    
+    IM3pi_true = TISR3PI_SIG -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
+    
+    //IM3pi_corred = DetectorEvent(TMath::Abs(IM3pi_true));
+    IM3pi_corred = DetectorEvent_fcn(TMath::Abs(IM3pi_true), PARA);
+    //cout << IM3pi_corred << ", " << DetectorEvent(TMath::Abs(IM3pi_true), para) << endl;
+    
+    h2d_corr -> Fill(IM3pi_true, IM3pi_corred);
+    
+  }
+  
+  return h2d_corr;
+  
+}
+
+//
+TH2D* getSmearMatrix(TH2D *h2d_corr, int bins, double xmin, double xmax) {
+
+  TH2D *h2d_smear = new TH2D("", "", bins, xmin, xmax, bins, xmin, xmax);
+  
+  double z_value = 0.;
+  double nb_true = 0.;
+  double p_value = 0., p_value_err = 0.;
+
+  int entries = 0;
+  
+  for (int j = 1; j <= h2d_corr -> ProjectionX() -> GetNbinsX(); j ++ ) {
+
+    for (int i = 1; i <= h2d_corr -> ProjectionY() -> GetNbinsX(); i ++ ) {
+
+      z_value = h2d_corr -> GetBinContent(j, i);
+      nb_true = h2d_corr -> ProjectionX() -> GetBinContent(j);
+      
+      p_value = get_ratio(z_value, nb_true);
+
+      if (p_value != 0.) {
+
+	p_value_err = binomial_err(z_value, nb_true) / p_value; //Relative err
+
+      }
+      else {
+
+	p_value_err = 0.;
+
+      }
+
+      h2d_smear -> SetBinContent(j, i, p_value);
+      //h2d_smear_matrix_err -> SetBinContent(j, i, p_value_err);
+      entries ++;
+
+    }
+	
+  }
+  
+  return h2d_smear;
+  
+}

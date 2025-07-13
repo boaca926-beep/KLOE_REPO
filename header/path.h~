@@ -1,0 +1,7 @@
+const TString rootFile = "../../path_small/ufo_path";
+const TString sampleFile = "../../result_small/input/ufo";
+const TString outputCut = "../../result_small/cut/tree_cut";
+const TString sig_path = "../../result_small/input/sig";
+const TString outputGen = "../../result_small/gen/tree_gen";
+const TString outputHist = "../../result_small/hist/hist";
+const TString data_type = "ufo";

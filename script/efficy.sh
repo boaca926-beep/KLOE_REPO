@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # input folder
-sample_size=small # norm_TUFO, small_TUFO
+sample_size=norm # norm_TUFO, small_TUFO
 syst_type=evtcls # evtcls, filfo, trigger
 exp_type=TUFO # UFO
 input_path=../../input_${sample_size}_${syst_type}_${exp_type}
@@ -59,9 +59,10 @@ done
 echo "Efficiency is calculated!"
 #rm $efficy_script
 
-input_header="../header/plot_efficy.h"
+plot_header="../header/plot_efficy.h"
 
-sed -i 's|\(const TString input_folder =\)\(.*\)|\1 "'"${efficy_path}"'";|' "$input_header"
+sed -i 's|\(const TString input_folder =\)\(.*\)|\1 "'"${efficy_path}"'";|' "$plot_header"
+sed -i 's|\(const TString syst_type =\)\(.*\)|\1 "'"${syst_type}"'";|' "$plot_header"
 
 plot_efficy_script=plot_efficy_script.C
 echo "void plot_efficy_script() {" > $plot_efficy_script

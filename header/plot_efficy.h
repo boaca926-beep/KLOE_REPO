@@ -1,4 +1,5 @@
 const TString input_folder = "../../efficy_evtcls";
+const TString syst_type = "evtcls";
   
 TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErrors *gf_sig, TGraphErrors *gf_ufo, TGraphErrors *gf_ratio){
 
@@ -9,7 +10,10 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_sig -> GetPoint(1, x2, y2);
 
   double Delta_m3pi = x2 - x1;
-  cout << Delta_m3pi << endl;
+  //double ymax = gf_ufo -> GetMaximum() * 1.2;
+  double ymax = 1.4;
+  
+  cout << "Delta_m3pi = " << Delta_m3pi << ", ymax = " << ymax << endl;
 
   const double mass_min = 760., mass_max = 800.;
   
@@ -31,8 +35,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
 
   gf_ufo -> GetYaxis() -> SetNdivisions(512);
   gf_ufo -> GetYaxis() -> SetTitleFont(43);
-  gf_ufo -> GetYaxis() -> SetRangeUser(0., gf_ufo -> GetMaximum() * 1.2);
-  //gf_ufo -> GetYaxis() -> SetRangeUser(0., 700.);
+  gf_ufo -> GetYaxis() -> SetRangeUser(0., ymax);
   //gf_ufo -> GetYaxis() -> SetTitle(TString::Format("Efficiency (#tilde{#varepsilon})/[%0.2f MeV/c^{2}]", Delta_m3pi));
   gf_ufo -> GetYaxis() -> SetTitle("Efficiency (#tilde{#varepsilon})");
   gf_ufo -> GetYaxis() -> SetTitleSize(33);

@@ -21,10 +21,10 @@ int efficy_evtcls() {
 
   cout << "Calculate efficiency ..." << endl; 
 
-  cout << "input path: " << inputFile << endl;
+  cout << "input path: " << inputFile << ", tree type = " << treeType << endl;
 
   TFile *f_input = new TFile(inputFile + ".root");
-  getObj(f_input);
+  //getObj(f_input);
 
   TTree *ALLCHAIN_CUT = (TTree*)f_input -> Get(treeType);
 

@@ -1,5 +1,6 @@
 #include "../header/sm_para.h"
 #include "../header/plot.h"
+#include "../header/hist.h"
 #include "../header/efficy.h"
 #include "../header/plot_efficy.h"
 #include "../header/method.h"

@@ -1,11 +1,11 @@
 #!/bin/bash
 
-## Specify DATA or UFO
+## Specify DATA
 sample_size=norm # norm; small; mini
+exp_type=TDATA 
+gsf=1 
 
-exp_type=TDATA # DATA
-gsf=1 # DATA
-
+input_path=../../input_${sample_size}_${exp_type}
 result_path=../../input_isrlumi_${sample_size}_${exp_type}
 
 if [[ -d "$result_path" ]]; then
@@ -26,8 +26,8 @@ echo "" > ${log_omega_fit}
 
 path_header=../header/path.h
 
-outputCut=../../input_norm_TDATA/cut/
-outputHist=../../input_norm_TDATA/hist/
+outputCut=${input_path}/cut/
+outputHist=${input_path}/hist/
 
 sed -i 's|\(const TString outputCut =\)\(.*\)|\1 "'"${outputCut}"'";|' "$path_header"
 sed -i 's|\(const TString outputHist =\)\(.*\)|\1 "'"${outputHist}"'";|' "$path_header"

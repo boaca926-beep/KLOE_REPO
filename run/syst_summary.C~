@@ -1,6 +1,0 @@
-int syst_summary() {
-
-
-  return 0;
-  
-}

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # input folder
-sample_size=norm # norm_TUFO, small_TUFO
+sample_size=small # norm_TUFO, small_TUFO
 syst_type=evtcls # evtcls, filfo, trigger
 exp_type=TUFO # UFO
 input_path=../../input_${sample_size}_${syst_type}_${exp_type}

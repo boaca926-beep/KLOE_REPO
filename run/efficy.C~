@@ -1,8 +1,0 @@
-int efficy() {
-
-  cout << "Calculate efficiency ..." << endl; 
-
-
-  return 0;
-  
-}

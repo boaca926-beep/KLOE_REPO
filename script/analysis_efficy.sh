@@ -1,12 +1,12 @@
 #!/bin/bash
 
-## Specify DATA 
-sample_size=norm # norm; small; mini
+## Specify DATA
+sample_size=norm #norm; small; mini
 exp_type=TDATA 
 gsf=1 
 
 input_path=../../input_${sample_size}_${exp_type}
-result_path=../../input_vmd_${sample_size}_${exp_type}
+result_path=../../analysis_${sample_size}_${exp_type}
 
 if [[ -d "$result_path" ]]; then
     #echo "Remove ${result_path} ..."
@@ -21,8 +21,8 @@ mkdir ${omega_path} # omega parameters
 mkdir ${log_path} # log files   
 
 log_omega_fit=${log_path}log_omega_fit.txt
-echo "" > ${log_omega_fit}
-#touch $log_omega_fit
+#echo "" > ${log_omega_fit}
+touch $log_omega_fit
 
 path_header=../header/path.h
 
@@ -38,8 +38,8 @@ sed -i 's|\(double gsf =\)\(.*\)|\1 '$gsf';|' "$path_header"
 omega_fit_script=omega_fit_script.C
 echo '#include <iostream>' > $omega_fit_script
 echo "void omega_fit_script() {" >> $omega_fit_script
-echo 'gROOT->ProcessLine(".L ../run/omega_fit_vmd.C");' >> $omega_fit_script
-echo 'gROOT->ProcessLine("omega_fit_vmd()");' >> $omega_fit_script
+echo 'gROOT->ProcessLine(".L ../run/omega_fit_efficy.C");' >> $omega_fit_script
+echo 'gROOT->ProcessLine("omega_fit_efficy()");' >> $omega_fit_script
 echo '}' >> $omega_fit_script
 root -l -n -q -b $omega_fit_script >> ${log_omega_fit}
 echo "Omega parameters are extracted!"

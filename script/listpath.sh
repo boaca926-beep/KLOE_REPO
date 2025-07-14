@@ -1,5 +1,6 @@
 #!/bin/bash
-INPATH=/media/bo/8E97-E8DD/DATA_PEAK/ROOTINPUT
+INPATH=/media/bo/Backup/DATA_PEAK/ROOTINPUT #8E97-E8DD Backup
+#INPATH=/media/bo/8E97-E8DD/DATA_PEAK/ROOTINPUT
 OUTPATH=../path_chain
 
 # create the main folder
@@ -64,36 +65,36 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     mc_type=${MC_TYPE[i]}
     file_type=${FILE_TYPE[i]}
 
-    printf '%s\n' "$INPATH/${data_type}/${file_type}"/* > $OUTPATH/${data_type}_sum
+    printf '%s\n' "$INPATH/${data_type}/${file_type}"/* > $OUTPATH/${mc_type}_path
 
-    total_lines=$(wc -l < $OUTPATH/${data_type}_sum)  
+    total_lines=$(wc -l < $OUTPATH/${mc_type}_path)  
     part_lines=$(( (total_lines + 2) / 3 ))  # Round up division
     
     echo $total_lines $part_lines
     
     # Part 1: Lines 1 to part_lines
-    head -n $part_lines $OUTPATH/${data_type}_sum > $OUTPATH/${mc_type}_path1
+    head -n $part_lines $OUTPATH/${mc_type}_path > $OUTPATH/${mc_type}_path1
     
     # Part 2: Lines (part_lines+1) to (2*part_lines)
-    tail -n +$((part_lines + 1)) $OUTPATH/${data_type}_sum | head -n $part_lines > $OUTPATH/${mc_type}_path2
+    tail -n +$((part_lines + 1)) $OUTPATH/${mc_type}_path | head -n $part_lines > $OUTPATH/${mc_type}_path2
     
     # Part 3: Remaining lines
-    tail -n +$((2 * part_lines + 1)) $OUTPATH/${data_type}_sum > $OUTPATH/${mc_type}_path3
+    tail -n +$((2 * part_lines + 1)) $OUTPATH/${mc_type}_path > $OUTPATH/${mc_type}_path3
 
 done
 
-printf '%s\n' "$path_UFO1"/* > $OUTPATH/UFO_sum
+printf '%s\n' "$path_UFO1"/* > $OUTPATH/ufo_path
 
-total_lines=$(wc -l < $OUTPATH/UFO_sum)  
+total_lines=$(wc -l < $OUTPATH/ufo_path)  
 part_lines=$(( (total_lines + 2) / 3 ))  # Round up division
 
 echo $total_lines $part_lines
 
 # Part 1: Lines 1 to part_lines
-head -n $part_lines $OUTPATH/UFO_sum > $OUTPATH/ufo_path1
+head -n $part_lines $OUTPATH/ufo_path > $OUTPATH/ufo_path1
 
 # Part 2: Lines (part_lines+1) to (2*part_lines)
-tail -n +$((part_lines + 1)) $OUTPATH/UFO_sum | head -n $part_lines > $OUTPATH/ufo_path2
+tail -n +$((part_lines + 1)) $OUTPATH/ufo_path | head -n $part_lines > $OUTPATH/ufo_path2
 
 # Part 3: Remaining lines
-tail -n +$((2 * part_lines + 1)) $OUTPATH/UFO_sum > $OUTPATH/ufo_path3
+tail -n +$((2 * part_lines + 1)) $OUTPATH/ufo_path > $OUTPATH/ufo_path3

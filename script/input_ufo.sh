@@ -1,10 +1,11 @@
 #!/bin/bash
 
 ## Specify DATA or UFO
-sample_size=norm # norm; small; mini
+sample_size=chain # norm; small; mini; chain
 #sample_path=../path_${sample_size}/
 syst_type=evtcls #evtcls, trigger, filfo
-sample_path=../../path_${sample_size}/ 
+#sample_path=../../path_${sample_size}/ 
+sample_path=../path_${sample_size}/ 
 
 exp_type=TUFO # UFO
 gsf=0.0114359 # UFO

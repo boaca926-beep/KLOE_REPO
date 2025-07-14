@@ -1,10 +1,9 @@
 #!/bin/bash
 
-## Specify DATA or UFO
+## Specify DATA
 sample_size=norm #norm; small; mini
-
-exp_type=TDATA # DATA
-gsf=1 # DATA
+exp_type=TDATA 
+gsf=1 
 
 input_path=../../input_${sample_size}_${exp_type}
 result_path=../../analysis_${sample_size}_${exp_type}

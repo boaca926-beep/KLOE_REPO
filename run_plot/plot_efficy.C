@@ -1,6 +1,6 @@
 #include "../header/sm_para.h"
 #include "../header/plot.h"
-#include "../header/hist.h"
+//#include "../header/hist.h"
 #include "../header/efficy.h"
 #include "../header/plot_efficy.h"
 #include "../header/method.h"
@@ -83,8 +83,9 @@ int plot_efficy() {
   for (int i = 0; i < nPoints; i ++) {
 
     if (y_efficy_sig[i] == 0. || y_efficy_ufo[i] == 0.) {
-        RATIO[i] = 0.;
-	RATIO_ERR[i] = 0.;
+      //cout << y_efficy_ufo[i] << ", " <<  y_efficy_sig[i] << endl;
+      RATIO[i] = 1.;
+      RATIO_ERR[i] = 0.;
     }
     else {
       RATIO[i] = get_ratio(y_efficy_ufo[i], y_efficy_sig[i]); //y_efficy_ufo[i] / y_efficy_sig[i];
@@ -108,17 +109,23 @@ int plot_efficy() {
   double sigma_c = ratioErr(a, sigma_a, b, sigma_b);
   cout << "c = " << c << " +/- " << sigma_c << endl;
   */
+
+  TFile *f_output = new TFile(input_folder + "/efficy_ratio.root", "update");
+  gf_ratio -> Write();
   
   // plot
   TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio);
 
   //gf_efficy_sig -> Draw("AP");
   //gf_efficy_ufo -> Draw("P");
-
+  //gf_ratio -> Draw("AP");
+  
   // save
   cv_efficy -> SaveAs(input_folder + "/cv_efficy.pdf");
   
   cout << input_folder << endl;
+
+  f_output -> Close();
   
   return 0;
   

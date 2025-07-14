@@ -3,19 +3,23 @@
 #include "../header/sfw2d.txt"
 #include "../header/sfw1d.txt" 
 #include "../header/method.h"
-#include "../header/omega_fit.h"
+#include "../header/omega_fit_efficy.h"
 #include "../header/cut_para.h"
 
-int omega_fit(){
+int omega_fit_efficy(){
 
   gErrorIgnoreLevel = kError;
   
   cout << "Extract omega parameters ..." << endl;
 
+  TFile *f_efficy_ratio = new TFile("../../efficy_evtcls/efficy_ratio.root");
+
   // data amd bkg histos
   //getObj(f_cut);
-  getObj(f_hist);
-  
+  //getObj(f_hist);
+  getObj(f_efficy_ratio);
+  TGraphErrors* gf_ratio = (TGraphErrors*)f_efficy_ratio -> Get("gf_ratio");
+    
   checkList(HIM3pi_fit);
   checkList(HSIG);
 
@@ -41,8 +45,8 @@ int omega_fit(){
   mcrest_hist -> Add(hkpm, 1.);
   mcrest_hist -> Add(hrhopi, 1.);
 
-  // efficiency
-  get_efficy();
+  // corrected efficiency
+  get_efficy(gf_ratio);
   
   // smearing matrix and smearing signal IM3pi MC true distr.
   TRandom *generator = new TRandom();

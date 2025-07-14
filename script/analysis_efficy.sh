@@ -6,7 +6,7 @@ exp_type=TDATA
 gsf=1 
 
 input_path=../../input_${sample_size}_${exp_type}
-result_path=../../analysis_${sample_size}_${exp_type}
+result_path=../../input_efficy_${sample_size}_${exp_type}
 
 if [[ -d "$result_path" ]]; then
     #echo "Remove ${result_path} ..."

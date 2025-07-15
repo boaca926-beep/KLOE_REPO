@@ -2,7 +2,7 @@
 
 # input folder
 sample_size=chain # norm; chain; small
-syst_type=evtcls # evtcls, filfo, trigger
+syst_type=filfo # evtcls, filfo, trigger
 exp_type=TUFO # UFO
 input_path=../../input_${sample_size}_${syst_type}_${exp_type}
 #echo $input_path

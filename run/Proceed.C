@@ -1,8 +1,9 @@
 //void Proceed(const TString input_str = "Analys_class(\"../../path_small/ksl_path1\",\"../../ksl_pre\")"){
 //void Proceed(const TString input_str = "Analys_class(\"../path_chain/SIG_sum\",\"../../sig_sum\")"){
 //void Proceed(const TString input_str = "Analys_class(\"../../path_norm/sig_path_sum\",\"../../sig_sum\")"){
-void Proceed(const TString input_str = "Analys_class(\"../../path_small/sig_path\",\"../../sig\")"){
+//void Proceed(const TString input_str = "Analys_class(\"../../path_small/sig_path\",\"../../sig\")"){
 //void Proceed(const TString input_str = "Analys_class(\"../../path_small/sig_tmp\",\"../../sig_tmp1\")"){
+void Proceed(const TString input_str = "Analys_class(\"../path_chain/exp_path\",\"../../exp\")"){
 
   cout << "READING INPUT FILES !" << endl;
   //gROOT -> ProcessLine( "gErrorIgnoreLevel = 1001;")

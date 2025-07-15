@@ -3,7 +3,7 @@
 ## Specify DATA or UFO
 sample_size=chain # norm; small; mini; chain
 #sample_path=../path_${sample_size}/
-syst_type=trigger #evtcls, trigger, filfo
+syst_type=filfo #evtcls, trigger, filfo
 #sample_path=../../path_${sample_size}/ 
 sample_path=../path_${sample_size}/ 
 
@@ -232,7 +232,9 @@ echo "void sfw2d_script() {" >> $sfw2d_script
 echo 'gROOT->ProcessLine(".L ../run/sfw2d.C");' >> $sfw2d_script
 echo 'gROOT->ProcessLine("sfw2d()");' >> $sfw2d_script
 echo '}' >> $sfw2d_script
-##root -l -n -q -b $sfw2d_script >> ${log_sfw2d}
+#root -l -n -q -b $sfw2d_script >> ${log_sfw2d}
+#cp ../header/sfw2d.txt ${outputSfw2D}
+#ls ${outputSfw2D}
 echo "MC normalization!"
 
 ## MC signal tuning
@@ -241,7 +243,9 @@ echo "void sfw1d_script() {" >> $sfw1d_script
 echo 'gROOT->ProcessLine(".L ../run/sfw1d.C");' >> $sfw1d_script
 echo 'gROOT->ProcessLine("sfw1d()");' >> $sfw1d_script
 echo '}' >> $sfw1d_script
-##root -l -n -q -b $sfw1d_script >> ${log_sfw1d}
+#root -l -n -q -b $sfw1d_script >> ${log_sfw1d}
+#cp ../header/sfw1d.txt ${outputSfw1D}
+#ls ${outputSfw1D}
 echo "MC signal tuning!"
 
 ## Omega parameters

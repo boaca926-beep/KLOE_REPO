@@ -34,18 +34,18 @@ echo "" > ${log_efficy}
 #touch $log_efficy
 
 #TREE_TYPE=("TISR3PI_SIG" "ksl" "exp" "eeg" "TUFO")
-TREE_TYPE=("TISR3PI_SIG" "TUFO")
+TREE_TYPE=("TISR3PI_SIG" "TUFO" "TDATA")
 
 # loop over sample types
 path_header=../header/efficy.h
 
 sed -i 's|\(const TString inputFile =\)\(.*\)|\1 "'"${input_path}/cut/tree_pre"'";|' "$path_header"
+sed -i 's|\(const TString outputCut =\)\(.*\)|\1 "'"${efficy_path}/"'";|' "$path_header"
     
 for ((i=0;i<${#TREE_TYPE[@]};++i)); do
 
     treeType=${TREE_TYPE[i]}
     
-    sed -i 's|\(const TString outputCut =\)\(.*\)|\1 "'"${efficy_path}/"'";|' "$path_header"
     sed -i 's|\(const TString treeType =\)\(.*\)|\1 "'"${treeType}"'";|' "$path_header"
 
     efficy_script=efficy_script.C
@@ -62,7 +62,7 @@ echo "Efficiency is calculated!"
 plot_header="../header/plot_efficy.h"
 
 sed -i 's|\(const TString input_folder =\)\(.*\)|\1 "'"${efficy_path}"'";|' "$plot_header"
-sed -i 's|\(const TString syst_type =\)\(.*\)|\1 "'"${syst_type}"'";|' "$plot_header"
+sed -i 's|\(const TString systType =\)\(.*\)|\1 "'"${syst_type}"'";|' "$plot_header"
 
 plot_efficy_script=plot_efficy_script.C
 echo "void plot_efficy_script() {" > $plot_efficy_script

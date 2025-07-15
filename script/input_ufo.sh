@@ -3,7 +3,7 @@
 ## Specify DATA or UFO
 sample_size=chain # norm; small; mini; chain
 #sample_path=../path_${sample_size}/
-syst_type=evtcls #evtcls, trigger, filfo
+syst_type=trigger #evtcls, trigger, filfo
 #sample_path=../../path_${sample_size}/ 
 sample_path=../path_${sample_size}/ 
 

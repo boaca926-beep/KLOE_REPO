@@ -52,10 +52,7 @@ int plot_efficy() {
 
   cout << "input path: " << input_folder << endl;
 
-  TFile *f_input = new TFile(input_folder + "/efficy.root");
-  //getObj(f_input);
-
-  TGraphErrors* gf_efficy_sig = (TGraphErrors*)f_input -> Get("gf_efficy_TISR3PI_SIG");
+* gf_efficy_sig = (TGraphErrors*)f_input -> Get("gf_efficy_TISR3PI_SIG");
   gf_efficy_sig -> SetLineColor(kBlue);
   gf_efficy_sig -> SetMarkerSize(.8);
   gf_efficy_sig -> SetMarkerStyle(20);
@@ -121,7 +118,7 @@ int plot_efficy() {
   //gf_ratio -> Draw("AP");
   
   // save
-  cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
+  cv_efficy -> SaveAs(input_folder + "/cv_efficy.pdf");
   
   cout << input_folder << endl;
 

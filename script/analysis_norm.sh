@@ -26,6 +26,12 @@ touch $log_omega_fit
 
 path_header=../header/path.h
 
+echo -e 'const TString outputCut = "";' > $path_header
+echo -e 'const TString outputHist = "";' >> $path_header
+echo -e 'const TString outputOmega = "";' >> $path_header
+echo -e 'const TString exp_type = "'$exp_type'";' >> $path_header
+echo -e "double gsf = $gsf;" >> $path_header
+
 outputCut=${input_path}/cut/
 outputHist=${input_path}/hist/
 

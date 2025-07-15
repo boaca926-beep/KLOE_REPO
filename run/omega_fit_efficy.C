@@ -12,8 +12,7 @@ int omega_fit_efficy(){
   
   cout << "Extract omega parameters ..." << endl;
 
-  TFile *f_efficy_ratio = new TFile("../../efficy_evtcls/efficy_ratio.root");
-
+  
   // data amd bkg histos
   //getObj(f_cut);
   //getObj(f_hist);

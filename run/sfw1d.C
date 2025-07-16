@@ -231,9 +231,16 @@ int sfw1d(){
   
   // save
 
+  TTree* TRESULT = new TTree("TRESULT", "recreate");
+  TRESULT -> SetAutoSave(0);
+
+  TRESULT -> Branch("Br_sig_sfw", &sig_sfw, "Br_sig_sfw/D");
+  TRESULT -> Fill();
+  
   hsig -> Write();
   H1D_list_scaled -> Write("HIM3pi", 1);
   TSFW -> Write();
+  TRESULT -> Write();
   
   f_output -> Close();
   

@@ -1,7 +1,7 @@
 #include "../header/sm_para.h"
 #include "../header/path.h"
-#include "../header/sfw2d.txt"
-#include "../header/sfw1d.txt" 
+//#include "../header/sfw2d.txt"
+//#include "../header/sfw1d.txt" 
 #include "../header/method.h"
 #include "../header/omega_fit.h"
 #include "../header/cut_para.h"
@@ -12,12 +12,53 @@ int omega_fit(){
   
   cout << "Extract omega parameters ..." << endl;
 
+  // scaling factors
+  //getObj(f_sfw2d);
+  //getObj(f_sfw1d);
+
+  // sfw1d
+  TTree *TSFW1D = (TTree*)f_sfw1d -> Get("TRESULT");
+
+  for (Int_t irow = 0; irow < TSFW1D -> GetEntries(); irow++) {// loop chain
+
+    TSFW1D -> GetEntry(irow);
+
+    sig_sfw = TSFW1D -> GetLeaf("Br_sig_sfw") -> GetValue(0);
+    
+  }
+
+  // sfw2d
+  TTree *TSFW2D = (TTree*)f_sfw2d -> Get("TRESULT");
+
+  for (Int_t irow = 0; irow < TSFW2D -> GetEntries(); irow++) {// loop chain
+
+    TSFW2D -> GetEntry(irow);
+    
+    eeg_sfw = TSFW2D -> GetLeaf("Br_eeg_sfw") -> GetValue(0);
+    isr3pi_sfw = TSFW2D -> GetLeaf("Br_isr3pi_sfw") -> GetValue(0);
+    omegapi_sfw = TSFW2D -> GetLeaf("Br_omegapi_sfw") -> GetValue(0);
+    etagam_sfw = TSFW2D -> GetLeaf("Br_etagam_sfw") -> GetValue(0);
+    ksl_sfw = TSFW2D -> GetLeaf("Br_ksl_sfw") -> GetValue(0);
+    mcrest_sfw = TSFW2D -> GetLeaf("Br_mcrest_sfw") -> GetValue(0);
+
+  }
+
+  cout << "Saling factors \n"
+       << "eeg_sfw = " << eeg_sfw << "\n"
+       << "isr3pi_sfw = " << isr3pi_sfw << "\n"
+       << "omegapi_sfw = " << omegapi_sfw << "\n" 
+       << "etagam_sfw = " << etagam_sfw << "\n" 
+       << "ksl_sfw = " << ksl_sfw << "\n"
+       << "mcrest_sfw = " << mcrest_sfw << "\n"
+       << "sig_sfw = " << sig_sfw << endl;
+
+  
   // data amd bkg histos
   //getObj(f_cut);
-  getObj(f_hist);
-  
-  checkList(HIM3pi_fit);
-  checkList(HSIG);
+  //getObj(f_hist);
+
+  //checkList(HIM3pi_fit);
+  //checkList(HSIG);
 
   // data
   cout << "gsf = " << gsf << ", exp_type = " << exp_type << endl;
@@ -296,17 +337,16 @@ int omega_fit(){
   TCRX3PI -> Branch("Br_gsf", &gsf, "Br_gsf/D");
   TCRX3PI -> Branch("Br_cut_value", &cut_value, "Br_cut_value/D");
 
-  /*
-  TCRX3PI -> Branch("Br_Mass_omega_fit", &Mass_omega_fit, "Br_Mass_omega_fit/D");
-  TCRX3PI -> Branch("Br_Mass_omega_err_fit", &Mass_omega_err_fit, "Br_Mass_omega_err_fit/D");
   
-  TCRX3PI -> Branch("Br_Gam_omega_fit", &Gam_omega_fit, "Br_Gam_omega_fit/D");
-  TCRX3PI -> Branch("Br_Gam_omega_err_fit", &Gam_omega_err_fit, "Br_Gam_omega_err_fit/D");
+  //TCRX3PI -> Branch("Br_Mass_omega_fit", &Mass_omega_fit, "Br_Mass_omega_fit/D");
+  //TCRX3PI -> Branch("Br_Mass_omega_err_fit", &Mass_omega_err_fit, "Br_Mass_omega_err_fit/D");
   
-  TCRX3PI -> Branch("Br_BB_fit", &BB_fit, "Br_BB_fit/D");
-  TCRX3PI -> Branch("Br_BB_err_fit", &BB_err_fit, "Br_BB_err_fit/D");
-  */
-
+  //TCRX3PI -> Branch("Br_Gam_omega_fit", &Gam_omega_fit, "Br_Gam_omega_fit/D");
+  //TCRX3PI -> Branch("Br_Gam_omega_err_fit", &Gam_omega_err_fit, "Br_Gam_omega_err_fit/D");
+  
+  //TCRX3PI -> Branch("Br_BB_fit", &BB_fit, "Br_BB_fit/D");
+  //TCRX3PI -> Branch("Br_BB_err_fit", &BB_err_fit, "Br_BB_err_fit/D");
+  
   TCRX3PI -> Branch("Br_OMEGA_PARA", &OMEGA_PARA, "Br_OMEGA_PARA[3]/D");
   TCRX3PI -> Branch("Br_OMEGA_PARA_ERR", &OMEGA_PARA_ERR, "Br_OMEGA_PARA_ERR[3]/D");
   
@@ -372,7 +412,7 @@ int omega_fit(){
   TRESULT -> Write();
   
   f_out -> Close();
-
+  
   return 0;
-
+  
 }

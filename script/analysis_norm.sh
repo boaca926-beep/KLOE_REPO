@@ -49,7 +49,7 @@ sfw2d_path=${input_path}/sfw2d/sfw2d.txt
 echo ${sfw2d_path} ${sfw1d_path}
 
 if [[ -f "${sfw1d_path}" ]]; then
-    #echo "Remove ${sfw1d_path} ..."
+    echo "Remove ${sfw1d_path} ..."
     #rm -rf ${sfw1d_path}
     #exit 1
 else
@@ -64,7 +64,7 @@ echo "void omega_fit_script() {" >> $omega_fit_script
 echo 'gROOT->ProcessLine(".L ../run/omega_fit.C");' >> $omega_fit_script
 echo 'gROOT->ProcessLine("omega_fit()");' >> $omega_fit_script
 echo '}' >> $omega_fit_script
-#root -l -n -q -b $omega_fit_script >> ${log_omega_fit}
+root -l -n -q -b $omega_fit_script >> ${log_omega_fit}
 echo "Omega parameters are extracted!"
 
 rm $omega_fit_script

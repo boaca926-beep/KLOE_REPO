@@ -35,6 +35,21 @@ sed -i 's|\(const TString outputOmega =\)\(.*\)|\1 "'"${omega_path}"'";|' "$path
 sed -i 's|\(const TString exp_type =\)\(.*\)|\1 "'"${exp_type}"'";|' "$path_header"
 sed -i 's|\(double gsf =\)\(.*\)|\1 '$gsf';|' "$path_header"
 
+# initialize sfw1d.txt and sfw2d.txt
+sfw1d_path=${input_path}/sfw1d/sfw1d.txt
+sfw2d_path=${input_path}/sfw2d/sfw2d.txt
+
+echo ${sfw2d_path} ${sfw1d_path}
+
+if [[ -f "${sfw1d_path}" ]]; then
+    echo "Remove ${sfw1d_path} ..."
+    #rm -rf ${sfw1d_path}
+    #exit 1
+else
+    echo "Folder ${sfw1d_path} doesn't exist!"
+    #exit 1
+fi    
+
 omega_fit_script=omega_fit_script.C
 echo '#include <iostream>' > $omega_fit_script
 echo "void omega_fit_script() {" >> $omega_fit_script

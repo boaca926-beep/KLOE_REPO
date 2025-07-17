@@ -30,7 +30,7 @@ int plot_vmd_bw(){
   TF1 *fun_vmd = new TF1("func_vmd", vmd_crx3pi_fcn, M3pi_min, M3pi_max, 3);
   fun_vmd -> SetParameters(mass_omega, Gam_omega, BB);
 
-  TCanvas *cv_bw_vmd = new TCanvas("cv_bw_vmd","BW vs. VMD", 0, 0, 1000, 600);
+  TCanvas *cv_bw_vmd = new TCanvas("cv_bw_vmd","BW vs. VMD", 0, 0, 1200, 600);
 
   fun_vmd -> SetNpx(2000);
   fun_vmd -> SetLineColor(kBlack);

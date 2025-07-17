@@ -53,17 +53,50 @@ int plot_efficy() {
   cout << "input path: " << input_folder << endl;
 
   TFile *f_input = new TFile(input_folder + "/efficy.root");
-  //getObj(f_input);
+  getObj(f_input);
 
+  // EFFICY
   TGraphErrors* gf_efficy_sig = (TGraphErrors*)f_input -> Get("gf_efficy_TISR3PI_SIG");
   gf_efficy_sig -> SetLineColor(kBlue);
+  gf_efficy_sig -> SetMarkerColor(kBlue);
   gf_efficy_sig -> SetMarkerSize(.8);
   gf_efficy_sig -> SetMarkerStyle(20);
   
   TGraphErrors* gf_efficy_ufo = (TGraphErrors*)f_input -> Get("gf_efficy_TUFO");
   gf_efficy_ufo -> SetLineColor(kBlack);
+  gf_efficy_ufo -> SetMarkerColor(kBlack);
   gf_efficy_ufo -> SetMarkerSize(.8);
   gf_efficy_ufo -> SetMarkerStyle(22);
+
+  // NB UFO
+  TGraphErrors* gf_nb_sel_ufo = (TGraphErrors*)f_input -> Get("gf_nb_sel_TUFO");
+  gf_nb_sel_ufo -> SetLineColor(kBlack);
+  gf_nb_sel_ufo -> SetMarkerColor(kBlack);
+  gf_nb_sel_ufo -> SetMarkerSize(.8);
+  gf_nb_sel_ufo -> SetMarkerStyle(22);
+  gf_nb_sel_ufo -> Draw("AP");
+
+  TGraphErrors* gf_nb_evtcls_ufo = (TGraphErrors*)f_input -> Get("gf_nb_evtcls_TUFO");
+  gf_nb_evtcls_ufo -> SetLineColor(kBlue);
+  gf_nb_evtcls_ufo -> SetMarkerColor(kBlue);
+  gf_nb_evtcls_ufo -> SetMarkerSize(.8);
+  gf_nb_evtcls_ufo -> SetMarkerStyle(20);
+  gf_nb_evtcls_ufo -> Draw("P");
+  
+  // NB SIG
+  TGraphErrors* gf_nb_sel_sig = (TGraphErrors*)f_input -> Get("gf_nb_sel_TISR3PI_SIG");
+  gf_nb_sel_sig -> SetLineColor(kBlack);
+  gf_nb_sel_sig -> SetMarkerColor(kBlack);
+  gf_nb_sel_sig -> SetMarkerSize(.8);
+  gf_nb_sel_sig -> SetMarkerStyle(22);
+  //gf_nb_sel_sig -> Draw("AP");
+
+  TGraphErrors* gf_nb_evtcls_sig = (TGraphErrors*)f_input -> Get("gf_nb_evtcls_TISR3PI_SIG");
+  gf_nb_evtcls_sig -> SetLineColor(kBlue);
+  gf_nb_evtcls_sig -> SetMarkerColor(kBlue);
+  gf_nb_evtcls_sig -> SetMarkerSize(.8);
+  gf_nb_evtcls_sig -> SetMarkerStyle(20);
+  //gf_nb_evtcls_sig -> Draw("P");
   
   // calcualte ratio
   int nPoints = gf_efficy_sig -> GetN();
@@ -100,28 +133,29 @@ int plot_efficy() {
   TGraphErrors *gf_ratio = get_graph_syst(x_efficy_sig, RATIO, x_efficy_sig_err, RATIO_ERR, nPoints);
   gf_ratio -> SetName("gf_ratio");
   //gf_ratio -> Draw("AP");
-  
-  /*
-  double a = 10., sigma_a = 1.;
-  double b = 2., sigma_b = .5;
-  double c = a / b;
-  
-  double sigma_c = ratioErr(a, sigma_a, b, sigma_b);
-  cout << "c = " << c << " +/- " << sigma_c << endl;
-  */
 
+  /*
+  const double mass_min = 760., mass_max = 800.;
+  
+  gf_efficy_sig -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
+  gf_efficy_sig -> Draw("AP");
+
+  gf_efficy_ufo -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
+  gf_efficy_ufo -> Draw("P");
+
+  gf_ratio -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
+  gf_ratio -> Draw("P");
+  */
+  
   TFile *f_output = new TFile(input_folder + "/efficy_ratio.root", "update");
   gf_ratio -> Write();
   
   // plot
-  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio);
+  //TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio);
+  //TCanvas *cv_nb_sel = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_nb_sel_sig, gf_nb_sel_sig, gf_efficy_sig);
 
-  //gf_efficy_sig -> Draw("AP");
-  //gf_efficy_ufo -> Draw("P");
-  //gf_ratio -> Draw("AP");
-  
   // save
-  cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
+  //cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
   
   cout << input_folder << endl;
 

@@ -102,7 +102,7 @@ int efficy_filfo() {
 
   // efficiency
   double efficy_tmp = 0., efficy_err_tmp = 0.;
-  double nb_sel = 0., nb_evtcls = 0.;
+  double nb_sel = 0., nb_filfo = 0.;
 
   const int binsize = H1DLIST[0] -> GetNbinsX();
   double xmin = H1DLIST[0] -> GetXaxis() -> GetXmin();
@@ -114,12 +114,12 @@ int efficy_filfo() {
   for (int i = 1; i <= binsize; i ++) {
 
     nb_sel = H1DLIST[0] -> GetBinContent(i);
-    nb_evtcls = H1DLIST[1] -> GetBinContent(i);
+    nb_filfo = H1DLIST[1] -> GetBinContent(i);
 
     M3PI[i - 1] = H1DLIST[0] -> GetBinCenter(i);
     M3PI_ERR[i - 1] = 0.;
 
-    if (nb_sel == 0. || nb_evtcls == 0.) {
+    if (nb_sel == 0. || nb_filfo == 0.) {
 
       EFFICY[i - 1] = 0.; 
       EFFICY_ERR[i - 1] = 0.;
@@ -127,12 +127,12 @@ int efficy_filfo() {
     }
     else {
 
-      EFFICY[i - 1] = nb_evtcls / nb_sel; 
-      EFFICY_ERR[i - 1] = binomial_err(nb_evtcls, nb_sel);
+      EFFICY[i - 1] = nb_filfo / nb_sel; 
+      EFFICY_ERR[i - 1] = binomial_err(nb_filfo, nb_sel);
     
     }
 
-    //cout << "mass bin " << i << ", mass = " << M3PI[i - 1] << ", nb_evtcls = " << nb_evtcls << ", nb_sel = " << nb_sel << ", efficy_tmp = " << EFFICY[i - 1] << "+/-" << EFFICY_ERR[i - 1] << endl; 
+    //cout << "mass bin " << i << ", mass = " << M3PI[i - 1] << ", nb_filfo = " << nb_filfo << ", nb_sel = " << nb_sel << ", efficy_tmp = " << EFFICY[i - 1] << "+/-" << EFFICY_ERR[i - 1] << endl; 
     
   }
 

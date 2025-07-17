@@ -2,7 +2,7 @@
 
 # input folder
 sample_size=chain # norm; chain; small
-syst_type=filfo # evtcls, filfo, trigger
+syst_type=evtcls # evtcls, filfo, trigger
 exp_type=TUFO # UFO
 input_path=../../input_${sample_size}_${syst_type}_${exp_type}
 #echo $input_path
@@ -34,7 +34,7 @@ echo "" > ${log_efficy}
 #touch $log_efficy
 
 #TREE_TYPE=("TISR3PI_SIG" "ksl" "exp" "eeg" "TUFO")
-TREE_TYPE=("TISR3PI_SIG" "TUFO" "TDATA")
+TREE_TYPE=("TISR3PI_SIG" "TUFO")
 
 # loop over sample types
 path_header=../header/efficy.h

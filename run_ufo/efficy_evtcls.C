@@ -17,6 +17,9 @@ double binomial_err(double nb_true, double nb_gen) {
   return error;
 }
 
+TRandom *generator = new TRandom();
+rnd=new TRandom3();
+
 int efficy_evtcls() {
 
   cout << "Calculate efficiency ..." << endl; 
@@ -33,7 +36,7 @@ int efficy_evtcls() {
   double evnt_sel = 0.; // number of events after selection
   double evnt_evtcls = 0.; // number of events after event classification
   
-  double m3pi = 0.;
+  double m3pi = 0., m3pi_true = 0.;
   double efficy_cut = 0.;
   
   TFile *f_output = new TFile(outputCut + "efficy.root", "update");
@@ -60,7 +63,9 @@ int efficy_evtcls() {
     ALLCHAIN_CUT -> GetEntry(irow);
 
     if (treeType == "TISR3PI_SIG") {
-      m3pi = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
+      //m3pi = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_7C") -> GetValue(0);
+      m3pi_true = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
+      m3pi = DetectorEvent(TMath::Abs(m3pi_true));
     }
     else {
       m3pi = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_7C") -> GetValue(0);
@@ -102,7 +107,8 @@ int efficy_evtcls() {
 
   // efficiency
   double efficy_tmp = 0., efficy_err_tmp = 0.;
-  double nb_sel = 0., nb_evtcls = 0.;
+  double nb_sel = 0., nb_sel_err = 0.;
+  double nb_evtcls = 0., nb_evtcls_err = 0.;
 
   const int binsize = H1DLIST[0] -> GetNbinsX();
   double xmin = H1DLIST[0] -> GetXaxis() -> GetXmin();
@@ -110,12 +116,27 @@ int efficy_evtcls() {
 
   double M3PI[binsize], M3PI_ERR[binsize];
   double EFFICY[binsize], EFFICY_ERR[binsize];
+  double NB_SEL[binsize], NB_SEL_ERR[binsize];
+  double NB_EVTCLS[binsize], NB_EVTCLS_ERR[binsize];
   
   for (int i = 1; i <= binsize; i ++) {
 
     nb_sel = H1DLIST[0] -> GetBinContent(i);
+    nb_sel_err = H1DLIST[0] -> GetBinError(i);
+    
     nb_evtcls = H1DLIST[1] -> GetBinContent(i);
+    nb_evtcls_err = H1DLIST[1] -> GetBinError(i);
 
+    //cout << "nb_sel = " << nb_sel << "+/-" << nb_sel_err << endl;
+    cout << "nb_evtcls = " << nb_evtcls << "+/-" << nb_evtcls_err << endl;
+
+    NB_SEL[i - 1] = nb_sel;
+    NB_SEL_ERR[i - 1] = nb_sel_err;
+
+    NB_EVTCLS[i - 1] = nb_evtcls;
+    NB_EVTCLS_ERR[i - 1] = nb_evtcls_err;
+    
+  
     M3PI[i - 1] = H1DLIST[0] -> GetBinCenter(i);
     M3PI_ERR[i - 1] = 0.;
 
@@ -139,6 +160,12 @@ int efficy_evtcls() {
   TGraphErrors *gf_efficy = get_graph_syst(M3PI, EFFICY, M3PI_ERR, EFFICY_ERR, binsize);
   gf_efficy -> SetName("gf_efficy_" + treeType);
 
+  TGraphErrors *gf_nb_sel = get_graph_syst(M3PI, NB_SEL, M3PI_ERR, NB_SEL_ERR, binsize);
+  gf_nb_sel -> SetName("gf_nb_sel_" + treeType);
+
+  TGraphErrors *gf_nb_evtcls = get_graph_syst(M3PI, NB_EVTCLS, M3PI_ERR, NB_EVTCLS_ERR, binsize);
+  gf_nb_evtcls -> SetName("gf_nb_evtcls_" + treeType);
+
   /*
   // plot
   TCanvas *cv_efficy = new TCanvas("cv_efficy", "cv_efficy", 1000, 800);
@@ -158,15 +185,20 @@ int efficy_evtcls() {
   gf_efficy -> GetXaxis() -> SetLabelSize(0.04);
   gf_efficy -> GetXaxis() -> CenterTitle();
   //gf_efficy -> GetXaxis() -> SetRangeUser(760., 800.);
-  */
   
-  gf_efficy -> Draw("AP");
+  */
+
+  //gf_efficy -> Draw("AP");
+  gf_nb_sel -> Draw("AP");
+  gf_nb_evtcls -> Draw("P");
   
   /// save
   TRESULT -> Write();
 
   HIM3PI -> Write("HIM3PI_" + treeType, 1);
   gf_efficy -> Write();
+  gf_nb_sel -> Write();
+  gf_nb_evtcls -> Write();
   
   f_output -> Close();
 

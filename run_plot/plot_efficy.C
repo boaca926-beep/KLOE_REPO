@@ -149,7 +149,7 @@ int plot_efficy() {
   
   TFile *f_output = new TFile(input_folder + "/efficy_ratio.root", "update");
   gf_ratio -> Write();
-  
+  gf_efficy_ufo -> Write();
   // plot
   //TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", 5e4);
   

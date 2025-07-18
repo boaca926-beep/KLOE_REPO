@@ -13,8 +13,8 @@ int omega_fit_efficy(){
   cout << "Extract omega parameters ..." << endl;
 
   // scaling factors
-  getObj(f_sfw2d);
-  getObj(f_sfw1d);
+  //getObj(f_sfw2d);
+  //getObj(f_sfw1d);
 
   // sfw1d
   TTree *TSFW1D = (TTree*)f_sfw1d -> Get("TRESULT");
@@ -119,7 +119,6 @@ int omega_fit_efficy(){
   // MC normalization
   MCNorm(); 
   scaleGSF(); 
-
   
   // calculate MC yields from sfw2d
   
@@ -155,6 +154,13 @@ int omega_fit_efficy(){
   TRESULT -> Branch("Br_W0_full", &W0_full, "Br_W0_full/D");
   
   //hefficy -> Draw();
+
+  // efficiency correction
+  double efficy_ratio = 0., efficy_ratio_err = 0.;
+  
+  double *x_efficy_ratio = gf_ratio -> GetX();
+  double *y_efficy_ratio = gf_ratio -> GetY();
+  double *y_efficy_ratio_err = gf_ratio -> GetEY();
 
   for (int i = 1; i <= binsize; i ++ ) {
 
@@ -202,12 +208,19 @@ int omega_fit_efficy(){
     efficy = hefficy -> GetBinContent(i);
     efficy_err = hefficy -> GetBinError(i);
 
+    // efficiency ratio
+    efficy_ratio = y_efficy_ratio[i - 1]; 
+    efficy_ratio_err = y_efficy_ratio_err[i - 1]; 
+
+    cout << "bin = " << i << ", mass (checked) = " << m3pi << "(" << x_efficy_ratio[i - 1] << "), efficy = " << efficy << "+/-" << y_efficy_ratio_err[i - 1] << endl;
+  
     // isr lumi
     W0_full = Get_W0_full(&m3pi);
 
     isrlumi = GetISRLumi_exact(m3pi_lower, m3pi_upper);
     isrlumi_apprx = GetISRLumi_apprx(m3pi, m3pi_lower, m3pi_upper, W0_full);
 
+    
     /*
     if (i == 119) {
 

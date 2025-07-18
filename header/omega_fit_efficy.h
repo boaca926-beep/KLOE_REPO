@@ -321,8 +321,8 @@ void get_efficy(TGraphErrors* gf_ratio) {// corrected efficiency
       
     }
 
-    //hefficy -> SetBinContent(i, efficy);
-    hefficy -> SetBinContent(i, efficy * efficy_ratio);
+    hefficy -> SetBinContent(i, efficy);
+    //hefficy -> SetBinContent(i, efficy * efficy_ratio);
     hefficy -> SetBinError(i, efficy_err);
 
     cout << "bin " << i << ", mass (checked): " << hefficy -> GetBinCenter(i) << "(" << x_efficy_ratio[i - 1] << "), efficy (corrected)= " << efficy << "(" << hefficy -> GetBinContent(i) << ")+/-" << hefficy -> GetBinError(i) << ", efficy_ratio = " << efficy_ratio << endl;

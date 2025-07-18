@@ -128,7 +128,7 @@ int efficy_evtcls() {
     nb_evtcls_err = H1DLIST[1] -> GetBinError(i);
 
     //cout << "nb_sel = " << nb_sel << "+/-" << nb_sel_err << endl;
-    cout << "nb_evtcls = " << nb_evtcls << "+/-" << nb_evtcls_err << endl;
+    //cout << "nb_evtcls = " << nb_evtcls << "+/-" << nb_evtcls_err << endl;
 
     NB_SEL[i - 1] = nb_sel;
     NB_SEL_ERR[i - 1] = nb_sel_err;

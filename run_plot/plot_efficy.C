@@ -74,14 +74,14 @@ int plot_efficy() {
   gf_nb_sel_ufo -> SetMarkerColor(kBlack);
   gf_nb_sel_ufo -> SetMarkerSize(.8);
   gf_nb_sel_ufo -> SetMarkerStyle(22);
-  gf_nb_sel_ufo -> Draw("AP");
+  //gf_nb_sel_ufo -> Draw("AP");
 
   TGraphErrors* gf_nb_evtcls_ufo = (TGraphErrors*)f_input -> Get("gf_nb_evtcls_TUFO");
   gf_nb_evtcls_ufo -> SetLineColor(kBlue);
   gf_nb_evtcls_ufo -> SetMarkerColor(kBlue);
   gf_nb_evtcls_ufo -> SetMarkerSize(.8);
   gf_nb_evtcls_ufo -> SetMarkerStyle(20);
-  gf_nb_evtcls_ufo -> Draw("P");
+  //gf_nb_evtcls_ufo -> Draw("P");
   
   // NB SIG
   TGraphErrors* gf_nb_sel_sig = (TGraphErrors*)f_input -> Get("gf_nb_sel_TISR3PI_SIG");
@@ -151,11 +151,16 @@ int plot_efficy() {
   gf_ratio -> Write();
   
   // plot
-  //TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio);
-  //TCanvas *cv_nb_sel = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_nb_sel_sig, gf_nb_sel_sig, gf_efficy_sig);
-
+  //TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", 5e4);
+  
+  //TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", 1000.);
+  
+  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio);
+  
   // save
-  //cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
+  cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
+  //cv_nb_sig -> SaveAs(input_folder + "/cv_nb_sig_" + systType + ".pdf");
+  //cv_nb_ufo -> SaveAs(input_folder + "/cv_nb_ufo_" + systType + ".pdf");
   
   cout << input_folder << endl;
 

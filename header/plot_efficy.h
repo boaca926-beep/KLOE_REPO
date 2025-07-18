@@ -1,5 +1,5 @@
 const TString input_folder = "../../efficy_evtcls";
-const TString syst_type = "evtcls";
+const TString systType = "evtcls";
   
 TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErrors *gf_sig, TGraphErrors *gf_ufo, TGraphErrors *gf_ratio){
 

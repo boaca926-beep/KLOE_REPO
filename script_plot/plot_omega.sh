@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FILE_TYPE=("vertex" "norm" "vmd_norm")
+#FILE_TYPE=("vertex" "norm" "vmd_norm")
 #FILE_TYPE=("vmd_mini" "mini")
 #FILE_TYPE=("norm" "vmd_norm" "isrlumi_norm")
 #FILE_TYPE=("chain")
@@ -8,6 +8,7 @@ FILE_TYPE=("vertex" "norm" "vmd_norm")
 #FILE_TYPE=("mini")
 #FILE_TYPE=("vertex")
 #FILE_TYPE=("isrlumi_norm" "norm")
+FILE_TYPE=("efficy_norm" "norm")
 
 #sample_size="mini"
 file_type1=${FILE_TYPE[0]}

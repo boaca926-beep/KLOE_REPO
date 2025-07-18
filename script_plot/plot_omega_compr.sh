@@ -1,4 +1,5 @@
-FILE_TYPE=("vertex" "norm" "omega" "" "")
+FILE_TYPE=("efficy_norm" "norm" "models" "Efficiency corrected" "Nominal")
+#FILE_TYPE=("vertex" "norm" "omega" "" "")
 #FILE_TYPE=("vmd_mini" "mini" "models")
 #FILE_TYPE=("vmd_norm" "norm" "models" "VMD" "BW")
 #FILE_TYPE=("isrlumi_norm" "norm" "models" "Exact" "Approx")
@@ -21,7 +22,7 @@ else
 fi
 mkdir $plot_folder
 
-log_tmp="${plot_folder}log_${legend_type1}_${legend_type2}.txt"
+log_tmp="${plot_folder}log.txt"
 #echo "" > ${log_tmp}
 touch $log_tmp
 

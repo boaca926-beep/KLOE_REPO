@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Specify DATA
-sample_size=norm #norm; small; mini
+sample_size=norm #norm; small; mini; chain
 exp_type=TDATA 
 gsf=1 
 

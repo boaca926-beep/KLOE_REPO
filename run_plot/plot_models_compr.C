@@ -248,7 +248,7 @@ int plot_models_compr() {
   SetLegend(legd_cv);
   legd_cv -> SetNColumns(3);
 
-  legd_cv -> AddEntry(n3pi_obs_f2, "Data " + legend_type2, "lep");
+  legd_cv -> AddEntry(n3pi_obs_f2, "Data", "lep");
   legd_cv -> AddEntry(n3pi_fit_f2, legend_type2, "l");
   //legd_cv -> AddEntry(n3pi_obs_f1, "Data " + legend_type1, "lep");
   legd_cv -> AddEntry(n3pi_fit_f1, legend_type1, "l");
@@ -301,7 +301,7 @@ int plot_models_compr() {
   //gPad -> SetLogy();
 
   // save
-  cv_n3pi_fit -> SaveAs(outputFolder + legend_type1 + "_"  + legend_type2 + ".pdf");
+  cv_n3pi_fit -> SaveAs(outputFolder + "crx3pi_compr.pdf");
   
   return 0;
   

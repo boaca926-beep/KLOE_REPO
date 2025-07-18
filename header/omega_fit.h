@@ -42,6 +42,9 @@ int residul_size_crx3pi = 0;
 
 TFile *f_hist = new TFile(outputHist + "hist.root"); 
 TFile *f_cut = new TFile(outputCut + "tree_pre.root");  
+TFile *f_sfw2d = new TFile(outputSfw2D + "sfw2d.root");  
+TFile *f_sfw1d = new TFile(outputSfw1D + "sfw1d.root");  
+
 TFile *f_out = new TFile(outputOmega + "omega_fit.root", "recreate");
 
 TTree* TRESULT = new TTree("TRESULT", "recreate");
@@ -54,9 +57,15 @@ TList *HSIG = (TList *) f_hist -> Get("HSIG");
 TH1D *hsig_true = (TH1D *) HSIG -> FindObject("hsig_true");  
 TH1D *hsig_gen = (TH1D *) HSIG -> FindObject("hsig_gen");
 
-  
-  
-// parameter gsf, TDATA and TUFO
+// scaling factors
+double eeg_sfw = 0.; //1.66579;
+double isr3pi_sfw = 0.; //0.0491344;
+double omegapi_sfw = 0.; //1.24086;
+double etagam_sfw = 0.; //1.01706;
+double ksl_sfw = 0.; //1.03746;
+double mcrest_sfw = 0.; //4.84081;
+
+double sig_sfw = 0.; //0.0461961;
 
 //double gsf = 1;
 

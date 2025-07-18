@@ -40,8 +40,12 @@ double M3PI_FIT[list_size], M3PI_FIT_ERR[list_size];
 double chi2_sum_crx3pi = 0.;
 int residul_size_crx3pi = 0;
 
+TFile *f_efficy_ratio = new TFile("../../efficy_evtcls/efficy_ratio.root");
 TFile *f_hist = new TFile(outputHist + "hist.root"); 
-TFile *f_cut = new TFile(outputCut + "tree_pre.root");  
+TFile *f_cut = new TFile(outputCut + "tree_pre.root");
+TFile *f_sfw2d = new TFile(outputSfw2D + "sfw2d.root");  
+TFile *f_sfw1d = new TFile(outputSfw1D + "sfw1d.root");  
+
 TFile *f_out = new TFile(outputOmega + "omega_fit.root", "recreate");
 
 TTree* TRESULT = new TTree("TRESULT", "recreate");
@@ -54,7 +58,15 @@ TList *HSIG = (TList *) f_hist -> Get("HSIG");
 TH1D *hsig_true = (TH1D *) HSIG -> FindObject("hsig_true");  
 TH1D *hsig_gen = (TH1D *) HSIG -> FindObject("hsig_gen");
 
-// parameter gsf, TDATA and TUFO
+// scaling factors
+double eeg_sfw = 0.; //1.66579;
+double isr3pi_sfw = 0.; //0.0491344;
+double omegapi_sfw = 0.; //1.24086;
+double etagam_sfw = 0.; //1.01706;
+double ksl_sfw = 0.; //1.03746;
+double mcrest_sfw = 0.; //4.84081;
+
+double sig_sfw = 0.; //0.0461961;
 
 //double gsf = 1;
 
@@ -220,9 +232,6 @@ void scaleGSF() {
   
 }
 
-
-
-
 //
 void MCNorm() {
 
@@ -273,23 +282,29 @@ void MCNorm() {
 }
 
 //
-void get_efficy() {// corrected efficiency
+void get_efficy(TGraphErrors* gf_ratio) {// corrected efficiency
 
-  int binsize = hsig_true -> GetNbinsX();
+  int nPoints = gf_ratio -> GetN();
+  double *x_efficy_ratio = gf_ratio -> GetX();
+  double *y_efficy_ratio = gf_ratio -> GetY();
   
+  int binsize = hsig_true -> GetNbinsX();
   double hmin = hsig_true -> GetXaxis() -> GetXmin();
   double hmax = hsig_true -> GetXaxis() -> GetXmax();
 
-  //cout << "binsize = " << binsize << ", hmin = " << hmin << ", hmax = " << hmax << endl;
+  cout << "nPoints = " << nPoints << ", binsize = " << binsize << ", hmin = " << hmin << ", hmax = " << hmax << endl;
   
   hefficy = new TH1D("hefficy", "", binsize, hmin, hmax);
   hefficy -> Sumw2();
 
   double nb_gen = 0., nb_true = 0.;
   double efficy = 0., efficy_err = 0.;
+  double efficy_ratio = 0.;
   
   for (int i = 1; i <= binsize; i ++ ) {
 
+    efficy_ratio = y_efficy_ratio[i - 1]; 
+      
     nb_gen = hsig_gen -> GetBinContent(i);
     
     nb_true = hsig_true -> GetBinContent(i);
@@ -306,9 +321,12 @@ void get_efficy() {// corrected efficiency
       
     }
 
-    hefficy -> SetBinContent(i, efficy);
+    //hefficy -> SetBinContent(i, efficy);
+    hefficy -> SetBinContent(i, efficy * efficy_ratio);
     hefficy -> SetBinError(i, efficy_err);
 
+    cout << "bin " << i << ", mass (checked): " << hefficy -> GetBinCenter(i) << "(" << x_efficy_ratio[i - 1] << "), efficy (corrected)= " << efficy << "(" << hefficy -> GetBinContent(i) << ")+/-" << hefficy -> GetBinError(i) << ", efficy_ratio = " << efficy_ratio << endl;
+    
     //cout << "nb_true = " << nb_true << ", nb_gen = " << nb_gen << ", efficy = " << hefficy -> GetBinContent(i) << "+/-" << hefficy -> GetBinError(i) << ", efficy_err = " << efficy_err << endl;
       
     

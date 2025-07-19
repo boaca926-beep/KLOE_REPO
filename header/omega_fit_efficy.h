@@ -25,8 +25,8 @@ double hmin = 0.;
 double hmax = 0.;
 
 double M3PI[list_size]; 
-double EFFICY[list_size]; 
-double EFFICY_ERR[list_size]; 
+double EFFICY[list_size], EFFICY_ERR[list_size];
+double EFFICY_RATIO[list_size], EFFICY_RATIO_ERR[list_size];
 double ISRLUMI[list_size]; 
 double CRX3PI_BW[list_size]; 
 
@@ -299,12 +299,9 @@ void get_efficy(TGraphErrors* gf_ratio) {// corrected efficiency
 
   double nb_gen = 0., nb_true = 0.;
   double efficy = 0., efficy_err = 0.;
-  double efficy_ratio = 0.;
   
   for (int i = 1; i <= binsize; i ++ ) {
 
-    efficy_ratio = y_efficy_ratio[i - 1]; 
-      
     nb_gen = hsig_gen -> GetBinContent(i);
     
     nb_true = hsig_true -> GetBinContent(i);
@@ -322,10 +319,9 @@ void get_efficy(TGraphErrors* gf_ratio) {// corrected efficiency
     }
 
     hefficy -> SetBinContent(i, efficy);
-    //hefficy -> SetBinContent(i, efficy * efficy_ratio);
     hefficy -> SetBinError(i, efficy_err);
 
-    cout << "bin " << i << ", mass (checked): " << hefficy -> GetBinCenter(i) << "(" << x_efficy_ratio[i - 1] << "), efficy (corrected)= " << efficy << "(" << hefficy -> GetBinContent(i) << ")+/-" << hefficy -> GetBinError(i) << ", efficy_ratio = " << efficy_ratio << endl;
+    //cout << "bin " << i << ", mass (checked): " << hefficy -> GetBinCenter(i) << "(" << x_efficy_ratio[i - 1] << "), efficy (corrected) = " << efficy << "(" << hefficy -> GetBinContent(i) << ")+/-" << hefficy -> GetBinError(i) << ", efficy_ratio = " << y_efficy_ratio[i - 1] << endl;
     
     //cout << "nb_true = " << nb_true << ", nb_gen = " << nb_gen << ", efficy = " << hefficy -> GetBinContent(i) << "+/-" << hefficy -> GetBinError(i) << ", efficy_err = " << efficy_err << endl;
       
@@ -656,6 +652,10 @@ void fcn_crx3pi(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t if
     M3PI[counter] = TRESULT -> GetLeaf("Br_m3pi") -> GetValue(0);
     EFFICY[counter] = TRESULT -> GetLeaf("Br_efficy") -> GetValue(0);
     EFFICY_ERR[counter] = TRESULT -> GetLeaf("Br_efficy_err") -> GetValue(0);
+
+    EFFICY_RATIO[counter] = TRESULT -> GetLeaf("Br_efficy_ratio") -> GetValue(0);
+    EFFICY_RATIO_ERR[counter] = TRESULT -> GetLeaf("Br_efficy_ratio_err") -> GetValue(0);
+
     ISRLUMI[counter] = TRESULT -> GetLeaf("Br_isrlumi_apprx") -> GetValue(0);
     CRX3PI_BW[counter] = fun_bw -> Eval(M3PI[counter]);
 
@@ -670,6 +670,8 @@ void fcn_crx3pi(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t if
     //cout << "ISRLUMI = " << ISRLUMI[counter] << ", CRX3PI_BW = " << CRX3PI_BW[counter] << "\n";
     //cout << "N3PI_OBS = " << N3PI_OBS[counter] << "\n";
 
+    cout << "bin indx = " << irow + 1 << ", M3PI = " << M3PI[counter] << ", EFFICY = " << EFFICY[counter] << " +/- " << EFFICY_ERR[counter] << ", EFFICY_RATIO = " << EFFICY_RATIO[counter] << " +/- " << EFFICY_RATIO_ERR[counter] << endl;
+    
     //cout << "bin indx = " << irow + 1 << ", M3PI = " << M3PI[counter] << ", EFFICY [%] = " << EFFICY[counter] * 100. << " +/- " << EFFICY_ERR[counter] * 100. << ", ISRLUMI = " << ISRLUMI[counter] << ", CRX3PI_BW = " << CRX3PI_BW[counter] << ", N3PI_OBS = " << N3PI_OBS[counter] << " +/- " << N3PI_OBS_ERR[counter] << ", N3PI_PRE = " << N3PI_PRE[counter] << "\n";
     
     counter ++;
@@ -773,7 +775,7 @@ void fcn_crx3pi(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t if
       
     }
 
-    N3PI_SMEAR[j -1] = nb_rec_tmp;
+    N3PI_SMEAR[j -1] = nb_rec_tmp * 0.9; //* EFFICY_RATIO[j - 1];
     N3PI_SMEAR_ERR[j -1] = TMath::Sqrt(nb_rec_tmp_err2_sum);
 
     //cout << N3PI_SMEAR_ERR[j -1] << ", " << TMath::Sqrt(nb_rec_tmp) << endl;
@@ -782,6 +784,8 @@ void fcn_crx3pi(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t if
     //cout << "bin indx = " << j << ", N3PI_SMEAR = " << N3PI_SMEAR[j - 1] << " +/- " << N3PI_SMEAR_ERR[j - 1] << "\n";
 
     if (j == bin_indx) {
+      cout << "rec bin = " << j << ", m3pi = " << hsig_true -> GetBinCenter(j) << ", N3PI_SMEAR = " << N3PI_SMEAR[j -1] << "+/-" << N3PI_SMEAR_ERR[j -1] << ", efficy = " << EFFICY[j - 1] << " +/- " << EFFICY_ERR[j - 1] << ", efficy_ratio = " << EFFICY_RATIO[j - 1] << " +/- " << EFFICY_RATIO_ERR[j - 1] << endl;  
+	
       //cout << "rec bin = " << j << ", m3pi = " << hsig_true -> GetBinCenter(j) << ", nb_sig = " << nb_sig << "+/-" << nb_sig_err << ", nb_sig_smeared = " << nb_sig_smeared << ", nb_sig_smeared_efficy = " << nb_sig_smeared_efficy << "+/-" << nb_sig_smeared_efficy_err <<  ", nb_sig_true = " << hsig_true -> GetBinContent(j) << ", nb_sig_gen = " << hsig_gen -> GetBinContent(j) << ", N3PI_PRE = " << N3PI_PRE[j - 1] << ", N3PI_SMEAR = " << N3PI_SMEAR[j -1] << "+/-" << N3PI_SMEAR_ERR[j -1] << "\n\n";
       //cout << "rec bin = " << j << ", m3pi = " << hsig_true -> GetBinCenter(j) << ", nb_sig_smeared = " << nb_sig_smeared <<  ", nb_sig_true = " << hsig_true -> GetBinContent(j) << ", nb_sig_gen = " << hsig_gen -> GetBinContent(j) << ", N3PI_PRE = " << N3PI_PRE[j - 1] << ", N3PI_SMEAR = " << N3PI_SMEAR[j -1] << "+/-" << N3PI_SMEAR_ERR[j -1] << "\n\n";
     }

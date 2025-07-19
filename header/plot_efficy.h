@@ -1,6 +1,50 @@
 const TString input_folder = "../../efficy_evtcls";
 const TString systType = "evtcls";
+
+TArrayD get_w_ratio(TGraphErrors *gf, const double mass_min, const double mass_max, const double Delta_m3pi) {
+
+  // Weighted average of gf
+  double *x_gf = gf -> GetX();
+  double *y_gf = gf -> GetY();
+  double *y_gf_err = gf -> GetEY();
+
+  double ratio_tmp = 0.;
+  double w_y = 0., w_sum = 0., wy_sum = 0.;
+  double err_tmp = 0.;
   
+  int count = 0;
+  
+  for (int i = 0; i < gf -> GetN(); i ++) {
+  //for (int i = 0; i < 3; i ++) {
+
+    if (x_gf[i] >= mass_min - Delta_m3pi && x_gf[i] <= mass_max + Delta_m3pi) {
+      count ++;
+      ratio_tmp = y_gf[i];
+      err_tmp = y_gf_err[i];
+      w_y = 1. / (err_tmp * err_tmp);
+      w_sum += w_y;
+      wy_sum += ratio_tmp * w_y;
+
+      cout << "ratio = " << ratio_tmp << "+/-" << err_tmp  << endl;
+   
+      //cout << "ratio = " << ratio_tmp << "+/-" << err_tmp << ", w_y =" << w_y << ", wy_sum = " << wy_sum << ", ratio * w_ y = " << ratio_tmp * w_y << ", w_sum = " << w_sum << endl;
+    }
+
+  }
+
+  TArrayD W(2);
+  
+  double ratio_average = wy_sum / w_sum;
+  double sigma_ratio = 1. / TMath::Sqrt(w_sum);
+  //cout << "ratio_average = " << ratio_average << "+/-" << sigma_ratio << endl;
+
+  W[0] = ratio_average;
+  W[1] = sigma_ratio;
+
+  return W;
+
+}
+
 TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErrors *gf_sig, TGraphErrors *gf_ufo, TGraphErrors *gf_ratio){
 
   double x1 = 0., y1 = 0.;
@@ -17,8 +61,57 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
 
   const double mass_min = 760., mass_max = 800.;
   cout << "mass_min = " << mass_min << ", mass_max = " << mass_max << endl;
+
+  /*
+  // Weighted average of gf_ratio
+  double *x_gf_ratio = gf_ratio -> GetX();
+  double *y_gf_ratio = gf_ratio -> GetY();
+  double *y_gf_ratio_err = gf_ratio -> GetEY();
+
+  double ratio_tmp = 0.;
+  double w_y = 0., w_sum = 0., wy_sum = 0.;
+  double err_tmp = 0.;
   
+  int count = 0;
   
+  for (int i = 0; i < gf_ratio -> GetN(); i ++) {
+  //for (int i = 0; i < 3; i ++) {
+
+    if (x_gf_ratio[i] >= mass_min - Delta_m3pi && x_gf_ratio[i] <= mass_max + Delta_m3pi) {
+      count ++;
+      ratio_tmp = y_gf_ratio[i];
+      err_tmp = y_gf_ratio_err[i];
+      w_y = 1. / (err_tmp * err_tmp);
+      w_sum += w_y;
+      wy_sum += ratio_tmp * w_y;
+
+      cout << "ratio = " << ratio_tmp << "+/-" << err_tmp  << endl;
+   
+      //cout << "ratio = " << ratio_tmp << "+/-" << err_tmp << ", w_y =" << w_y << ", wy_sum = " << wy_sum << ", ratio * w_ y = " << ratio_tmp * w_y << ", w_sum = " << w_sum << endl;
+    }
+
+  }
+
+  double ratio_average = wy_sum / w_sum;
+  double sigma_ratio = 1. / TMath::Sqrt(w_sum);
+  cout << "ratio_average = " << ratio_average << "+/-" << sigma_ratio << endl;
+  */
+  
+  //
+  TArrayD w_ratio = get_w_ratio(gf_ratio, mass_min, mass_max, Delta_m3pi);
+  TArrayD w_efficy_sig = get_w_ratio(gf_sig, mass_min, mass_max, Delta_m3pi);
+  TArrayD w_efficy_ufo = get_w_ratio(gf_ufo, mass_min, mass_max, Delta_m3pi);
+  
+  cout << "ratio average mean = " << w_ratio[0] << "+/-" << w_ratio[1] << endl;
+  cout << "efficy_sig average mean = " << w_efficy_sig[0] << "+/-" << w_efficy_sig[1] << endl;
+  cout << "efficy_ufo average mean = " << w_efficy_ufo[0] << "+/-" << w_efficy_ufo[1] << endl;
+  cout << "w_efficy_ufo[0] / w_efficy_sig[0] = " << w_efficy_ufo[0] / w_efficy_sig[0] << ", total ratio = " << 0.561752 / 0.656811 << endl;
+  
+  TLine *line = new TLine(mass_min - Delta_m3pi / 2., w_ratio[0], mass_max, w_ratio[0]);
+  line -> SetLineColor(kRed);
+  line -> SetLineWidth(2);
+
+  // plot
   TCanvas *cv = new TCanvas(cv_title, cv_nm, 1200, 800);
   
   TPad *p2 = new TPad("p2", "p2", 0., 0., 1., 0.35);
@@ -104,6 +197,8 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ratio -> SetLineWidth(2);
   
   gf_ratio -> Draw("APZ");
+  line -> Draw("Same");
+  
   p2 -> SetGrid();
   
   TLegend *legd_cv_p2 = new TLegend(0.2, 0.65, 0.4, 0.9);

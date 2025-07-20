@@ -8,7 +8,8 @@
 #FILE_TYPE=("mini")
 #FILE_TYPE=("vertex")
 #FILE_TYPE=("isrlumi_norm" "norm")
-FILE_TYPE=("efficy_norm" "norm")
+#FILE_TYPE=("efficy_norm" "norm")
+FILE_TYPE=("efficy_norm")
 
 #sample_size="mini"
 file_type1=${FILE_TYPE[0]}
@@ -36,7 +37,8 @@ for ((i=0; i<${#FILE_TYPE[@]}; ++i)); do
     echo $file_indx $file_type
     
     #input_file="/home/bo/Desktop/analysis_root_v6/analysis_${file_type}_TDATA/omega_fit/omega_fit.root"
-    input_file="../../input_${file_type}_TDATA/omega_fit/omega_fit.root"
+    #input_file="../../input_${file_type}_TDATA/omega_fit/omega_fit.root"
+    input_file="../../analysis_${file_type}_TDATA/omega_fit/omega_fit.root"
 
     sed -i 's|\(const TString input_file =\)\(.*\)|\1 "'"${input_file}"'";|' "$header"
     sed -i 's|\(const TString file_type =\)\(.*\)|\1 "'"${file_type}"'";|' "$header"

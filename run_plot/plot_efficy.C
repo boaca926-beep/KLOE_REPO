@@ -135,6 +135,17 @@ int plot_efficy() {
   gf_ratio -> SetName("gf_ratio");
   //gf_ratio -> Draw("AP");
 
+  // fit gf_ratio to pol2
+  gf_ratio -> Fit("pol2", "S", "", 758, 803);
+  TF1 *f_ratio = gf_ratio -> GetFunction("pol2");
+  f_ratio -> SetLineWidth(2);
+  f_ratio -> SetLineColor(1);
+  f_ratio -> SetNpx(5000);
+
+  double p0 = f_ratio -> GetParameter(0);
+  double p1 = f_ratio -> GetParameter(1);
+  double p2 = f_ratio -> GetParameter(2);
+  
   /*
   const double mass_min = 760., mass_max = 800.;
   
@@ -150,6 +161,14 @@ int plot_efficy() {
   
   TFile *f_output = new TFile(input_folder + "/efficy_ratio.root", "update");
   gf_ratio -> Write();
+
+  TTree* TRESULT = new TTree("TRESULT", "recreate");
+  TRESULT -> SetAutoSave(0);
+  TRESULT -> Branch("Br_p0", &p0, "Br_p0/D");
+  TRESULT -> Branch("Br_p1", &p1, "Br_p1/D");
+  TRESULT -> Branch("Br_p2", &p2, "Br_p2/D");
+
+  TRESULT -> Fill();
   
   // plot
   //TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", 5e4);
@@ -178,6 +197,8 @@ int plot_efficy() {
   
   cout << input_folder << endl;
 
+  TRESULT -> Write();
+  
   f_output -> Close();
   
   return 0;

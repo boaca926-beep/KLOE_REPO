@@ -146,31 +146,31 @@ int tree_cut_evtcls(){
     //if (evnt_tot > 1e5) break;
 
     //// preselection cut
-    if (trigger_indx == 0) continue;
+    //if (trigger_indx == 0) continue; // CUT I
     evnt_trigger ++;
     //cout << trigger_indx << endl;
 
-    if (filfo_indx == 0) continue;
+    //if (filfo_indx == 0) continue; // CUT II
     evnt_filfo ++;
     //cout << filfo_indx << endl;
 
-    //if (evtcls_indx == 0) continue;
+    //if (evtcls_indx == 0) continue; // CUT III
     evnt_evtcls ++;
     
     //// background rejection
+    /*
     if (lagvalue_min_7C > chi2_cut) continue;
     else if (deltaE > deltaE_cut) continue;
     else if (angle_pi0gam12 > angle_cut) continue;
     else if (betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) continue;
+    */
     evnt_sel ++;
-
 
     // fill trees
     TTList[0]-> Fill(); // data
     TTList[8]-> Fill(); // ufo
     TTList[9]-> Fill(); // eeg
     TTList[10]-> Fill(); // sig
-    
 
     if (phid == 0) {// omegapi
       TTList[1] -> Fill();

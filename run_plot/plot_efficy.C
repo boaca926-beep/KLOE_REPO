@@ -67,7 +67,8 @@ int plot_efficy() {
   gf_efficy_ufo -> SetMarkerColor(kBlack);
   gf_efficy_ufo -> SetMarkerSize(.8);
   gf_efficy_ufo -> SetMarkerStyle(22);
-
+  //gf_efficy_ufo -> Draw("AP");
+  
   // NB UFO
   TGraphErrors* gf_nb_sel_ufo = (TGraphErrors*)f_input -> Get("gf_nb_sel_TUFO");
   gf_nb_sel_ufo -> SetLineColor(kBlack);
@@ -152,11 +153,22 @@ int plot_efficy() {
   gf_ratio -> Write();
   
   // plot
-  //TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", 5e4);
+  TArrayD ymax_nb_sig = get_gf_max(gf_nb_sel_sig);
+  TArrayD ymax_nb_ufo = get_gf_max(gf_nb_sel_ufo);
   
-  //TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", 1000.);
+  TArrayD ymax_efficy_sig = get_gf_max(gf_efficy_sig);
+  TArrayD ymax_efficy_ufo = get_gf_max(gf_efficy_ufo);
+  double ymax_efficy = max(ymax_efficy_sig[0], ymax_efficy_ufo[0]);
   
-  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio);
+  const TString note = "No cuts applied";
+  cout << "ymax_nb_sig = " << ymax_nb_sig[0] << ", ymax_nb_ufo = " << ymax_nb_ufo[0] << "\n"
+       << "ymax_efficy_sig = " << ymax_efficy_sig[0] << ", ymax_efficy_ufo = " << ymax_efficy_ufo[0] << ", max_efficy = " << ymax_efficy <<  "\n";  
+  
+  //TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", ymax_nb_sig[0], note);
+  
+  //TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", ymax_nb_ufo[0], note);
+  
+  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio, ymax_efficy, note);
 
   // Weighted average of gf_ratio
   //TGraphErrors *gf_ratio_omega_region = (TGraphErrors *)cv_efficy -> FindObject("gf_ratio");

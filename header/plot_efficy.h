@@ -1,6 +1,10 @@
 const TString input_folder = "../../efficy_evtcls";
 const TString systType = "evtcls";
 
+const double mass_min = 760., mass_max = 800.;
+cout << "mass_min = " << mass_min << ", mass_max = " << mass_max << endl;
+
+  
 TArrayD get_w_ratio(TGraphErrors *gf, const double mass_min, const double mass_max, const double Delta_m3pi) {
 
   // Weighted average of gf
@@ -25,7 +29,7 @@ TArrayD get_w_ratio(TGraphErrors *gf, const double mass_min, const double mass_m
       w_sum += w_y;
       wy_sum += ratio_tmp * w_y;
 
-      cout << "ratio = " << ratio_tmp << "+/-" << err_tmp  << endl;
+      //cout << "mass = " << x_gf[i] << ", ratio = " << ratio_tmp << "+/-" << err_tmp  << endl;
    
       //cout << "ratio = " << ratio_tmp << "+/-" << err_tmp << ", w_y =" << w_y << ", wy_sum = " << wy_sum << ", ratio * w_ y = " << ratio_tmp * w_y << ", w_sum = " << w_sum << endl;
     }
@@ -45,7 +49,7 @@ TArrayD get_w_ratio(TGraphErrors *gf, const double mass_min, const double mass_m
 
 }
 
-TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErrors *gf_sig, TGraphErrors *gf_ufo, TGraphErrors *gf_ratio){
+TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErrors *gf_sig, TGraphErrors *gf_ufo, TGraphErrors *gf_ratio, const double ymax, const TString Note){
 
   double x1 = 0., y1 = 0.;
   double x2 = 0., y2 = 0.;
@@ -55,53 +59,18 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
 
   double Delta_m3pi = x2 - x1;
   //double ymax = gf_ufo -> GetMaximum() * 1.2;
-  double ymax = 1.4;
   
   cout << "Delta_m3pi = " << Delta_m3pi << ", ymax = " << ymax << endl;
 
-  const double mass_min = 760., mass_max = 800.;
-  cout << "mass_min = " << mass_min << ", mass_max = " << mass_max << endl;
-
-  /*
-  // Weighted average of gf_ratio
-  double *x_gf_ratio = gf_ratio -> GetX();
-  double *y_gf_ratio = gf_ratio -> GetY();
-  double *y_gf_ratio_err = gf_ratio -> GetEY();
-
-  double ratio_tmp = 0.;
-  double w_y = 0., w_sum = 0., wy_sum = 0.;
-  double err_tmp = 0.;
-  
-  int count = 0;
-  
-  for (int i = 0; i < gf_ratio -> GetN(); i ++) {
-  //for (int i = 0; i < 3; i ++) {
-
-    if (x_gf_ratio[i] >= mass_min - Delta_m3pi && x_gf_ratio[i] <= mass_max + Delta_m3pi) {
-      count ++;
-      ratio_tmp = y_gf_ratio[i];
-      err_tmp = y_gf_ratio_err[i];
-      w_y = 1. / (err_tmp * err_tmp);
-      w_sum += w_y;
-      wy_sum += ratio_tmp * w_y;
-
-      cout << "ratio = " << ratio_tmp << "+/-" << err_tmp  << endl;
-   
-      //cout << "ratio = " << ratio_tmp << "+/-" << err_tmp << ", w_y =" << w_y << ", wy_sum = " << wy_sum << ", ratio * w_ y = " << ratio_tmp * w_y << ", w_sum = " << w_sum << endl;
-    }
-
-  }
-
-  double ratio_average = wy_sum / w_sum;
-  double sigma_ratio = 1. / TMath::Sqrt(w_sum);
-  cout << "ratio_average = " << ratio_average << "+/-" << sigma_ratio << endl;
-  */
-  
-  //
+  cout << "w_ratio" << endl; 
   TArrayD w_ratio = get_w_ratio(gf_ratio, mass_min, mass_max, Delta_m3pi);
+
+  cout << "w_efficy_sig" << endl; 
   TArrayD w_efficy_sig = get_w_ratio(gf_sig, mass_min, mass_max, Delta_m3pi);
+
+  cout << "w_efficy_ufo" << endl; 
   TArrayD w_efficy_ufo = get_w_ratio(gf_ufo, mass_min, mass_max, Delta_m3pi);
-  
+
   cout << "ratio average mean = " << w_ratio[0] << "+/-" << w_ratio[1] << endl;
   cout << "efficy_sig average mean = " << w_efficy_sig[0] << "+/-" << w_efficy_sig[1] << endl;
   cout << "efficy_ufo average mean = " << w_efficy_ufo[0] << "+/-" << w_efficy_ufo[1] << endl;
@@ -111,9 +80,14 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   line -> SetLineColor(kRed);
   line -> SetLineWidth(2);
 
+  TPaveText *pt34 = new TPaveText(0.6, 0.85, 0.8, 0.8, "NDC");
+  PteAttr(pt34);
+  pt34 -> SetTextSize(0.07);
+  pt34 -> AddText(Note);
+
   // plot
   TCanvas *cv = new TCanvas(cv_title, cv_nm, 1200, 800);
-  
+
   TPad *p2 = new TPad("p2", "p2", 0., 0., 1., 0.35);
   p2 -> Draw();
   p2 -> SetBottomMargin(0.25);
@@ -131,7 +105,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
 
   gf_ufo -> GetYaxis() -> SetNdivisions(512);
   gf_ufo -> GetYaxis() -> SetTitleFont(43);
-  gf_ufo -> GetYaxis() -> SetRangeUser(0., ymax);
+  gf_ufo -> GetYaxis() -> SetRangeUser(0., ymax * 1.4);
   //gf_ufo -> GetYaxis() -> SetTitle(TString::Format("Efficiency (#tilde{#varepsilon})/[%0.2f MeV/c^{2}]", Delta_m3pi));
   gf_ufo -> GetYaxis() -> SetTitle("Efficiency (#tilde{#varepsilon})");
   gf_ufo -> GetYaxis() -> SetTitleSize(33);
@@ -156,11 +130,12 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   
   gf_ufo -> Draw("APZ");
   gf_sig -> Draw("PZ");
-
+  pt34 -> Draw("Same");
+  
   p1 -> Update();
 
   //
-  TLegend * legd_cv_p1 = new TLegend(0.4, 0.7, 0.85, 0.85);
+  TLegend * legd_cv_p1 = new TLegend(0.2, 0.75, 0.5, 0.85);
   
   SetLegend(legd_cv_p1);
   legd_cv_p1 -> SetTextSize(0.07);
@@ -180,7 +155,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ratio -> GetYaxis() -> SetTitleOffset(1.4);
   ////gf_ratio -> GetYaxis() -> SetLabelFont(43); // Absolute front size in pixel (precision 3)
   gf_ratio -> GetYaxis() -> SetLabelSize(0.1);
-  gf_ratio -> GetYaxis() -> SetRangeUser(0.5, 1.2);
+  //gf_ratio -> GetYaxis() -> SetRangeUser(0.5, 1.2);
   
   //gf_ratio -> GetYaxis() -> SetRangeUser(0., gf_ratio -> GetMaximum() * 1.2);
   gf_ratio -> GetYaxis() -> CenterTitle();
@@ -214,7 +189,54 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
 
 }
 
-TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *gf_nb_sel, TGraphErrors *gf_nb_evtcls, TGraphErrors *gf_efficy, const TString y_title, const double ymax){
+TArrayD get_gf_max(TGraphErrors *gf) {
+
+  // Weighted average of gf
+  double *x_gf = gf -> GetX();
+  double *y_gf = gf -> GetY();
+  double *y_gf_err = gf -> GetEY();
+
+  int count = 0;
+  double max_value = 0.;
+  double value_tmp = 0.;
+
+  double x1 = 0., x2 = 0.;
+  double y1 = 0., y2 = 0.;
+  
+  gf -> GetPoint(0, x1, y1);
+  gf -> GetPoint(1, x2, y2);
+
+  double Delta_m3pi = x2 - x1;
+
+  for (int i = 0; i < gf -> GetN(); i ++) {
+
+    if (x_gf[i] >= mass_min - Delta_m3pi && x_gf[i] <= mass_max + Delta_m3pi) {
+      
+      count ++;
+      
+      value_tmp = y_gf[i];
+      
+      if (value_tmp > max_value) {
+	max_value = value_tmp;
+      }
+      
+      //cout << value_tmp << ", max_value = " << max_value << endl;
+
+    }
+    
+  }
+
+  //cout << "max_value = " << max_value << endl;
+
+  TArrayD W(1);
+  
+  W[0] = max_value;
+  
+  return W;
+
+}
+
+TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *gf_nb_sel, TGraphErrors *gf_nb_evtcls, TGraphErrors *gf_efficy, const TString y_title, const double ymax, const TString Note){
 
   double x1 = 0., y1 = 0.;
   double x2 = 0., y2 = 0.;
@@ -223,15 +245,17 @@ TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *
   gf_nb_sel -> GetPoint(1, x2, y2);
 
   double Delta_m3pi = x2 - x1;
-  //double ymax = gf_nb_sel -> GetMaximum() * 1.2;
-  //double ymax = 1.4;
-  
+
   cout << "Delta_m3pi = " << Delta_m3pi << ", ymax = " << ymax << endl;
 
   const double mass_min = 760., mass_max = 800.;
   cout << "mass_min = " << mass_min << ", mass_max = " << mass_max << endl;
   
-  
+  TPaveText *pt34 = new TPaveText(0.6, 0.85, 0.8, 0.8, "NDC");
+  PteAttr(pt34);
+  pt34 -> SetTextSize(0.07);
+  pt34 -> AddText(Note);
+
   TCanvas *cv = new TCanvas(cv_title, cv_nm, 1200, 800);
   
   TPad *p2 = new TPad("p2", "p2", 0., 0., 1., 0.35);
@@ -249,7 +273,7 @@ TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *
 
   gf_nb_sel -> GetYaxis() -> SetNdivisions(512);
   gf_nb_sel -> GetYaxis() -> SetTitleFont(43);
-  gf_nb_sel -> GetYaxis() -> SetRangeUser(0., ymax);
+  gf_nb_sel -> GetYaxis() -> SetRangeUser(0., ymax *  1.2);
   gf_nb_sel -> GetYaxis() -> SetTitle(TString::Format("Events/[%0.2f MeV/c^{2}]", Delta_m3pi));
   //gf_nb_sel -> GetYaxis() -> SetTitle("");
   gf_nb_sel -> GetYaxis() -> SetTitleSize(33);
@@ -274,9 +298,10 @@ TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *
   
   gf_nb_sel -> Draw("APZ");
   gf_nb_evtcls -> Draw("PZ");
+  pt34 -> Draw("Same");
   
   //
-  TLegend * legd_cv_p1 = new TLegend(0.15, 0.5, 0.5, 0.85);
+  TLegend * legd_cv_p1 = new TLegend(0.15, 0.7, 0.5, 0.9);
   
   SetLegend(legd_cv_p1);
   legd_cv_p1 -> SetTextSize(0.06);

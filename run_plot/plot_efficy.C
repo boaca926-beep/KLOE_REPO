@@ -179,7 +179,7 @@ int plot_efficy() {
   TArrayD ymax_efficy_ufo = get_gf_max(gf_efficy_ufo);
   double ymax_efficy = max(ymax_efficy_sig[0], ymax_efficy_ufo[0]);
   
-  const TString note = "No cuts applied";
+  const TString note = "trigger+bkg";
   cout << "ymax_nb_sig = " << ymax_nb_sig[0] << ", ymax_nb_ufo = " << ymax_nb_ufo[0] << "\n"
        << "ymax_efficy_sig = " << ymax_efficy_sig[0] << ", ymax_efficy_ufo = " << ymax_efficy_ufo[0] << ", max_efficy = " << ymax_efficy <<  "\n";  
   

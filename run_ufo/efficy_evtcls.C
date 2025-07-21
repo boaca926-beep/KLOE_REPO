@@ -31,7 +31,7 @@ int efficy_evtcls() {
 
   TTree *ALLCHAIN_CUT = (TTree*)f_input -> Get(treeType);
 
-  int evtcls_indx = -1, trigger_indx = -1, filfo_indx = -1;
+  int evtcls_indx = -1, trigger_indx = -1, filfo_indx = -1, sel_indx = -1;
   
   double evnt_sel = 0.; // number of events after selection
   double evnt_evtcls = 0.; // number of events after event classification
@@ -74,6 +74,9 @@ int efficy_evtcls() {
     trigger_indx = ALLCHAIN_CUT -> GetLeaf("Br_trigger_indx") -> GetValue(0);
     filfo_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo_indx") -> GetValue(0);
     evtcls_indx = ALLCHAIN_CUT -> GetLeaf("Br_evtcls_indx") -> GetValue(0);
+    sel_indx = ALLCHAIN_CUT -> GetLeaf("Br_sel_indx") -> GetValue(0);
+
+    cout << sel_indx << endl;
     
     evnt_sel ++;
 

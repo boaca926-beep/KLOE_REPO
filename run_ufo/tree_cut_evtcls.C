@@ -38,6 +38,8 @@ int tree_cut_evtcls(){
   int trigger_indx = -1;
   int filfo_indx = -1;
   int evtcls_indx = -1;
+  int sel_indx = -1;
+  
   //int fstate_indx = 0;
   int bkg_indx = 0, recon_indx = 0;
 
@@ -85,6 +87,7 @@ int tree_cut_evtcls(){
     tree_tmp -> Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
     tree_tmp -> Branch("Br_bkg_indx", &bkg_indx, "Br_bkg_indx/I");
     tree_tmp -> Branch("Br_recon_indx", &recon_indx, "Br_recon_indx/I");
+    tree_tmp -> Branch("Br_sel_indx", &sel_indx, "Br_sel_indx/I");
 
     tree_tmp -> Branch("Br_trigger_indx", &trigger_indx, "Br_trigger_indx/I");
     tree_tmp -> Branch("Br_filfo_indx", &filfo_indx, "Br_filfo_indx/I");
@@ -146,7 +149,7 @@ int tree_cut_evtcls(){
     //if (evnt_tot > 1e5) break;
 
     //// preselection cut
-    //if (trigger_indx == 0) continue; // CUT I
+    if (trigger_indx == 0) continue; // CUT I
     evnt_trigger ++;
     //cout << trigger_indx << endl;
 
@@ -158,12 +161,21 @@ int tree_cut_evtcls(){
     evnt_evtcls ++;
     
     //// background rejection
+    if (lagvalue_min_7C > chi2_cut || deltaE > deltaE_cut || angle_pi0gam12 > angle_cut || betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) {
+      sel_indx = 0;
+      //cout << sel_indx << endl;
+    }
+    else {
+      sel_indx = 1;
+    }
+
     /*
     if (lagvalue_min_7C > chi2_cut) continue;
     else if (deltaE > deltaE_cut) continue;
     else if (angle_pi0gam12 > angle_cut) continue;
     else if (betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) continue;
     */
+    
     evnt_sel ++;
 
     // fill trees

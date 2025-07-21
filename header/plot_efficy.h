@@ -80,7 +80,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   line -> SetLineColor(kRed);
   line -> SetLineWidth(2);
 
-  TPaveText *pt34 = new TPaveText(0.6, 0.85, 0.8, 0.8, "NDC");
+  TPaveText *pt34 = new TPaveText(0.5, 0.85, 0.8, 0.8, "NDC");
   PteAttr(pt34);
   pt34 -> SetTextSize(0.07);
   pt34 -> AddText(Note);
@@ -155,7 +155,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ratio -> GetYaxis() -> SetTitleOffset(1.4);
   ////gf_ratio -> GetYaxis() -> SetLabelFont(43); // Absolute front size in pixel (precision 3)
   gf_ratio -> GetYaxis() -> SetLabelSize(0.1);
-  //gf_ratio -> GetYaxis() -> SetRangeUser(0.5, 1.2);
+  gf_ratio -> GetYaxis() -> SetRangeUser(0.8, 2.);
   
   //gf_ratio -> GetYaxis() -> SetRangeUser(0., gf_ratio -> GetMaximum() * 1.2);
   gf_ratio -> GetYaxis() -> CenterTitle();
@@ -172,7 +172,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ratio -> SetLineWidth(2);
   
   gf_ratio -> Draw("APZ");
-  line -> Draw("Same");
+  //line -> Draw("Same");
   
   p2 -> SetGrid();
   

@@ -153,7 +153,7 @@ int tree_cut_evtcls(){
     evnt_trigger ++;
     //cout << trigger_indx << endl;
 
-    //if (filfo_indx == 0) continue; // CUT II
+    if (filfo_indx == 0) continue; // CUT II
     evnt_filfo ++;
     //cout << filfo_indx << endl;
 

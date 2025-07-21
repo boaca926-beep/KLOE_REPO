@@ -34,6 +34,7 @@ int efficy_evtcls() {
   int evtcls_indx = -1, trigger_indx = -1, filfo_indx = -1, sel_indx = -1;
   
   double evnt_sel = 0.; // number of events after selection
+  double evnt_bkg = 0.; // number of backgroud events
   double evnt_evtcls = 0.; // number of events after event classification
   
   double m3pi = 0., m3pi_true = 0.;
@@ -76,13 +77,15 @@ int efficy_evtcls() {
     evtcls_indx = ALLCHAIN_CUT -> GetLeaf("Br_evtcls_indx") -> GetValue(0);
     sel_indx = ALLCHAIN_CUT -> GetLeaf("Br_sel_indx") -> GetValue(0);
 
-    cout << sel_indx << endl;
+    //cout << sel_indx << endl;
     
     evnt_sel ++;
 
     H1DLIST[0] -> Fill(m3pi);
-  
-    if (evtcls_indx == 0) continue;
+
+    if (sel_indx == 0) evnt_bkg ++;
+    
+    if (evtcls_indx == 0 && sel_indx == 0) continue;
     evnt_evtcls ++;
 
     H1DLIST[1] -> Fill(m3pi);
@@ -99,7 +102,7 @@ int efficy_evtcls() {
 
   efficy_cut = evnt_evtcls / evnt_sel;
 
-  cout << "evnt_sel = " << evnt_sel << "\n"
+  cout << "evnt_sel = " << evnt_sel << ", evnt_bkg = " << evnt_bkg << "\n"
        << "evnt_evtcls = " << evnt_evtcls << "\n"
        << "efficy_cut = " << efficy_cut << endl;
 

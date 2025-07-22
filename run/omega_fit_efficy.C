@@ -85,7 +85,7 @@ int omega_fit_efficy(){
   mcrest_hist -> Add(hrhopi, 1.);
 
   // corrected efficiency
-  get_efficy(gf_ratio);
+  get_efficy();
   
   // smearing matrix and smearing signal IM3pi MC true distr.
   TRandom *generator = new TRandom();

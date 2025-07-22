@@ -149,11 +149,11 @@ int tree_cut_evtcls(){
     //if (evnt_tot > 1e5) break;
 
     //// preselection cut
-    if (trigger_indx == 0) continue; // CUT I
+    //if (trigger_indx == 0) continue; // CUT I
     evnt_trigger ++;
     //cout << trigger_indx << endl;
 
-    if (filfo_indx == 0) continue; // CUT II
+    //if (filfo_indx == 0) continue; // CUT II
     evnt_filfo ++;
     //cout << filfo_indx << endl;
 

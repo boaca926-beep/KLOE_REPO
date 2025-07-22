@@ -83,21 +83,21 @@ int efficy_evtcls() {
 
     evnt_sel ++;
     
-    if (trigger_indx == 0) continue; // trigger
+    //if (trigger_indx == 0) continue; // trigger
     evnt_trigger ++;
     
-    if (filfo_indx == 0) continue; // filfo
+    //if (filfo_indx == 0) continue; // filfo
     evnt_filfo ++;
     
     //cout << trigger_indx << " " << filfo_indx << endl;
     
-    if (sel_indx == 0) continue; // background rejection
+    //if (sel_indx == 0) continue; // background rejection
     evnt_bkg ++;
     
     
     H1DLIST[0] -> Fill(m3pi);
     
-    if (evtcls_indx == 0) continue;
+    if (evtcls_indx == 0) continue; // evnt classification
     
     evnt_evtcls ++;
 
@@ -113,7 +113,7 @@ int efficy_evtcls() {
 
   //h1d_IM3pi -> Draw();
 
-  efficy_cut = evnt_evtcls / evnt_sel;
+  efficy_cut = evnt_evtcls / evnt_bkg;
 
   cout << "evnt_sel = " << evnt_sel << "\n"
        << "evnt_trigger = " << evnt_trigger << "\n"

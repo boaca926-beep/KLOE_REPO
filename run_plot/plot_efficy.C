@@ -127,7 +127,7 @@ int plot_efficy() {
   
     }
 
-    //cout << "point " << i << ", mass = " << x_efficy_sig[i] << ", efficy_sig = " << y_efficy_sig[i] << "+/-" << y_efficy_sig_err[i] << ", efficy_ufo = " << y_efficy_ufo[i] << "+/-" << y_efficy_ufo_err[i] << ", efficy ratio (ufo/sig) = " << RATIO[i] << "+/-" << RATIO_ERR[i] << endl;
+    cout << "point " << i << ", mass = " << x_efficy_sig[i] << ", efficy_sig = " << y_efficy_sig[i] << "+/-" << y_efficy_sig_err[i] << ", efficy_ufo = " << y_efficy_ufo[i] << "+/-" << y_efficy_ufo_err[i] << ", efficy ratio (ufo/sig) = " << RATIO[i] << "+/-" << RATIO_ERR[i] << endl;
     
   }
   
@@ -179,17 +179,17 @@ int plot_efficy() {
   TArrayD ymax_efficy_ufo = get_gf_max(gf_efficy_ufo);
   double ymax_efficy = max(ymax_efficy_sig[0], ymax_efficy_ufo[0]);
   
-  const TString note = "Prescaled (trigger+FILFO)";
-  //const TString note = "";
+  //const TString note = "Prescaled (trigger+FILFO)";
+  const TString note = "2 tracks+1 #gamma";
   
   cout << "ymax_nb_sig = " << ymax_nb_sig[0] << ", ymax_nb_ufo = " << ymax_nb_ufo[0] << "\n"
        << "ymax_efficy_sig = " << ymax_efficy_sig[0] << ", ymax_efficy_ufo = " << ymax_efficy_ufo[0] << ", max_efficy = " << ymax_efficy <<  "\n";  
   
-  //TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", ymax_nb_sig[0], note);
+  TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", ymax_nb_sig[0], note);
   
-  //TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", ymax_nb_ufo[0], note);
+  TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", ymax_nb_ufo[0], note);
   
-  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio, ymax_efficy, note);
+  //TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio, ymax_efficy, note);
 
   // Weighted average of gf_ratio
   //TGraphErrors *gf_ratio_omega_region = (TGraphErrors *)cv_efficy -> FindObject("gf_ratio");
@@ -205,9 +205,9 @@ int plot_efficy() {
   
   
   // save
-  cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
-  //cv_nb_sig -> SaveAs(input_folder + "/cv_nb_sig_" + systType + ".pdf");
-  //cv_nb_ufo -> SaveAs(input_folder + "/cv_nb_ufo_" + systType + ".pdf");
+  //cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
+  cv_nb_sig -> SaveAs(input_folder + "/cv_nb_sig_" + systType + ".pdf");
+  cv_nb_ufo -> SaveAs(input_folder + "/cv_nb_ufo_" + systType + ".pdf");
   
   cout << input_folder << endl;
 

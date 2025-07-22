@@ -81,11 +81,14 @@ int efficy_evtcls() {
     
     evnt_sel ++;
 
-    H1DLIST[0] -> Fill(m3pi);
-
     if (sel_indx == 0) evnt_bkg ++;
+
+    //if (sel_indx == 0) continue; // background rejection
+
+    H1DLIST[0] -> Fill(m3pi);
     
-    if (evtcls_indx == 0 && sel_indx == 0) continue;
+    if (evtcls_indx == 0) continue;
+    
     evnt_evtcls ++;
 
     H1DLIST[1] -> Fill(m3pi);

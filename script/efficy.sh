@@ -4,7 +4,7 @@
 sample_size=chain # norm; chain; small
 syst_type=evtcls # evtcls, filfo, trigger
 exp_type=TUFO # UFO
-input_path=../../input_${sample_size}_${syst_type}_${exp_type}
+input_path=../../input_${sample_size}_${syst_type}_${exp_type}_prescaled
 #echo $input_path
 
 if [[ -d "$input_path" ]]; then

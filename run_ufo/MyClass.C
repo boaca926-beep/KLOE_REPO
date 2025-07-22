@@ -1109,7 +1109,7 @@ void MyClass::Main()
     */
     
     /// fill trees
-    if (lagvalue_min_7C > 100.) continue; // cut 6
+    //if (lagvalue_min_7C > 100.) continue; // cut 6
     //if (IM_3pi > 820. || IM_3pi < 750.) continue;
     //if (IM3pi_7C > 730. || IM3pi_7C < 440.) continue;
     evnt_final ++;

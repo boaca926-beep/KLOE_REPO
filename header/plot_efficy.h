@@ -80,7 +80,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   line -> SetLineColor(kRed);
   line -> SetLineWidth(2);
 
-  TPaveText *pt34 = new TPaveText(0.5, 0.85, 0.8, 0.8, "NDC");
+  TPaveText *pt34 = new TPaveText(0.45, 0.85, 0.7, 0.8, "NDC");
   PteAttr(pt34);
   pt34 -> SetTextSize(0.07);
   pt34 -> AddText(Note);
@@ -107,7 +107,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ufo -> GetYaxis() -> SetTitleFont(43);
   gf_ufo -> GetYaxis() -> SetRangeUser(0., ymax * 1.4);
   //gf_ufo -> GetYaxis() -> SetTitle(TString::Format("Efficiency (#tilde{#varepsilon})/[%0.2f MeV/c^{2}]", Delta_m3pi));
-  gf_ufo -> GetYaxis() -> SetTitle("Efficiency (#tilde{#varepsilon})");
+  gf_ufo -> GetYaxis() -> SetTitle("Efficiency #tilde{#varepsilon}");
   gf_ufo -> GetYaxis() -> SetTitleSize(33);
   gf_ufo -> GetYaxis() -> SetTitleOffset(1.5);
   gf_ufo -> GetYaxis() -> SetLabelSize(0.05);
@@ -155,7 +155,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ratio -> GetYaxis() -> SetTitleOffset(1.4);
   ////gf_ratio -> GetYaxis() -> SetLabelFont(43); // Absolute front size in pixel (precision 3)
   gf_ratio -> GetYaxis() -> SetLabelSize(0.1);
-  gf_ratio -> GetYaxis() -> SetRangeUser(0.8, 2.);
+  gf_ratio -> GetYaxis() -> SetRangeUser(0.5, 1.2);
   
   //gf_ratio -> GetYaxis() -> SetRangeUser(0., gf_ratio -> GetMaximum() * 1.2);
   gf_ratio -> GetYaxis() -> CenterTitle();
@@ -251,7 +251,7 @@ TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *
   const double mass_min = 760., mass_max = 800.;
   cout << "mass_min = " << mass_min << ", mass_max = " << mass_max << endl;
   
-  TPaveText *pt34 = new TPaveText(0.6, 0.85, 0.8, 0.8, "NDC");
+  TPaveText *pt34 = new TPaveText(0.45, 0.85, 0.7, 0.8, "NDC");
   PteAttr(pt34);
   pt34 -> SetTextSize(0.07);
   pt34 -> AddText(Note);
@@ -273,7 +273,7 @@ TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *
 
   gf_nb_sel -> GetYaxis() -> SetNdivisions(512);
   gf_nb_sel -> GetYaxis() -> SetTitleFont(43);
-  gf_nb_sel -> GetYaxis() -> SetRangeUser(0., ymax *  1.2);
+  gf_nb_sel -> GetYaxis() -> SetRangeUser(0., ymax *  1.5);
   gf_nb_sel -> GetYaxis() -> SetTitle(TString::Format("Events/[%0.2f MeV/c^{2}]", Delta_m3pi));
   //gf_nb_sel -> GetYaxis() -> SetTitle("");
   gf_nb_sel -> GetYaxis() -> SetTitleSize(33);
@@ -307,8 +307,8 @@ TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *
   legd_cv_p1 -> SetTextSize(0.06);
   legd_cv_p1 -> SetNColumns(1);
   
-  legd_cv_p1 -> AddEntry(gf_nb_evtcls, "After streaming", "lep");
-  legd_cv_p1 -> AddEntry(gf_nb_sel, "Before streaming", "lep");
+  legd_cv_p1 -> AddEntry(gf_nb_evtcls, "After KSL", "lep");
+  legd_cv_p1 -> AddEntry(gf_nb_sel, "Before KSL", "lep");
   
   legd_cv_p1 -> Draw("Same");
 

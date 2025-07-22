@@ -282,17 +282,17 @@ void MCNorm() {
 }
 
 //
-void get_efficy(TGraphErrors* gf_ratio) {// corrected efficiency
-
-  int nPoints = gf_ratio -> GetN();
-  double *x_efficy_ratio = gf_ratio -> GetX();
-  double *y_efficy_ratio = gf_ratio -> GetY();
+void get_efficy() {
+  
+  //int nPoints = gf_ratio -> GetN();
+  //double *x_efficy_ratio = gf_ratio -> GetX();
+  //double *y_efficy_ratio = gf_ratio -> GetY();
   
   int binsize = hsig_true -> GetNbinsX();
   double hmin = hsig_true -> GetXaxis() -> GetXmin();
   double hmax = hsig_true -> GetXaxis() -> GetXmax();
 
-  cout << "nPoints = " << nPoints << ", binsize = " << binsize << ", hmin = " << hmin << ", hmax = " << hmax << endl;
+  cout << "binsize = " << binsize << ", hmin = " << hmin << ", hmax = " << hmax << endl;
   
   hefficy = new TH1D("hefficy", "", binsize, hmin, hmax);
   hefficy -> Sumw2();

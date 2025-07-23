@@ -81,6 +81,7 @@ sed -i 's/\(const double Lumi_tot =\)\(.*\)/\1 '$Lumi_tot';/' $sm_header
 #DATA_TYPE=("sig" "ksl" "exp" "eeg" "ufo")
 DATA_TYPE=("sig" "ufo" "exp")
 
+
 ## Folders
 input_path=${result_path}/input/
 cut_path=${result_path}/cut/

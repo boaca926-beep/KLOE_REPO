@@ -37,6 +37,7 @@ int tree_cut_evtcls(){
   int phid = 0, sig_type = 0;
   int trigger_indx = -1;
   int filfo_indx = -1;
+  int filfo28_indx = -1;
   int evtcls_indx = -1;
   int sel_indx = -1;
   
@@ -91,6 +92,7 @@ int tree_cut_evtcls(){
 
     tree_tmp -> Branch("Br_trigger_indx", &trigger_indx, "Br_trigger_indx/I");
     tree_tmp -> Branch("Br_filfo_indx", &filfo_indx, "Br_filfo_indx/I");
+    tree_tmp -> Branch("Br_filfo28_indx", &filfo28_indx, "Br_filfo28_indx/I");
     tree_tmp -> Branch("Br_evtcls_indx", &evtcls_indx, "Br_evtcls_indx/I");
 
     tree_tmp -> Branch("Br_IM3pi_7C", &IM3pi_7C, "Br_IM3pi_7C/D");
@@ -123,6 +125,7 @@ int tree_cut_evtcls(){
 
     trigger_indx = ALLCHAIN_CUT -> GetLeaf("Br_trigger_indx") -> GetValue(0);
     filfo_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo_indx") -> GetValue(0);
+    filfo28_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo28_indx") -> GetValue(0);
     evtcls_indx = ALLCHAIN_CUT -> GetLeaf("Br_evtcls_indx") -> GetValue(0);
     //fstate_indx = ALLCHAIN_CUT -> GetLeaf("Br_fstate_indx") -> GetValue(0);
 

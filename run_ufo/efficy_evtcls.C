@@ -35,7 +35,7 @@ int efficy_evtcls() {
   int filfo28_indx = -1;
   
   double evnt_trigger = 0.; // number of events after the trigger
-  double evnt_filfo = 0.; // number of events after the filfo
+  double evnt_filfo = 0., N0 = 0.; // number of events after the filfo
   double evnt_bkg = 0.; // number of backgroud events
   double evnt_sel = 0.; // number of events after selection
   double evnt_evtcls = 0.; // number of events after event classification
@@ -62,7 +62,7 @@ int efficy_evtcls() {
   
   }
 
-  ALLCHAIN_CUT -> Print();
+  //ALLCHAIN_CUT -> Print();
     
   for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow ++) {// loop trees
 	  
@@ -88,16 +88,19 @@ int efficy_evtcls() {
     //if (m3pi > 760 && m3pi < 800) {
       evnt_sel ++;
     
-      if (trigger_indx == 0) continue; // trigger
+      //if (trigger_indx == 0) continue; // trigger
       evnt_trigger ++;
-    
-      //if (filfo_indx == 0) continue; // filfo20
-      if (filfo_indx == 0) continue; // filfo28
+
+      if (filfo28_indx == 0) {// filfo28
+	N0 ++;
+	continue; 
+      }
       evnt_filfo ++;
       
       //cout << trigger_indx << " " << filfo_indx << endl;
-    
-      //if (sel_indx == 0) continue; // background rejection
+      //cout << filfo28_indx << endl;
+      
+      if (sel_indx == 0) continue; // background rejection
       evnt_bkg ++;
     
       //if (evtcls_indx == 0) continue; // evnt classification
@@ -127,7 +130,7 @@ int efficy_evtcls() {
 
   cout << "evnt_sel = " << evnt_sel << "\n"
        << "evnt_trigger = " << evnt_trigger << "\n"
-       << "evnt_filfo = " << evnt_filfo << "\n"
+       << "evnt_filfo (N28) = " << evnt_filfo << ", N28 = " << evnt_filfo << ", N0+N28 = " << N0 + evnt_filfo << ", efficy_filfo = " << N0 / evnt_filfo / 9 <<  "\n"
        << "evnt_bkg = " << evnt_bkg << "\n"
        << "evnt_evtcls = " << evnt_evtcls << "\n"
        << "efficy_cut = " << efficy_cut << endl;

@@ -544,14 +544,14 @@ void MyClass::Main()
     //if (IfFilfoed()) continue; // SYST. CHECK, bit 20, standard FILFO cut
     //filfo_indx = 1;
 
-    if (IfFilfoed()) {
+    if (IfFilfoed()) {// bit 20, standard FILFO cut
       filfo_indx = 0;
     }
     else {
       filfo_indx = 1;
     }
 
-    if (IfFilfoed_28()) {// bit 28, standard FILFO cut
+    if (IfFilfoed_28()) {// bit 28, work also for UFO
       filfo28_indx = 0;
     }
     else {// bit 28 off

@@ -180,10 +180,10 @@ int plot_efficy() {
   double ymax_efficy = max(ymax_efficy_sig[0], ymax_efficy_ufo[0]);
 
   //const TString note = "Prescaled (trigger+FILFO)+KSL";
-  //const TString note = "Prescaled (trigger+FILFO)+Bkg";
-  //const TString note = "Prescaled (trigger+FILFO)";
-  //const TString note = "Prescaled (trigger)";
-  const TString note = "2 tracks+3#gamma";
+  const TString note = "trigger+FILFO+Bkg";
+  //const TString note = "trigger+FILFO";
+  //const TString note = "trigger";
+  //const TString note = "2 tracks+3#gamma";
   
   cout << "ymax_nb_sig = " << ymax_nb_sig[0] << ", ymax_nb_ufo = " << ymax_nb_ufo[0] << "\n"
        << "ymax_efficy_sig = " << ymax_efficy_sig[0] << ", ymax_efficy_ufo = " << ymax_efficy_ufo[0] << ", max_efficy = " << ymax_efficy <<  "\n";  

@@ -146,7 +146,7 @@ int tree_cut_filfo(){
     //if (evnt_tot > 1e5) break;
 
     //// preselection cut
-    if (trigger_indx == 0) continue;
+    //if (trigger_indx == 0) continue;
     evnt_trigger ++;
     //cout << trigger_indx << endl;
 
@@ -154,7 +154,7 @@ int tree_cut_filfo(){
     evnt_filfo ++;
     //cout << filfo_indx << endl;
 
-    if (evtcls_indx == 0) continue;
+    //if (evtcls_indx == 0) continue;
     evnt_evtcls ++;
     
     //// background rejection

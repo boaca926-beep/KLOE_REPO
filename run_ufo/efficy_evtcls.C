@@ -35,7 +35,7 @@ int efficy_evtcls() {
   int filfo28_indx = -1;
   
   double evnt_trigger = 0.; // number of events after the trigger
-  double evnt_filfo = 0., N0 = 0.; // number of events after the filfo
+  double evnt_filfo = 0., N28 = 0.; // number of events after the filfo
   double evnt_bkg = 0.; // number of backgroud events
   double evnt_sel = 0.; // number of events after selection
   double evnt_evtcls = 0.; // number of events after event classification
@@ -88,26 +88,25 @@ int efficy_evtcls() {
     //if (m3pi > 760 && m3pi < 800) {
       evnt_sel ++;
     
-      //if (trigger_indx == 0) continue; // trigger
+      if (trigger_indx == 0) continue; // trigger
       evnt_trigger ++;
 
-      if (filfo28_indx == 0) {// filfo28
-	N0 ++;
+      //if (filfo_indx == 0) continue; // filfo20
+      if (filfo28_indx == 1) {// bit28 on, N28
+	N28 ++;
 	continue; 
       }
-      evnt_filfo ++;
+
+      evnt_filfo ++; // bit28 off, N0
       
       //cout << trigger_indx << " " << filfo_indx << endl;
       //cout << filfo28_indx << endl;
-      
+
       if (sel_indx == 0) continue; // background rejection
       evnt_bkg ++;
-    
-      //if (evtcls_indx == 0) continue; // evnt classification
-      //evnt_evtcls ++;
-    
+      
       H1DLIST[0] -> Fill(m3pi);
-    
+
       if (evtcls_indx == 0) continue; // evnt classification 
       evnt_evtcls ++;
       
@@ -127,10 +126,11 @@ int efficy_evtcls() {
 
   efficy_cut = evnt_evtcls / evnt_bkg;
   //efficy_cut = evnt_bkg / evnt_evtcls;
-
+  double efficy_filfo = 2 * evnt_filfo / (N28 + 2 * evnt_filfo);
+  
   cout << "evnt_sel = " << evnt_sel << "\n"
        << "evnt_trigger = " << evnt_trigger << "\n"
-       << "evnt_filfo (N28) = " << evnt_filfo << ", N28 = " << evnt_filfo << ", N0+N28 = " << N0 + evnt_filfo << ", efficy_filfo = " << N0 / evnt_filfo / 9 <<  "\n"
+       << "evnt_filfo (N0) = " << evnt_filfo << ", N28 = " << N28 << ", N0+N28 = " << evnt_filfo + N28 << ", efficy_filfo = " << efficy_filfo << "\n"
        << "evnt_bkg = " << evnt_bkg << "\n"
        << "evnt_evtcls = " << evnt_evtcls << "\n"
        << "efficy_cut = " << efficy_cut << endl;

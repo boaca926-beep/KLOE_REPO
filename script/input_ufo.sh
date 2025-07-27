@@ -10,7 +10,7 @@ sample_path=../path_${sample_size}/
 exp_type=TUFO # UFO
 gsf=0.0114359 # UFO
 
-result_path=../../input_${sample_size}_${syst_type}_${exp_type}
+result_path=../../input_${sample_size}_${exp_type}
 
 ## Initialize the normial conditions
 # Pre-selection

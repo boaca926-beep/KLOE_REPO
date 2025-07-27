@@ -91,7 +91,7 @@ int efficy_filfo() {
       if (trigger_indx == 0) continue; // trigger
       evnt_trigger ++;
 
-      if (evtcls_indx == 0) continue; // evnt classification 
+      //if (evtcls_indx == 0) continue; // evnt classification 
       evnt_evtcls ++;
 
       //if (sel_indx == 0) continue; // background rejection
@@ -102,11 +102,11 @@ int efficy_filfo() {
     
       H1DLIST[0] -> Fill(m3pi);
     
-      if (filfo28_indx == 0) {
+      if (filfo28_indx == 1) {// bit20 on, N28
 	N28 ++;
-	continue; // filfo28
+	continue;
       }
-      evnt_filfo ++;
+      evnt_filfo ++; // bit28 off, N0
       
       //cout << trigger_indx << " " << filfo_indx << endl;
       //cout << filfo28_indx << endl;
@@ -128,10 +128,12 @@ int efficy_filfo() {
   efficy_cut = evnt_evtcls / evnt_bkg;
   //efficy_cut = evnt_bkg / evnt_evtcls;
 
+  double efficy_filfo = 2 * evnt_filfo / (N28 + 2 * evnt_filfo);
+  
   cout << "evnt_sel = " << evnt_sel << "\n"
-       << "evnt_evtcls = " << evnt_evtcls << "\n"
        << "evnt_trigger = " << evnt_trigger << "\n"
-       << "evnt_filfo (N0) = " << evnt_filfo << ", N28 = " << N28 << ", N0+N28 = " << evnt_filfo + N28 << "\n"
+       << "evnt_evtcls = " << evnt_evtcls << "\n"
+       << "evnt_filfo (N0) = " << evnt_filfo << ", N28 = " << N28 << ", N0+N28 = " << evnt_filfo + N28 << ", efficy_filfo = " << efficy_filfo <<  "\n"
        << "evnt_bkg = " << evnt_bkg << "\n"
        << "efficy_cut = " << efficy_cut << endl;
 

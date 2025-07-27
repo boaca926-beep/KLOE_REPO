@@ -551,11 +551,11 @@ void MyClass::Main()
       filfo_indx = 1;
     }
 
-    if (IfFilfoed_28()) {// bit 28, work also for UFO
-      filfo28_indx = 0;
+    if (((eclfilfo & ( 1 << 28 )) >> 28) == 1) {// bit 28 on, work also for UFO
+      filfo28_indx = 1;
     }
     else {// bit 28 off
-      filfo28_indx = 1;
+      filfo28_indx = 0;
     }
     
     evnt_filfo ++;

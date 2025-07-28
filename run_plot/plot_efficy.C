@@ -136,6 +136,7 @@ int plot_efficy() {
   gf_ratio -> SetName("gf_ratio");
   //gf_ratio -> Draw("AP");
 
+  /*
   // fit gf_ratio to pol2
   gf_ratio -> Fit("pol2", "S", "", 758, 803);
   TF1 *f_ratio = gf_ratio -> GetFunction("pol2");
@@ -146,6 +147,7 @@ int plot_efficy() {
   double p0 = f_ratio -> GetParameter(0);
   double p1 = f_ratio -> GetParameter(1);
   double p2 = f_ratio -> GetParameter(2);
+  */
   
   /*
   const double mass_min = 760., mass_max = 800.;
@@ -165,10 +167,13 @@ int plot_efficy() {
 
   TTree* TRESULT = new TTree("TRESULT", "recreate");
   TRESULT -> SetAutoSave(0);
+
+  /*
   TRESULT -> Branch("Br_p0", &p0, "Br_p0/D");
   TRESULT -> Branch("Br_p1", &p1, "Br_p1/D");
   TRESULT -> Branch("Br_p2", &p2, "Br_p2/D");
-
+  */
+  
   TRESULT -> Fill();
   
   // plot
@@ -188,11 +193,11 @@ int plot_efficy() {
   cout << "ymax_nb_sig = " << ymax_nb_sig[0] << ", ymax_nb_ufo = " << ymax_nb_ufo[0] << "\n"
        << "ymax_efficy_sig = " << ymax_efficy_sig[0] << ", ymax_efficy_ufo = " << ymax_efficy_ufo[0] << ", max_efficy = " << ymax_efficy <<  "\n";  
   
-  TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", ymax_nb_sig[0], note);
+  //TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", ymax_nb_sig[0], note);
   
-  TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", ymax_nb_ufo[0], note);
+  //TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", ymax_nb_ufo[0], note);
   
-  //TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio, ymax_efficy, note);
+  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio, ymax_efficy, note);
 
   // Weighted average of gf_ratio
   //TGraphErrors *gf_ratio_omega_region = (TGraphErrors *)cv_efficy -> FindObject("gf_ratio");
@@ -208,9 +213,9 @@ int plot_efficy() {
   
   
   // save
-  //cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
-  cv_nb_sig -> SaveAs(input_folder + "/cv_nb_sig_" + systType + ".pdf");
-  cv_nb_ufo -> SaveAs(input_folder + "/cv_nb_ufo_" + systType + ".pdf");
+  cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
+  //cv_nb_sig -> SaveAs(input_folder + "/cv_nb_sig_" + systType + ".pdf");
+  //cv_nb_ufo -> SaveAs(input_folder + "/cv_nb_ufo_" + systType + ".pdf");
   
   cout << input_folder << endl;
 

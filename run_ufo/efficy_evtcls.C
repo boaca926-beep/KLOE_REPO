@@ -127,13 +127,15 @@ int efficy_evtcls() {
   efficy_cut = evnt_evtcls / evnt_bkg;
   //efficy_cut = evnt_bkg / evnt_evtcls;
   double efficy_filfo = 2 * evnt_filfo / (N28 + 2 * evnt_filfo);
+  double efficy_trigger = evnt_trigger / evnt_sel;
   
   cout << "evnt_sel = " << evnt_sel << "\n"
        << "evnt_trigger = " << evnt_trigger << "\n"
        << "evnt_filfo (N0) = " << evnt_filfo << ", N28 = " << N28 << ", N0+N28 = " << evnt_filfo + N28 << ", efficy_filfo = " << efficy_filfo << "\n"
        << "evnt_bkg = " << evnt_bkg << "\n"
        << "evnt_evtcls = " << evnt_evtcls << "\n"
-       << "efficy_cut = " << efficy_cut << endl;
+       << "efficy_cut = " << efficy_cut << "\n"
+       << "efficy_trigger = " << efficy_trigger << "\n";
 
   TRESULT -> Fill();
 

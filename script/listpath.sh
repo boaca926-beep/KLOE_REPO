@@ -50,14 +50,24 @@ path_EEG7=$INPATH/EEG/mceeg7
 path_EEG8=$INPATH/EEG/mceeg8
 path_EEG9=$INPATH/EEG/mceeg9
 
+path_RHOPI1=$INPATH/RHOPI/MCRHOPI1
+path_RHOPI2=$INPATH/RHOPI/MCRHOPI2
+path_RHOPI3=$INPATH/RHOPI/MCRHOPI3
+path_RHOPI4=$INPATH/RHOPI/MCRHOPI4
+path_RHOPI5=$INPATH/RHOPI/MCRHOPI5
+path_RHOPI6=$INPATH/RHOPI/MCRHOPI6
+path_RHOPI7=$INPATH/RHOPI/MCRHOPI7
+path_RHOPI8=$INPATH/RHOPI/MCRHOPI8
+path_RHOPI9=$INPATH/RHOPI/MCRHOPI9
+
 path_UFO1=$INPATH/UFO
 
 echo "Creating input root list from" $INPATH
 echo "outpath:" $OUTPATH
 
-DATA_TYPE=("SIG" "KSL" "EXP" "EEG")
-MC_TYPE=("sig" "ksl" "exp" "eeg")
-FILE_TYPE=("isr3pi1" "mcksl1" "data1" "mceeg1" "")
+DATA_TYPE=("SIG" "KSL" "EXP" "EEG" "RHOPI")
+MC_TYPE=("sig" "ksl" "exp" "eeg" "rhopi")
+FILE_TYPE=("isr3pi1" "mcksl1" "data1" "mceeg1" "MCRHOPI1")
 
 for ((i=0;i<${#DATA_TYPE[@]};++i)); do
 

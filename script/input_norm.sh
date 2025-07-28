@@ -1,7 +1,7 @@
 #!/bin/bash
 
 ## Specify DATA or UFO
-sample_size=chain # norm; small; mini; chain
+sample_size=norm # norm; small; mini; chain
 sample_path=../path_${sample_size}/ 
 #sample_path=../../path_${sample_size}/ 
 
@@ -43,8 +43,8 @@ echo -e 'const double deltaE_cut = -1;' >> $cut_header
 echo -e 'const double beta_cut = -1;' >> $cut_header
 echo -e 'const double c0 = -1;' >> $cut_header
 echo -e 'const double c1 = -1;' >> $cut_header
-echo -e 'const TString cut_nm = "";' >> $cut_header
 echo -e 'double cut_value = -1;' >> $cut_header
+echo -e 'const TString cut_nm = "";' >> $cut_header
 
 sed -i 's/\(const double chi2_cut =\)\(.*\)/\1 '$chi2_cut';/' $cut_header
 sed -i 's/\(const double angle_cut =\)\(.*\)/\1 '$angle_cut';/' $cut_header

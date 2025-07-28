@@ -6,40 +6,6 @@
 #include "../header/method.h"
 #include "../header/graph.h"
 
-double ratioErr(double a, double sigma_a, double b, double sigma_b) {// ratio = a / b
-
-  if (b == 0) {
-
-    cout << "Division by zero!" << endl;
-    return 0;
-
-  }
-
-  double c = a / b;
-  double rela_err = TMath::Sqrt(TMath::Power(sigma_a / a, 2) + TMath::Power(sigma_b / b, 2));
-  double sigma_c = c * rela_err;
-
-  //cout << TMath::Power(sigma_a / a, 2) + TMath::Power(sigma_b / b, 2) << ", a = " << a << ", b = " << b << endl;
-   
-  return sigma_c;
-  
-}
-
-double get_ratio(double a, double b) {// ratio = a / b
-
-  if (b == 0) {
-
-    cout << "Division by zero!" << endl;
-    return 0;
-
-  }
-
-  double c = a / b;
-
-  return c;
-  
-}
-
 int plot_efficy() {
 
   gErrorIgnoreLevel = kError;
@@ -53,7 +19,7 @@ int plot_efficy() {
   cout << "input path: " << input_folder << endl;
 
   TFile *f_input = new TFile(input_folder + "/efficy.root");
-  getObj(f_input);
+  //getObj(f_input);
 
   // EFFICY
   TGraphErrors* gf_efficy_sig = (TGraphErrors*)f_input -> Get("gf_efficy_TISR3PI_SIG");
@@ -127,7 +93,7 @@ int plot_efficy() {
   
     }
 
-    cout << "point " << i << ", mass = " << x_efficy_sig[i] << ", efficy_sig = " << y_efficy_sig[i] << "+/-" << y_efficy_sig_err[i] << ", efficy_ufo = " << y_efficy_ufo[i] << "+/-" << y_efficy_ufo_err[i] << ", efficy ratio (ufo/sig) = " << RATIO[i] << "+/-" << RATIO_ERR[i] << endl;
+    //cout << "point " << i << ", mass = " << x_efficy_sig[i] << ", efficy_sig = " << y_efficy_sig[i] << "+/-" << y_efficy_sig_err[i] << ", efficy_ufo = " << y_efficy_ufo[i] << "+/-" << y_efficy_ufo_err[i] << ", efficy ratio (ufo/sig) = " << RATIO[i] << "+/-" << RATIO_ERR[i] << endl;
     
   }
   
@@ -137,7 +103,7 @@ int plot_efficy() {
   //gf_ratio -> Draw("AP");
 
   // fit gf_ratio to pol2
-  gf_ratio -> Fit("pol2", "S", "", 758, 803);
+  gf_ratio -> Fit("pol2", "S", "", 758, 800);
   TF1 *f_ratio = gf_ratio -> GetFunction("pol2");
   f_ratio -> SetLineWidth(2);
   f_ratio -> SetLineColor(1);
@@ -146,6 +112,68 @@ int plot_efficy() {
   double p0 = f_ratio -> GetParameter(0);
   double p1 = f_ratio -> GetParameter(1);
   double p2 = f_ratio -> GetParameter(2);
+
+  double p0_err = f_ratio -> GetParError(0);
+  double p1_err = f_ratio -> GetParError(1);
+  double p2_err = f_ratio -> GetParError(2);
+
+  cout << "p0 = " << p0 << "+/-" << p0_err << "\n"
+       << "p1 = " << p1 << "+/-" << p1_err << "\n"
+       << "p2 = " << p2 << "+/-" << p2_err << "\n";
+    
+  double PARA_FIT[3] = {p0, p1, p2};
+  double PARA_FIT_ERR[3] = {p0_err, p1_err, p2_err};
+
+  // get corrected ratio
+  double *x_gf = gf_ratio -> GetX();
+  double *y_gf = gf_ratio -> GetY();
+  double *y_gf_err = gf_ratio -> GetEY();
+
+  double x1 = 0., y1 = 0.;
+  double x2 = 0., y2 = 0.;
+
+  gf_ratio -> GetPoint(0, x1, y1);
+  gf_ratio -> GetPoint(1, x2, y2);
+
+  double Delta_m3pi = x2 - x1;
+  double efficy_ratio = 0.;
+  double efficy_ratio_corr = 0., efficy_ratio_corr_err = 0.;
+  double EFFICY_RATIO_CORR[nPoints];
+  double EFFICY_RATIO_CORR_ERR[nPoints];
+  
+  cout << "Delta_m3pi = " << Delta_m3pi << ", nPoints = " << nPoints << endl;
+  
+  for (int i = 0; i < nPoints; i ++) {
+
+    if (x_gf[i] >= mass_min - Delta_m3pi && x_gf[i] <= mass_max) {
+
+      efficy_ratio_corr = f_ratio -> Eval(x_gf[i]);
+      efficy_ratio_corr_err = get_efficy_ratio_err(PARA_FIT, PARA_FIT_ERR, x_gf[i]);
+      
+      //cout << "bin = " << i + 1 << "\t mass = " << x_gf[i] << "\t efficy_ratio = " << y_gf[i] << "+/-" << y_gf_err[i] << endl;
+
+    }
+    else {
+      efficy_ratio_corr = y_gf[i];
+      efficy_ratio_corr_err = y_gf_err[i];
+      
+    }
+
+    EFFICY_RATIO_CORR[i] = efficy_ratio_corr;
+    EFFICY_RATIO_CORR_ERR[i] = efficy_ratio_corr_err;
+
+    cout << "bin = " << i + 1 << "\t mass = " << x_gf[i] << "\t efficy_ratio = " << y_gf[i] << "+/-" << y_gf_err[i] << ", \t efficy_ratio_corr = " << EFFICY_RATIO_CORR[i] << "+/-" << EFFICY_RATIO_CORR_ERR[i] << endl;
+
+  }
+
+  TGraphErrors *gf_ratio_corr = get_graph_syst(x_efficy_sig, EFFICY_RATIO_CORR, x_efficy_sig_err, EFFICY_RATIO_CORR_ERR, nPoints);
+  gf_ratio_corr -> SetLineColor(kRed);
+  gf_ratio_corr -> SetMarkerColor(kRed);
+
+  gf_ratio_corr -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
+  gf_ratio_corr -> Draw("AP");
+  //gf_ratio -> Draw("P");
+  
   
   /*
   const double mass_min = 760., mass_max = 800.;
@@ -165,10 +193,13 @@ int plot_efficy() {
 
   TTree* TRESULT = new TTree("TRESULT", "recreate");
   TRESULT -> SetAutoSave(0);
+
+  /*
   TRESULT -> Branch("Br_p0", &p0, "Br_p0/D");
   TRESULT -> Branch("Br_p1", &p1, "Br_p1/D");
   TRESULT -> Branch("Br_p2", &p2, "Br_p2/D");
-
+  */
+  
   TRESULT -> Fill();
   
   // plot
@@ -178,18 +209,21 @@ int plot_efficy() {
   TArrayD ymax_efficy_sig = get_gf_max(gf_efficy_sig);
   TArrayD ymax_efficy_ufo = get_gf_max(gf_efficy_ufo);
   double ymax_efficy = max(ymax_efficy_sig[0], ymax_efficy_ufo[0]);
-  
-  //const TString note = "Prescaled (trigger+FILFO)";
-  const TString note = "2 tracks+1 #gamma";
+
+  //const TString note = "Prescaled (trigger+FILFO)+KSL";
+  const TString note = "trigger+FILFO+Bkg";
+  //const TString note = "trigger+FILFO";
+  //const TString note = "trigger";
+  //const TString note = "2 tracks+3#gamma";
   
   cout << "ymax_nb_sig = " << ymax_nb_sig[0] << ", ymax_nb_ufo = " << ymax_nb_ufo[0] << "\n"
        << "ymax_efficy_sig = " << ymax_efficy_sig[0] << ", ymax_efficy_ufo = " << ymax_efficy_ufo[0] << ", max_efficy = " << ymax_efficy <<  "\n";  
   
-  TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", ymax_nb_sig[0], note);
+  //TCanvas *cv_nb_sig = plotting_nb("cv_nb_sig", "Number of signal events", gf_nb_sel_sig, gf_nb_evtcls_sig, gf_efficy_sig, "Efficiency (#tilde{#varepsilon}_{sig})", ymax_nb_sig[0], note);
   
-  TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", ymax_nb_ufo[0], note);
+  //TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", ymax_nb_ufo[0], note);
   
-  //TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio, ymax_efficy, note);
+  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio, gf_ratio_corr, ymax_efficy, note);
 
   // Weighted average of gf_ratio
   //TGraphErrors *gf_ratio_omega_region = (TGraphErrors *)cv_efficy -> FindObject("gf_ratio");
@@ -205,9 +239,9 @@ int plot_efficy() {
   
   
   // save
-  //cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
-  cv_nb_sig -> SaveAs(input_folder + "/cv_nb_sig_" + systType + ".pdf");
-  cv_nb_ufo -> SaveAs(input_folder + "/cv_nb_ufo_" + systType + ".pdf");
+  cv_efficy -> SaveAs(input_folder + "/cv_efficy_" + systType + ".pdf");
+  //cv_nb_sig -> SaveAs(input_folder + "/cv_nb_sig_" + systType + ".pdf");
+  //cv_nb_ufo -> SaveAs(input_folder + "/cv_nb_ufo_" + systType + ".pdf");
   
   cout << input_folder << endl;
 

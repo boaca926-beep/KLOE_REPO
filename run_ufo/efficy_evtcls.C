@@ -32,9 +32,10 @@ int efficy_evtcls() {
   TTree *ALLCHAIN_CUT = (TTree*)f_input -> Get(treeType);
 
   int evtcls_indx = -1, trigger_indx = -1, filfo_indx = -1, sel_indx = -1;
+  int filfo28_indx = -1;
   
   double evnt_trigger = 0.; // number of events after the trigger
-  double evnt_filfo = 0.; // number of events after the filfo
+  double evnt_filfo = 0., N28 = 0.; // number of events after the filfo
   double evnt_bkg = 0.; // number of backgroud events
   double evnt_sel = 0.; // number of events after selection
   double evnt_evtcls = 0.; // number of events after event classification
@@ -61,11 +62,13 @@ int efficy_evtcls() {
   
   }
 
+  //ALLCHAIN_CUT -> Print();
+    
   for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow ++) {// loop trees
 	  
     ALLCHAIN_CUT -> GetEntry(irow);
 
-    if (treeType == "TISR3PI_SIG") {
+    if (treeType == "TISR3PI_SIG") {//
       //m3pi = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_7C") -> GetValue(0);
       m3pi_true = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
       m3pi = DetectorEvent(TMath::Abs(m3pi_true));
@@ -76,51 +79,63 @@ int efficy_evtcls() {
     
     trigger_indx = ALLCHAIN_CUT -> GetLeaf("Br_trigger_indx") -> GetValue(0);
     filfo_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo_indx") -> GetValue(0);
+    filfo28_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo28_indx") -> GetValue(0);
     evtcls_indx = ALLCHAIN_CUT -> GetLeaf("Br_evtcls_indx") -> GetValue(0);
     sel_indx = ALLCHAIN_CUT -> GetLeaf("Br_sel_indx") -> GetValue(0);
 
     //cout << sel_indx << endl;
 
-    evnt_sel ++;
+    //if (m3pi > 760 && m3pi < 800) {
+      evnt_sel ++;
     
-    //if (trigger_indx == 0) continue; // trigger
-    evnt_trigger ++;
-    
-    //if (filfo_indx == 0) continue; // filfo
-    evnt_filfo ++;
-    
-    //cout << trigger_indx << " " << filfo_indx << endl;
-    
-    //if (sel_indx == 0) continue; // background rejection
-    evnt_bkg ++;
-    
-    
-    H1DLIST[0] -> Fill(m3pi);
-    
-    if (evtcls_indx == 0) continue; // evnt classification
-    
-    evnt_evtcls ++;
+      if (trigger_indx == 0) continue; // trigger
+      evnt_trigger ++;
 
-    H1DLIST[1] -> Fill(m3pi);
-  
-    //if (evtcls_indx == 0) cout << evtcls_indx << endl;
-    //if (filfo_indx == 0) cout << filfo_indx << endl;
-    //if (trigger_indx == 0) cout << trigger_indx << endl;
-  
-    //cout << m3pi << endl;
+      //if (filfo_indx == 0) continue; // filfo20
+      if (filfo28_indx == 1) {// bit28 on, N28
+	N28 ++;
+	continue; 
+      }
+
+      evnt_filfo ++; // bit28 off, N0
+      
+      //cout << trigger_indx << " " << filfo_indx << endl;
+      //cout << filfo28_indx << endl;
+
+      if (sel_indx == 0) continue; // background rejection
+      evnt_bkg ++;
+      
+      H1DLIST[0] -> Fill(m3pi);
+
+      if (evtcls_indx == 0) continue; // evnt classification 
+      evnt_evtcls ++;
+      
+      H1DLIST[1] -> Fill(m3pi);
+    
+      //if (evtcls_indx == 0) cout << evtcls_indx << endl;
+      //if (filfo_indx == 0) cout << filfo_indx << endl;
+      //if (trigger_indx == 0) cout << trigger_indx << endl;
+    
+      //cout << m3pi << endl;
+
+      //}
     
   }
 
   //h1d_IM3pi -> Draw();
 
   efficy_cut = evnt_evtcls / evnt_bkg;
-
+  //efficy_cut = evnt_bkg / evnt_evtcls;
+  double efficy_filfo = 2 * evnt_filfo / (N28 + 2 * evnt_filfo);
+  double efficy_trigger = evnt_trigger / evnt_sel;
+  
   cout << "evnt_sel = " << evnt_sel << "\n"
        << "evnt_trigger = " << evnt_trigger << "\n"
-       << "evnt_filfo = " << evnt_filfo << "\n"
+       << "evnt_filfo (N0) = " << evnt_filfo << ", N28 = " << N28 << ", N0+N28 = " << evnt_filfo + N28 << ", efficy_filfo = " << efficy_filfo << "\n"
        << "evnt_bkg = " << evnt_bkg << "\n"
        << "evnt_evtcls = " << evnt_evtcls << "\n"
-       << "efficy_cut = " << efficy_cut << endl;
+       << "efficy_cut = " << efficy_cut << "\n"
+       << "efficy_trigger = " << efficy_trigger << "\n";
 
   TRESULT -> Fill();
 
@@ -211,8 +226,8 @@ int efficy_evtcls() {
   */
 
   //gf_efficy -> Draw("AP");
-  gf_nb_sel -> Draw("AP");
-  gf_nb_evtcls -> Draw("P");
+  //gf_nb_sel -> Draw("AP");
+  //gf_nb_evtcls -> Draw("P");
   
   /// save
   TRESULT -> Write();

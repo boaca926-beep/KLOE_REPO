@@ -23,6 +23,7 @@ void MyClass::Main()
   int fiduial_indx = -1;
   int trigger_indx = -1;
   int filfo_indx = -1;
+  int filfo28_indx = -1; 
   int evtcls_indx = -1;
 
   int test_indx = 0;     
@@ -125,6 +126,7 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_trigger_indx", &trigger_indx, "Br_trigger_indx/I");
   ALLCHAIN_CUT.Branch("Br_evtcls_indx", &evtcls_indx, "Br_evtcls_indx/I");
   ALLCHAIN_CUT.Branch("Br_filfo_indx", &filfo_indx, "Br_filfo_indx/I");
+  ALLCHAIN_CUT.Branch("Br_filfo28_indx", &filfo28_indx, "Br_filfo28_indx/I");
   
   //
   //ALLCHAIN_CUT.Branch("Br_Rhov", &Rhov, "Br_Rhov/D");  
@@ -542,11 +544,18 @@ void MyClass::Main()
     //if (IfFilfoed()) continue; // SYST. CHECK, bit 20, standard FILFO cut
     //filfo_indx = 1;
 
-    if (IfFilfoed()) {
+    if (IfFilfoed()) {// bit 20, standard FILFO cut
       filfo_indx = 0;
     }
     else {
       filfo_indx = 1;
+    }
+
+    if (((eclfilfo & ( 1 << 28 )) >> 28) == 1) {// bit 28 on, work also for UFO
+      filfo28_indx = 1;
+    }
+    else {// bit 28 off
+      filfo28_indx = 0;
     }
     
     evnt_filfo ++;

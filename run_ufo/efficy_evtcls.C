@@ -226,8 +226,8 @@ int efficy_evtcls() {
   */
 
   //gf_efficy -> Draw("AP");
-  gf_nb_sel -> Draw("AP");
-  gf_nb_evtcls -> Draw("P");
+  //gf_nb_sel -> Draw("AP");
+  //gf_nb_evtcls -> Draw("P");
   
   /// save
   TRESULT -> Write();

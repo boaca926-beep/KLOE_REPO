@@ -1,6 +1,6 @@
 #!/bin/bash
-#INPATH=/media/bo/Backup/DATA_PEAK/ROOTINPUT #8E97-E8DD Backup
-INPATH=/media/bo/8E97-E8DD/DATA_PEAK/ROOTINPUT
+INPATH=/media/bo/Backup/DATA_PEAK/ROOTINPUT #8E97-E8DD Backup
+#INPATH=/media/bo/8E97-E8DD/DATA_PEAK/ROOTINPUT
 OUTPATH=../path_chain
 
 # create the main folder

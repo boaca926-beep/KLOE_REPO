@@ -775,7 +775,7 @@ void fcn_crx3pi(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t if
       
     }
 
-    N3PI_SMEAR[j -1] = nb_rec_tmp * 0.82; //* EFFICY_RATIO[j - 1];
+    N3PI_SMEAR[j -1] = nb_rec_tmp; //* EFFICY_RATIO[j - 1]; efficy_ratio correction
     N3PI_SMEAR_ERR[j -1] = TMath::Sqrt(nb_rec_tmp_err2_sum);
 
     //cout << N3PI_SMEAR_ERR[j -1] << ", " << TMath::Sqrt(nb_rec_tmp) << endl;

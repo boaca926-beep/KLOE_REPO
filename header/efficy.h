@@ -1,4 +1,4 @@
-const TString inputFile = "../../input_chain_evtcls_TUFO/cut/tree_pre";
+const TString inputFile = "../../input_chain_TUFO/cut/tree_pre";
 const TString outputCut = "../../efficy_evtcls/";
 const TString treeType = "TUFO";
 

@@ -102,8 +102,12 @@ int plot_efficy() {
   gf_ratio -> SetName("gf_ratio");
   //gf_ratio -> Draw("AP");
 
+  TGraphErrors* gf_ratio1 = (TGraphErrors*)gf_ratio -> Clone("gf_ratio1");
+  
   // fit gf_ratio to pol2
-  gf_ratio -> Fit("pol2", "S", "", 758, 800);
+  const double fit_range1 = 758., fit_range2 = 800.;
+
+  gf_ratio -> Fit("pol2", "S", "", fit_range1, fit_range2);
   TF1 *f_ratio = gf_ratio -> GetFunction("pol2");
   f_ratio -> SetLineWidth(2);
   f_ratio -> SetLineColor(1);
@@ -120,9 +124,41 @@ int plot_efficy() {
   cout << "p0 = " << p0 << "+/-" << p0_err << "\n"
        << "p1 = " << p1 << "+/-" << p1_err << "\n"
        << "p2 = " << p2 << "+/-" << p2_err << "\n";
-    
-  double PARA_FIT[3] = {p0, p1, p2};
-  double PARA_FIT_ERR[3] = {p0_err, p1_err, p2_err};
+
+  // fit gf_ratio to pol3
+
+  TGraphErrors* gf_ratio_cloned = (TGraphErrors*)gf_ratio -> Clone("gf_ratio_cloned");
+  
+  gf_ratio_cloned -> Fit("pol3", "S", "", fit_range1, fit_range2);
+  TF1 *f_ratio1 = gf_ratio_cloned -> GetFunction("pol3");
+  f_ratio1 -> SetLineWidth(2);
+  f_ratio1 -> SetLineColor(kRed);
+  f_ratio1 -> SetNpx(5000);
+
+  double p30 = f_ratio1 -> GetParameter(0);
+  double p31 = f_ratio1 -> GetParameter(1);
+  double p32 = f_ratio1 -> GetParameter(2);
+  double p33 = f_ratio1 -> GetParameter(3);
+
+  double p30_err = f_ratio1 -> GetParError(0);
+  double p31_err = f_ratio1 -> GetParError(1);
+  double p32_err = f_ratio1 -> GetParError(2);
+  double p33_err = f_ratio1 -> GetParError(3);
+
+  cout << "p30 = " << p30 << "+/-" << p30_err << "\n"
+       << "p31 = " << p31 << "+/-" << p31_err << "\n"
+       << "p32 = " << p32 << "+/-" << p32_err << "\n"
+       << "p33 = " << p33 << "+/-" << p33_err << "\n";
+
+  /*
+  TCanvas *cv = new TCanvas("cv_title", "cv", 1200, 800);
+  f_ratio -> Draw();
+  f_ratio1 -> Draw("same");
+  */
+  
+  //
+  double PARA_FIT_POL3[4] = {p30, p31, p32, p33};
+  double PARA_FIT_POL3_ERR[4] = {p30_err, p31_err, p32_err, p33_err};
 
   // get corrected ratio
   double *x_gf = gf_ratio -> GetX();
@@ -138,6 +174,7 @@ int plot_efficy() {
   double Delta_m3pi = x2 - x1;
   double efficy_ratio = 0.;
   double efficy_ratio_corr = 0., efficy_ratio_corr_err = 0.;
+  double efficy_ratio_p3 = 0.;
   double EFFICY_RATIO_CORR[nPoints];
   double EFFICY_RATIO_CORR_ERR[nPoints];
   
@@ -147,10 +184,12 @@ int plot_efficy() {
 
     if (x_gf[i] >= mass_min - Delta_m3pi && x_gf[i] <= mass_max) {
 
+      efficy_ratio_p3 = f_ratio1 -> Eval(x_gf[i]);
+	
       efficy_ratio_corr = f_ratio -> Eval(x_gf[i]);
-      efficy_ratio_corr_err = get_efficy_ratio_err(PARA_FIT, PARA_FIT_ERR, x_gf[i]);
+      efficy_ratio_corr_err = TMath::Abs(efficy_ratio_corr - efficy_ratio_p3); //get_efficy_ratio_err(PARA_FIT, PARA_FIT_ERR, x_gf[i]);
       
-      //cout << "bin = " << i + 1 << "\t mass = " << x_gf[i] << "\t efficy_ratio = " << y_gf[i] << "+/-" << y_gf_err[i] << endl;
+      cout << "bin = " << i + 1 << "\t mass = " << x_gf[i] << "\t efficy_ratio = " << y_gf[i] << "+/-" << y_gf_err[i] << "\t efficy_ratio_p3 = " << efficy_ratio_p3 << "\t efficy_ratio_corr = " << efficy_ratio_corr << "+/-" << efficy_ratio_corr_err  << ", efficy_diff = " << efficy_ratio_corr_err << endl;
 
     }
     else {
@@ -162,7 +201,7 @@ int plot_efficy() {
     EFFICY_RATIO_CORR[i] = efficy_ratio_corr;
     EFFICY_RATIO_CORR_ERR[i] = efficy_ratio_corr_err;
 
-    cout << "bin = " << i + 1 << "\t mass = " << x_gf[i] << "\t efficy_ratio = " << y_gf[i] << "+/-" << y_gf_err[i] << ", \t efficy_ratio_corr = " << EFFICY_RATIO_CORR[i] << "+/-" << EFFICY_RATIO_CORR_ERR[i] << endl;
+    //cout << "bin = " << i + 1 << "\t mass = " << x_gf[i] << "\t efficy_ratio = " << y_gf[i] << "+/-" << y_gf_err[i] << ", \t efficy_ratio_corr = " << EFFICY_RATIO_CORR[i] << "+/-" << EFFICY_RATIO_CORR_ERR[i] << endl;
 
   }
 
@@ -170,23 +209,22 @@ int plot_efficy() {
   gf_ratio_corr -> SetLineColor(kRed);
   gf_ratio_corr -> SetMarkerColor(kRed);
 
-  gf_ratio_corr -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
-  gf_ratio_corr -> Draw("AP");
+  //gf_ratio_corr -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
+  //gf_ratio_corr -> Draw("AP");
   //gf_ratio -> Draw("P");
   
   
-  /*
-  const double mass_min = 760., mass_max = 800.;
   
-  gf_efficy_sig -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
-  gf_efficy_sig -> Draw("AP");
+  //const double mass_min = 760., mass_max = 800.;
+  
+  //gf_efficy_sig -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
+  //gf_efficy_sig -> Draw("AP");
 
-  gf_efficy_ufo -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
-  gf_efficy_ufo -> Draw("P");
+  //gf_efficy_ufo -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
+  //gf_efficy_ufo -> Draw("P");
 
-  gf_ratio -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
-  gf_ratio -> Draw("P");
-  */
+  //gf_ratio -> GetXaxis() -> SetRangeUser(mass_min, mass_max);
+  //gf_ratio -> Draw("P");
   
   TFile *f_output = new TFile(input_folder + "/efficy_ratio.root", "update");
   gf_ratio -> Write();
@@ -194,11 +232,10 @@ int plot_efficy() {
   TTree* TRESULT = new TTree("TRESULT", "recreate");
   TRESULT -> SetAutoSave(0);
 
-  /*
+  
   TRESULT -> Branch("Br_p0", &p0, "Br_p0/D");
   TRESULT -> Branch("Br_p1", &p1, "Br_p1/D");
   TRESULT -> Branch("Br_p2", &p2, "Br_p2/D");
-  */
   
   TRESULT -> Fill();
   
@@ -223,7 +260,7 @@ int plot_efficy() {
   
   //TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", ymax_nb_ufo[0], note);
   
-  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio, gf_ratio_corr, ymax_efficy, note);
+  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio1, gf_ratio_corr, ymax_efficy, note);
 
   // Weighted average of gf_ratio
   //TGraphErrors *gf_ratio_omega_region = (TGraphErrors *)cv_efficy -> FindObject("gf_ratio");

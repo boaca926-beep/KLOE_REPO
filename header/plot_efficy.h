@@ -4,7 +4,7 @@ const TString systType = "evtcls";
 const double mass_min = 760., mass_max = 800.;
 cout << "mass_min = " << mass_min << ", mass_max = " << mass_max << endl;
 
-  
+
 TArrayD get_w_ratio(TGraphErrors *gf, const double mass_min, const double mass_max, const double Delta_m3pi) {
 
   // Weighted average of gf
@@ -49,7 +49,7 @@ TArrayD get_w_ratio(TGraphErrors *gf, const double mass_min, const double mass_m
 
 }
 
-TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErrors *gf_sig, TGraphErrors *gf_ufo, TGraphErrors *gf_ratio, const double ymax, const TString Note){
+TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErrors *gf_sig, TGraphErrors *gf_ufo, TGraphErrors *gf_ratio, TGraphErrors *gf_ratio_corr, const double ymax, const TString Note){
 
   double x1 = 0., y1 = 0.;
   double x2 = 0., y2 = 0.;
@@ -71,16 +71,18 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   cout << "w_efficy_ufo" << endl; 
   TArrayD w_efficy_ufo = get_w_ratio(gf_ufo, mass_min, mass_max, Delta_m3pi);
 
-  cout << "ratio average mean = " << w_ratio[0] << "+/-" << w_ratio[1] << endl;
+  cout << "mass range [" << mass_min << ", " << mass_max << "] MeV/c^2\n"
+       << "ratio average mean = " << w_ratio[0] << "+/-" << w_ratio[1] << endl;
   cout << "efficy_sig average mean = " << w_efficy_sig[0] << "+/-" << w_efficy_sig[1] << endl;
   cout << "efficy_ufo average mean = " << w_efficy_ufo[0] << "+/-" << w_efficy_ufo[1] << endl;
-  cout << "w_efficy_ufo[0] / w_efficy_sig[0] = " << w_efficy_ufo[0] / w_efficy_sig[0] << ", total ratio = " << 0.561752 / 0.656811 << endl;
+  cout << "w_efficy_ufo[0] / w_efficy_sig[0] = " << w_efficy_ufo[0] / w_efficy_sig[0] << endl;
+  cout << "Full mass range: ratio = " << 0.561752 / 0.656811 << endl;
   
   TLine *line = new TLine(mass_min - Delta_m3pi / 2., w_ratio[0], mass_max, w_ratio[0]);
   line -> SetLineColor(kRed);
   line -> SetLineWidth(2);
 
-  TPaveText *pt34 = new TPaveText(0.45, 0.85, 0.7, 0.8, "NDC");
+  TPaveText *pt34 = new TPaveText(0.5, 0.85, 0.7, 0.8, "NDC");
   PteAttr(pt34);
   pt34 -> SetTextSize(0.07);
   pt34 -> AddText(Note);
@@ -155,7 +157,9 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ratio -> GetYaxis() -> SetTitleOffset(1.4);
   ////gf_ratio -> GetYaxis() -> SetLabelFont(43); // Absolute front size in pixel (precision 3)
   gf_ratio -> GetYaxis() -> SetLabelSize(0.1);
-  gf_ratio -> GetYaxis() -> SetRangeUser(0.5, 1.2);
+  //gf_ratio -> GetYaxis() -> SetRangeUser(0.5, 1.2);
+  //gf_ratio -> GetYaxis() -> SetRangeUser(0.5, 1.7);
+  gf_ratio -> GetYaxis() -> SetRangeUser(0.9, 1.7);
   
   //gf_ratio -> GetYaxis() -> SetRangeUser(0., gf_ratio -> GetMaximum() * 1.2);
   gf_ratio -> GetYaxis() -> CenterTitle();
@@ -172,6 +176,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ratio -> SetLineWidth(2);
   
   gf_ratio -> Draw("APZ");
+  gf_ratio_corr -> Draw("P");
   //line -> Draw("Same");
   
   p2 -> SetGrid();
@@ -251,7 +256,7 @@ TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *
   const double mass_min = 760., mass_max = 800.;
   cout << "mass_min = " << mass_min << ", mass_max = " << mass_max << endl;
   
-  TPaveText *pt34 = new TPaveText(0.45, 0.85, 0.7, 0.8, "NDC");
+  TPaveText *pt34 = new TPaveText(0.5, 0.85, 0.7, 0.8, "NDC");
   PteAttr(pt34);
   pt34 -> SetTextSize(0.07);
   pt34 -> AddText(Note);
@@ -321,7 +326,8 @@ TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *
   gf_efficy -> GetYaxis() -> SetTitleOffset(1.4);
   ////gf_efficy -> GetYaxis() -> SetLabelFont(43); // Absolute front size in pixel (precision 3)
   gf_efficy -> GetYaxis() -> SetLabelSize(0.1);
-  gf_efficy -> GetYaxis() -> SetRangeUser(0.2, 1);
+  //gf_efficy -> GetYaxis() -> SetRangeUser(0.2, 0.8);
+  gf_efficy -> GetYaxis() -> SetRangeUser(0., 1.);
   
   //gf_efficy -> GetYaxis() -> SetRangeUser(0., gf_efficy -> GetMaximum() * 1.2);
   gf_efficy -> GetYaxis() -> CenterTitle();
@@ -354,3 +360,61 @@ TCanvas *plotting_nb(const TString cv_title, const TString cv_nm, TGraphErrors *
 
 }
 
+double ratioErr(double a, double sigma_a, double b, double sigma_b) {// ratio = a / b
+
+  if (b == 0) {
+
+    cout << "Division by zero!" << endl;
+    return 0;
+
+  }
+
+  double c = a / b;
+  double rela_err = TMath::Sqrt(TMath::Power(sigma_a / a, 2) + TMath::Power(sigma_b / b, 2));
+  double sigma_c = c * rela_err;
+
+  //cout << TMath::Power(sigma_a / a, 2) + TMath::Power(sigma_b / b, 2) << ", a = " << a << ", b = " << b << endl;
+   
+  return sigma_c;
+  
+}
+
+double get_ratio(double a, double b) {// ratio = a / b
+
+  if (b == 0) {
+
+    cout << "Division by zero!" << endl;
+    return 0;
+
+  }
+
+  double c = a / b;
+
+  return c;
+  
+}
+
+double get_efficy_ratio_err(double *PARA, double *PARA_ERR, double x) {
+
+  double ratio_err = 0.;
+  double ratio_err2 = 0.;
+
+  double a_err = PARA_ERR[0];
+  double b_err = PARA_ERR[1];
+  double c_err = PARA_ERR[2];
+  
+  double term1 = TMath::Power(x, 4) * TMath::Power(a_err, 2);
+  double term2 = TMath::Power(x, 2) * TMath::Power(b_err, 2);
+  double term3 = TMath::Power(c_err, 2);
+
+  ratio_err2 = term1 + term2 + term3;
+  ratio_err = TMath::Sqrt(ratio_err2);
+  
+  cout << "a = " << PARA[0] << "+/-" << PARA_ERR[0] << "\n"
+       << "b = " << PARA[1] << "+/-" << PARA_ERR[1] << "\n"
+       << "c = " << PARA[2] << "+/-" << PARA_ERR[2] << "\n"
+       << "x = " << x << "\n"
+       << "ratio_err = " << ratio_err << endl;
+ 
+  return ratio_err;
+}

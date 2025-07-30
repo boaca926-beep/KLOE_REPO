@@ -206,6 +206,7 @@ int plot_efficy() {
   }
 
   TGraphErrors *gf_ratio_corr = get_graph_syst(x_efficy_sig, EFFICY_RATIO_CORR, x_efficy_sig_err, EFFICY_RATIO_CORR_ERR, nPoints);
+  gf_ratio_corr -> SetName("gf_ratio_corr");
   gf_ratio_corr -> SetLineColor(kRed);
   gf_ratio_corr -> SetMarkerColor(kRed);
 
@@ -228,6 +229,8 @@ int plot_efficy() {
   
   TFile *f_output = new TFile(input_folder + "/efficy_ratio.root", "update");
   gf_ratio -> Write();
+  gf_ratio_corr -> Write();
+  
 
   TTree* TRESULT = new TTree("TRESULT", "recreate");
   TRESULT -> SetAutoSave(0);

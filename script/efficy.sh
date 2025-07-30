@@ -138,6 +138,6 @@ echo "void plot_efficy_script() {" > $plot_efficy_script
 echo '  gROOT->ProcessLine(".L ../run_plot/plot_efficy.C");' >> $plot_efficy_script
 echo '  gROOT->ProcessLine("plot_efficy()");' >> $plot_efficy_script
 echo '}' >> $plot_efficy_script
-root -l -n -q -b $plot_efficy_script
+root -l -n -q -b $plot_efficy_script >> ${log_efficy}
 
 rm $plot_efficy_script

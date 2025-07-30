@@ -56,8 +56,8 @@ int omega_fit_efficy(){
   //getObj(f_cut);
   //getObj(f_hist);
   getObj(f_efficy_ratio);
-  TGraphErrors* gf_ratio = (TGraphErrors*)f_efficy_ratio -> Get("gf_ratio");
-  TGraphErrors* gf_efficy_TUFO = (TGraphErrors*)f_efficy_ratio -> Get("gf_efficy_TUFO");
+  TGraphErrors* gf_ratio = (TGraphErrors*)f_efficy_ratio -> Get("gf_ratio_corr");
+  //TGraphErrors* gf_efficy_TUFO = (TGraphErrors*)f_efficy_ratio -> Get("gf_efficy_TUFO");
     
   checkList(HIM3pi_fit);
   checkList(HSIG);
@@ -148,7 +148,6 @@ int omega_fit_efficy(){
   TRESULT -> Branch("Br_m3pi", &m3pi, "Br_m3pi/D");
   TRESULT -> Branch("Br_efficy", &efficy, "Br_efficy/D");
   TRESULT -> Branch("Br_efficy_err", &efficy_err, "Br_efficy_err/D");
-
   TRESULT -> Branch("Br_isrlumi", &isrlumi, "Br_isrlumi/D");
   TRESULT -> Branch("Br_isrlumi_apprx", &isrlumi_apprx, "Br_isrlumi_apprx/D");
   TRESULT -> Branch("Br_nb_isr3pi_obs", &nb_isr3pi_obs, "Br_nb_isr3pi_obs/D");
@@ -166,7 +165,7 @@ int omega_fit_efficy(){
   double *x_efficy_ratio = gf_ratio -> GetX();
   double *y_efficy_ratio = gf_ratio -> GetY();
   double *y_efficy_ratio_err = gf_ratio -> GetEY();
-  double *y_efficy_TUFO_err = gf_efficy_TUFO -> GetEY();
+  //double *y_efficy_TUFO_err = gf_efficy_TUFO -> GetEY();
 
   for (int i = 1; i <= binsize; i ++ ) {
 
@@ -216,9 +215,9 @@ int omega_fit_efficy(){
 
     // efficiency ratio
     efficy_ratio = y_efficy_ratio[i - 1]; 
-    efficy_ratio_err = y_efficy_TUFO_err[i - 1];
+    efficy_ratio_err = y_efficy_ratio_err[i - 1];
     
-    cout << "bin = " << i << ", mass (checked) = " << m3pi << "(" << x_efficy_ratio[i - 1] << "), efficy = " << efficy << "+/-" << efficy_err << ", efficy_ratio = " << efficy_ratio << "+/-" << y_efficy_ratio_err[i - 1] << ", efficy_TUFO_err = " << efficy_ratio_err << endl;
+    cout << "bin = " << i << ", mass (checked) = " << m3pi << "(" << x_efficy_ratio[i - 1] << "), efficy = " << efficy << "+/-" << efficy_err << ", efficy_ratio = " << efficy_ratio << "+/-" << efficy_ratio_err << endl;
   
     // isr lumi
     W0_full = Get_W0_full(&m3pi);

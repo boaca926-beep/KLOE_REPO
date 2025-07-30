@@ -44,6 +44,7 @@ TFile *f_hist = new TFile(outputHist + "hist.root");
 TFile *f_cut = new TFile(outputCut + "tree_pre.root");
 TFile *f_sfw2d = new TFile(outputSfw2D + "sfw2d.root");  
 TFile *f_sfw1d = new TFile(outputSfw1D + "sfw1d.root");  
+TFile *f_efficy_ratio = new TFile(inputEfficyRatio + "efficy_ratio.root");  
 
 TFile *f_out = new TFile(outputOmega + "omega_fit.root", "recreate");
 

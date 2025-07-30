@@ -32,6 +32,7 @@ echo -e 'const TString outputHist = "";' >> $path_header
 echo -e 'const TString outputOmega = "";' >> $path_header
 echo -e 'const TString outputSfw2D = "";' >> $path_header
 echo -e 'const TString outputSfw1D = "";' >> $path_header
+echo -e 'const TString inputEfficyRatio = "../../efficy_evtcls/";' >> $path_header
 echo -e 'const TString exp_type = "'$exp_type'";' >> $path_header
 echo -e "double gsf = $gsf;" >> $path_header
 

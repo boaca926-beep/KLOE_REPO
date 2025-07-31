@@ -56,7 +56,9 @@ int omega_fit_efficy(){
   //getObj(f_cut);
   //getObj(f_hist);
   getObj(f_efficy_ratio);
-  TGraphErrors* gf_ratio = (TGraphErrors*)f_efficy_ratio -> Get("gf_ratio_corr");
+  //TGraphErrors* gf_ratio = (TGraphErrors*)f_efficy_ratio -> Get("gf_ratio_corr");
+  TGraphErrors* gf_ratio = (TGraphErrors*)f_efficy_ratio -> Get("gf_ratio");
+  
   //TGraphErrors* gf_efficy_TUFO = (TGraphErrors*)f_efficy_ratio -> Get("gf_efficy_TUFO");
     
   checkList(HIM3pi_fit);

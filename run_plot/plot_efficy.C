@@ -223,9 +223,9 @@ int plot_efficy() {
 
     if (x_gf[i] >= mass_min - Delta_m3pi && x_gf[i] <= mass_max) {
 
-      efficy_ratio_p3 = f_ratio2 -> Eval(x_gf[i]); //f_ratio1 -> Eval(x_gf[i]);
+      efficy_ratio_p3 = f_ratio1 -> Eval(x_gf[i]); // 3nd poly fit results
 	
-      efficy_ratio_corr = f_ratio -> Eval(x_gf[i]);
+      efficy_ratio_corr = f_ratio -> Eval(x_gf[i]); // 2nd poly fit results
       //efficy_ratio_corr_err = get_efficy_ratio_err(fitResult, x_gf[i]);
       
       efficy_ratio_corr_err = 0.;// TMath::Abs(efficy_ratio_corr - efficy_ratio_p3); //get_efficy_ratio_err(PARA_FIT, PARA_FIT_ERR, x_gf[i]);

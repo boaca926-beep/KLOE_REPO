@@ -15,16 +15,15 @@ int plot_omega_syst() {
   string line;
   int f_indx = 0;
 
-  /*
-  double w_y = 0.;
-  double w_sum = 0.;
-  double wy_sum = 0.;
-  */
+  //double w_y = 0.;
+  //double w_sum = 0.;
+  //double wy_sum = 0.;
   
-  ifstream filelist(syst_path + "path_output.txt"); 
+  ifstream filelist(syst_path + "path_output.txt");
+  cout << syst_path << endl;
   //ifstream filelist("../../result_syst/norm_lumi_nb/path_output.txt");
   //ifstream filelist("../../presel_syst_egammamin/path_output.txt");
-  
+
   //TFile* f_tmp = new TFile("../../presel_syst_egammamin/result0/omega_fit/omegafit.root");
   cout << syst_path + "path_output.txt" << endl;
   
@@ -58,22 +57,20 @@ int plot_omega_syst() {
 	    
 	  }// end tree-loop
 
-	  /*
-	  isr3pi_sfw = OMEGA_PARA[1];
-	  isr3pi_sfw_err = OMEGA_PARA[1];
+	  //isr3pi_sfw = OMEGA_PARA[1];
+	  //isr3pi_sfw_err = OMEGA_PARA[1];
 
-	  omegapi_sfw = OMEGA_PARA[2];
-	  omegapi_sfw_err = OMEGA_PARA[2];
+	  //omegapi_sfw = OMEGA_PARA[2];
+	  //omegapi_sfw_err = OMEGA_PARA[2];
 
-	  etagam_sfw = OMEGA_PARA[3];
-	  etagam_sfw_err = OMEGA_PARA[3];
+	  //etagam_sfw = OMEGA_PARA[3];
+	  //etagam_sfw_err = OMEGA_PARA[3];
 
-	  ksl_sfw = OMEGA_PARA[4];
-	  ksl_sfw_err = OMEGA_PARA[4];
+	  //ksl_sfw = OMEGA_PARA[4];
+	  //ksl_sfw_err = OMEGA_PARA[4];
 
-	  mcrest_sfw = OMEGA_PARA[5];
-	  mcrest_sfw_err = OMEGA_PARA[5];
-	  */
+	  //mcrest_sfw = OMEGA_PARA[5];
+	  //mcrest_sfw_err = OMEGA_PARA[5];
 	  
 	  //<<"\tisr3pi_sfw = "<< isr3pi_sfw << "+/-" << isr3pi_sfw_err << "\n"
 	  //<<"\tomegapi_sfw = "<< omegapi_sfw << "+/-" << omegapi_sfw_err << "\n"
@@ -96,9 +93,7 @@ int plot_omega_syst() {
 	  
 	  //cout << f_indx << ", " << line.data() << ", " << cut_label << " = " << cut_value[0] << ", " << para_label << " = " << YLIST[f_indx] << "+/-" << YLIST_ERR[f_indx] << ", para_indx = " << para_indx << "\n";
 
-	  /*
 	  // normial value
-	  */
 	  
 	  f_indx ++;
 	  
@@ -135,21 +130,20 @@ int plot_omega_syst() {
   // Type II syst. error.
   fill_uncorr(UNCORR_ERR, YLIST, YLIST_ERR, f_indx);
   cout << "norm - 1: " << step1_diff << ", norm + 1: " << step2_diff << endl;
-  /*
-  double syst_err = getmaxoftwo(TMath::Abs(step1_diff), TMath::Abs(step2_diff));
 
-  cout << "TypeII Syst. Err." << endl;
+  //double syst_err = getmaxoftwo(TMath::Abs(step1_diff), TMath::Abs(step2_diff));
+
+  //cout << "TypeII Syst. Err." << endl;
   
-  if (syst_err == TMath::Abs(step1_diff)) {
-    cout << "-1 sigma determines the SYST." << endl;
-    cout << "Syst. Err. = " << syst_err << ", z = " << step1_Z << endl;
-  }
-  else if (syst_err == TMath::Abs(step2_diff)) {
-    cout << "+1 sigma determines the SYST." << endl;
-    cout << "Syst. Err. = " << syst_err << ", z = " << step2_Z << endl;
-  }
-  */
-  
+  //if (syst_err == TMath::Abs(step1_diff)) {
+  //cout << "-1 sigma determines the SYST." << endl;
+  //cout << "Syst. Err. = " << syst_err << ", z = " << step1_Z << endl;
+  //}
+  //else if (syst_err == TMath::Abs(step2_diff)) {
+  //cout << "+1 sigma determines the SYST." << endl;
+  //cout << "Syst. Err. = " << syst_err << ", z = " << step2_Z << endl;
+  //}
+
   // Create graphs
   // gf_syst: variation as function of cut variable, uncorr. errors
   gf_syst = get_graph_syst(XLIST, YLIST, XLIST_ERR, UNCORR_ERR, f_indx);
@@ -264,7 +258,6 @@ int plot_omega_syst() {
   gf_mg1 -> Draw("C3");
   pt -> Draw("Same");
 
-
   // Final syst. err
 
   TFile *f_output = new TFile(outputPlot + para_label + "_" + cut_label + ".root", "recreate");
@@ -275,7 +268,7 @@ int plot_omega_syst() {
   
   TRESULT -> Branch("Br_err_type", &err_type, "Br_err_type/I");
   TRESULT -> Branch("Br_SYST_ERR", &SYST_ERR, "Br_SYST_ERR[2]/D");
-  
+
   if (err_type == 1) {
     SYST_ERR[0] = nega_err;
     SYST_ERR[1] = plus_err;
@@ -304,7 +297,7 @@ int plot_omega_syst() {
 
   TRESULT -> Write();
   f_output -> Close();
-
+  
   return 0;
   
 }

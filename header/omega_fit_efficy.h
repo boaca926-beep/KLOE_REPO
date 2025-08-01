@@ -26,7 +26,9 @@ double hmax = 0.;
 
 double M3PI[list_size]; 
 double EFFICY[list_size]; 
-double EFFICY_ERR[list_size]; 
+double EFFICY_ERR[list_size];
+double RATIO_CORR[list_size]; 
+double RATIO_CORR_ERR[list_size];
 double ISRLUMI[list_size]; 
 double CRX3PI_BW[list_size]; 
 
@@ -652,11 +654,13 @@ void fcn_crx3pi(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t if
     ISRLUMI[counter] = TRESULT -> GetLeaf("Br_isrlumi_apprx") -> GetValue(0);
     CRX3PI_BW[counter] = fun_bw -> Eval(M3PI[counter]);
 
+    RATIO_CORR[counter] = TRESULT -> GetLeaf("Br_efficy_ratio") -> GetValue(0);
+    RATIO_CORR_ERR[counter] = TRESULT -> GetLeaf("Br_efficy_ratio_err") -> GetValue(0);
+    
     // updated from TUFO
     N3PI_OBS[counter] = TRESULT -> GetLeaf("Br_nb_isr3pi_obs") -> GetValue(0);
     N3PI_OBS_ERR[counter] = TRESULT -> GetLeaf("Br_nb_isr3pi_obs_err") -> GetValue(0);
 	       
-    // predicted number of 3pi events after the acceptance correction
     // apply globle scaling factor
     N3PI_PRE[counter] = ISRLUMI[counter] * CRX3PI_BW[counter];
 
@@ -766,15 +770,19 @@ void fcn_crx3pi(Int_t &npar, Double_t *gin, Double_t &f, Double_t *par, Int_t if
       
     }
 
-    N3PI_SMEAR[j -1] = nb_rec_tmp; // efficiency correction
-    N3PI_SMEAR_ERR[j -1] = TMath::Sqrt(nb_rec_tmp_err2_sum);
+    // number of smeared 3pi events after the acceptance correction
+    N3PI_SMEAR[j -1] = nb_rec_tmp * RATIO_CORR[j - 1]; // efficiency correction
+    //N3PI_SMEAR_ERR[j -1] = TMath::Sqrt(nb_rec_tmp_err2_sum);
+    N3PI_SMEAR_ERR[j -1] = TMath::Sqrt(nb_rec_tmp_err2_sum) * (1 + RATIO_CORR_ERR[j - 1]);
 
-    //cout << N3PI_SMEAR_ERR[j -1] << ", " << TMath::Sqrt(nb_rec_tmp) << endl;
+    cout << "rec bin = " << j << ", m3pi = " << hsig_true -> GetBinCenter(j) << ", efficy_ratio = " << RATIO_CORR[j - 1] << "+/-" << RATIO_CORR_ERR[j - 1] << endl;
     
+    //cout << N3PI_SMEAR_ERR[j -1] << ", " << TMath::Sqrt(nb_rec_tmp) << endl;
     
     //cout << "bin indx = " << j << ", N3PI_SMEAR = " << N3PI_SMEAR[j - 1] << " +/- " << N3PI_SMEAR_ERR[j - 1] << "\n";
 
     if (j == bin_indx) {
+      
       //cout << "rec bin = " << j << ", m3pi = " << hsig_true -> GetBinCenter(j) << ", nb_sig = " << nb_sig << "+/-" << nb_sig_err << ", nb_sig_smeared = " << nb_sig_smeared << ", nb_sig_smeared_efficy = " << nb_sig_smeared_efficy << "+/-" << nb_sig_smeared_efficy_err <<  ", nb_sig_true = " << hsig_true -> GetBinContent(j) << ", nb_sig_gen = " << hsig_gen -> GetBinContent(j) << ", N3PI_PRE = " << N3PI_PRE[j - 1] << ", N3PI_SMEAR = " << N3PI_SMEAR[j -1] << "+/-" << N3PI_SMEAR_ERR[j -1] << "\n\n";
       //cout << "rec bin = " << j << ", m3pi = " << hsig_true -> GetBinCenter(j) << ", nb_sig_smeared = " << nb_sig_smeared <<  ", nb_sig_true = " << hsig_true -> GetBinContent(j) << ", nb_sig_gen = " << hsig_gen -> GetBinContent(j) << ", N3PI_PRE = " << N3PI_PRE[j - 1] << ", N3PI_SMEAR = " << N3PI_SMEAR[j -1] << "+/-" << N3PI_SMEAR_ERR[j -1] << "\n\n";
     }

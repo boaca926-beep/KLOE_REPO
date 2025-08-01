@@ -176,7 +176,7 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ratio -> SetLineWidth(2);
   
   gf_ratio -> Draw("APZ");
-  gf_ratio_corr -> Draw("P");
+  //gf_ratio_corr -> Draw("P");
   //line -> Draw("Same");
   
   p2 -> SetGrid();
@@ -394,6 +394,20 @@ double get_ratio(double a, double b) {// ratio = a / b
   
 }
 
+double get_efficy_ratio_err(TFitResultPtr fitResult, double x) {
+
+  double ratio_err = TMath::Sqrt(
+				 TMath::Power(fitResult->ParError(0), 2) +            // p0 error
+				 TMath::Power(x * fitResult->ParError(1), 2) +        // p1 error
+				 TMath::Power(x * x * fitResult->ParError(2), 2)      // p2 error
+);
+  
+  cout << x << ", p0 error = " << fitResult -> ParError(0) << ", p1 error = " << fitResult -> ParError(1) << ", p2 error = " << fitResult -> ParError(2) << ", ratio_err = " << ratio_err << endl;
+  
+  return ratio_err;
+}
+
+/*
 double get_efficy_ratio_err(double *PARA, double *PARA_ERR, double x) {
 
   double ratio_err = 0.;
@@ -418,3 +432,12 @@ double get_efficy_ratio_err(double *PARA, double *PARA_ERR, double x) {
  
   return ratio_err;
 }
+*/
+
+/*
+double sigma_y_approx = sqrt(
+    pow(fitResult->ParError(0), 2) +                     // p0 error
+    pow(x_star * fitResult->ParError(1), 2) +             // p1 error
+    pow(x_star * x_star * fitResult->ParError(2), 2)      // p2 error
+);
+*/

@@ -1,9 +1,9 @@
 const TString syst_path = "../../result_syst/norm_lumi_nb/";
-const TString outputPlot = "../../plot_norm_lumi_nb/";
+const TString outputPlot = "../../plot_results/plot_norm_lumi_nb/";
 
 const TString cut_label = "lumi_nb";
 const TString cut_title = "#DeltaL_{int} [#deltaL_{int}/L_{int}]";
-const int err_type = 2;
+int err_type = 2;
 
 double XLIST[1000], XLIST_ERR[1000];
 double YLIST[1000], YLIST_ERR[1000];
@@ -13,6 +13,7 @@ double SIGMABAND[1000], SIGMABAND_ERR[1000];
 double UNCORR_ERR[1000];
 double X_NORM[1], Y_NORM[1], Z_NORM[1];
 double X_ERR_NORM[1], Y_ERR_NORM[1], Z_ERR_NORM[1];
+double SYST_ERR[2];
 
 TTree* TRESULT = new TTree("TRESULT", "recreate");
   
@@ -44,7 +45,8 @@ int step2_indx = -1;
 
 double step1_diff = 0., step2_diff = 0.;
 double step1_Z = 0., step2_Z = 0.;
-double nega_err = 0., plus_err = 0.;
+//double nega_err = 0., plus_err = 0.;
+
 
 void fill_uncorr(double LIST_TARGET[], double LIST[], double LIST_ERR[], int length) {
 
@@ -219,3 +221,80 @@ double getminoftwo(double a, double b) {
   return min;
   
 }
+
+void get_syst_errII(double err1, double err2){
+
+  double max = getmaxoftwo(err1, err2);
+  double min = getminoftwo(err1, err2);
+  double plus_err = 0., nega_err = 0.;
+
+    
+  if (err1 * err2 < 0.) {
+
+    if (err1 == max) {
+      plus_err = err1;
+      nega_err = err2;
+    }
+    else {
+      plus_err = err2;
+      nega_err = err1;
+    }
+    //cout << max << endl;
+    
+  }
+  else if (err1 * err2 > 0.) {
+
+    //cout << "min = " << min << ", max = " << max << endl;
+    
+    if (err1 < 0) {
+      plus_err = 0.;
+      nega_err = min;
+    }
+    else {
+      plus_err = max;
+      nega_err = 0.;
+    }
+    
+  }
+  else if (err1 == 0. && err2 != 0.) {
+
+    if (err2 > 0.) {
+       plus_err = err2;
+       nega_err = 0.;
+    }
+    else {
+      plus_err = 0.;
+      nega_err = err2;
+    }
+    
+  }
+  else if (err2 == 0. && err1 != 0.) {
+
+    if (err1 > 0.) {
+       plus_err = err1;
+       nega_err = 0.;
+    }
+    else {
+      plus_err = 0.;
+      nega_err = err1;
+    }
+    
+  }
+  else if (err1 == 0. && err2 == 0.) {
+
+    plus_err = 0.;
+    nega_err = 0.;
+    
+  }
+  else {
+    cout << "New case !!!" << endl;
+  }
+  
+  
+  SYST_ERR[0] = nega_err;
+  SYST_ERR[1] = plus_err;
+  
+  
+
+}
+

@@ -24,9 +24,13 @@
 #sample_type="norm"
 #syst_type="fit"
 
-CUT_TYPE=("lumi_nb")
+#CUT_TYPE=("lumi_nb")
+#sample_type="norm"
+#syst_type="lumi"
+
+CUT_TYPE=("angle_cut")
 sample_type="norm"
-syst_type="lumi"
+syst_type="bkg"
 
 
 main_folder="../../SYST/syst_${syst_type}"

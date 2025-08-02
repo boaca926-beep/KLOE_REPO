@@ -89,7 +89,7 @@ echo "void merge_script() {" >> $merge_script
 echo '  gROOT->ProcessLine(".L ../run_plot/mergePlots.C");' >> $merge_script
 echo '  gROOT->ProcessLine("mergePlots()");' >> $merge_script
 echo '}' >> $merge_script
-#root -l -n -q -b $merge_script
+root -l -n -q -b $merge_script
 
 rm $merge_script
 

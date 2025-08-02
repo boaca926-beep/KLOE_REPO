@@ -8,9 +8,9 @@
 #
 
 
-CUT_TYPE=("egammamin" "nb_sigma_T_clust")
-sample_type="preselect_syst"
-syst_type="presel"
+#CUT_TYPE=("egammamin" "nb_sigma_T_clust")
+#sample_type="preselect_syst"
+#syst_type="presel"
 
 #CUT_TYPE=("chi2_cut" "angle_cut" "deltaE_cut" "beta_cut")
 #sample_type="norm"
@@ -24,9 +24,9 @@ syst_type="presel"
 #sample_type="norm"
 #syst_type="fit"
 
-#CUT_TYPE=("lumi_nb")
-#sample_type="norm"
-#syst_type="lumi"
+CUT_TYPE=("lumi_nb")
+sample_type="norm"
+syst_type="lumi"
 
 
 main_folder="../../SYST/syst_${syst_type}"

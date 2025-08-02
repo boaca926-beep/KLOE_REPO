@@ -1,8 +1,16 @@
 #!/bin/bash
 
-log_syst_summary=../header/log_syst_summary.txt
-echo "" > $log_syst_summary
-#touch $log_syst_summary
+#main_folder="../../SYST"
+log_syst_summary=../../SYST/log_syst_summary.txt
+
+if [[ -e "$log_syst_summary" ]]; then
+    echo update $log_syst_summary
+    rm -rf $log_syst_summary
+else
+    echo "" > $log_syst_summary
+    #touch $log_syst_summary
+    #exit 1
+fi
 
 syst_summary_script=syst_summary_script.C
 echo '#include <iostream>' > $syst_summary_script

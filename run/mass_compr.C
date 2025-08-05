@@ -1,0 +1,15 @@
+#include "../header/compr.h"
+
+int mass_compr() {
+
+  gErrorIgnoreLevel = kError;
+  TGaxis::SetMaxDigits(4);
+  //gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+
+  TFile *intree = new TFile(infile_tmp);
+
+
+  return 0;
+  
+}

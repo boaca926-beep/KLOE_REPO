@@ -1,6 +1,7 @@
 #!/bin/bash
 INPATH=/media/bo/Backup/DATA_PEAK/ROOTINPUT #8E97-E8DD Backup
 #INPATH=/media/bo/8E97-E8DD/DATA_PEAK/ROOTINPUT #8E97-E8DD Backup
+
 OUTPATH=../path_norm
 
 # create the main folder

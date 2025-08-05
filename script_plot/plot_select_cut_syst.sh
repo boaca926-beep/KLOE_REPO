@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# background rejecion 0: chi2; 1: angle_cut; 2: deltaE; 3: beta
+# background rejecion 0: chi2; 1: angle; 2: deltaE; 3: beta
 # fit 4: mass_sigma_nb; 6: fit_range
 # normalzation 5: sfw2d_sigma_nb
 # luminosity 7: lumi_nb
 
-cut_indx=7
+cut_indx=3
 cut_type=select_cut 
 
 ## Initialization
@@ -19,8 +19,8 @@ err_type=${ERR_TYPE[$cut_indx]}
 echo "cut_label=${cut_label}; cut_title=${cut_title}; err_type=$err_type"
 
 sample_type=norm # mini norm
-syst_path=../../result_syst/${sample_type}_${cut_label}/
-#syst_path=../../select_cut_syst_${sample_type}_TDATA_${cut_label}/
+#syst_path=../../result_syst/${sample_type}_${cut_label}/
+syst_path=../../select_cut_syst_${sample_type}_TDATA_${cut_label}/
 
 if [[ -d "$syst_path" ]]; then
     ls $syst_path
@@ -89,7 +89,7 @@ echo "void merge_script() {" >> $merge_script
 echo '  gROOT->ProcessLine(".L ../run_plot/mergePlots.C");' >> $merge_script
 echo '  gROOT->ProcessLine("mergePlots()");' >> $merge_script
 echo '}' >> $merge_script
-#root -l -n -q -b $merge_script
+root -l -n -q -b $merge_script
 
 rm $merge_script
 

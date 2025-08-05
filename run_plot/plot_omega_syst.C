@@ -1,4 +1,4 @@
-#include "../header/path.h"
+//#include "../header/path.h"
 #include "../header/sm_para.h"
 #include "../header/plot_omega_syst.h"
 #include "../header/method.h"

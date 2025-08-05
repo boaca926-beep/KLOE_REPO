@@ -1,13 +1,12 @@
 #include "../header/syst_summary.h"
-//#include "width_summary.h"
-//#include "bb_summary.h"
-
+//#include "../header/width_summary.h"
+//#include "../header/bb_summary.h"
+#include "../header/mass_summary.h"
 
 int syst_summary() {
 
   cout << "Total systematic uncertainty" << endl;
   
-  /*
   // comment part
   double systerr_plus=0., systerr_plus_sq_sum = 0.;
   double systerr_neg=0., systerr_neg_sq_sum = 0.;
@@ -33,7 +32,6 @@ int syst_summary() {
   cout << "\nPara. " << para_nm << " = " << value_nomi << "\n"
        << "Stat. Err. = +/-" << error_stat << "\n"
        << "Syst. Err. = (+" << Form("%.2f", systerr_plus) << ", -" << Form("%.2f", systerr_neg) << ")" << endl;
-  */
-
+  
   return 0;
 }

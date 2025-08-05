@@ -17,10 +17,10 @@ double chi2_sum_f2 = 0., Lumi_int_fit_f2 = 0.;
 
 int ndf_f1 = 0, ndf_f2 = 0;
 
-const TString file_type1 = "vmd_norm";
+const TString file_type1 = "isrlumi_norm";
 const TString file_type2 = "norm";
 
-const TString legend_type1 = "VMD";
-const TString legend_type2 = "BW";
+const TString legend_type1 = "Exact";
+const TString legend_type2 = "Approx";
 
 const TString outputFolder = "../../plot_models_compr/";

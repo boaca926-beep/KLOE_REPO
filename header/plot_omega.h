@@ -1,5 +1,5 @@
-const TString input_file = "../../input_efficy_norm_TDATA/omega_fit/omega_fit.root";
-const TString file_type = "efficy_norm";
+const TString input_file = "../../input_isrlumi_norm_TDATA/omega_fit/omega_fit.root";
+const TString file_type = "isrlumi_norm";
 const TString outputPlot = "../../plot_omega/";
 
 

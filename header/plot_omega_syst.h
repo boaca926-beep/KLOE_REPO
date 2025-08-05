@@ -1,8 +1,8 @@
-const TString syst_path = "../../result_syst/norm_lumi_nb/";
-const TString outputPlot = "../../plot_results/plot_norm_lumi_nb/";
+const TString syst_path = "../../presel_syst_nb_sigma_T_clust/";
+const TString outputPlot = "../../plot_results/plot_preselect_syst_nb_sigma_T_clust/";
 
-const TString cut_label = "lumi_nb";
-const TString cut_title = "#DeltaL_{int} [#deltaL_{int}/L_{int}]";
+const TString cut_label = "nb_sigma_T_clust";
+const TString cut_title = "n [#sigma_{t}] [ps]";
 int err_type = 2;
 
 double XLIST[1000], XLIST_ERR[1000];
@@ -19,7 +19,7 @@ TTree* TRESULT = new TTree("TRESULT", "recreate");
   
 const int para_indx = 2;
 const TString para_label = "BB";
-const TString para_title = "B_{ee}B_{3#pi}";
+const TString para_title = "B_{ee}B_{3#pi} scaling factor";
 const TString para_unit = "";
 
 TGraphErrors *gf_syst = new TGraphErrors();

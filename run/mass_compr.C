@@ -44,10 +44,10 @@ int mass_compr(){
   const double XLIST_EXP1_ERR[1] = {0};
 
   // KLOE ISR (this work)
-  const double mass2 = 782.73;
-  const double mass2_err = 0.04;
+  const double mass2 = 782.730;
+  const double mass2_err = 0.0398315;
   const double mass2_syst_err_plus = 0.05;
-  const double mass2_syst_err_minus = 0.03;
+  const double mass2_syst_err_minus = 0.07;
 
   double mass2_exl = 0.; // lower error for x
   double mass2_exh = 0.; // higher error for x

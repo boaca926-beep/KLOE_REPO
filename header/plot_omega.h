@@ -1,5 +1,5 @@
-const TString input_file = "../../input_efficy_norm_TDATA/omega_fit/omega_fit.root";
-const TString file_type = "efficy_norm";
+const TString input_file = "../../input_norm_TDATA/omega_fit/omega_fit.root";
+const TString file_type = "norm";
 const TString outputPlot = "../../plot_omega/";
 
 
@@ -226,7 +226,7 @@ void plot_fit() {
   TPaveText *pt4 = new TPaveText(0.65, 0.72, 0.85, 0.68, "NDC");
   TPaveText *pt5 = new TPaveText(0.65, 0.60, 0.85, 0.61, "NDC");
   
-  PteAttr(pt1); pt1 -> SetTextSize(0.05);
+  PteAttr(pt1); pt1 -> SetTextSize(0.05); 
   PteAttr(pt2); pt2 -> SetTextSize(0.05);
   PteAttr(pt3); pt3 -> SetTextSize(0.05);
   PteAttr(pt4); pt4 -> SetTextSize(0.05);

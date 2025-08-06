@@ -1,2 +1,2 @@
-const TString input_folder = "../../SYST_BKG_REJ/BB";
+const TString input_folder = "../../SYST/syst_presel/BB";
 const TString para_label = "BB";

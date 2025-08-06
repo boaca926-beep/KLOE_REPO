@@ -1,0 +1,26 @@
+Fit results
+
+Processing fit_script.C...
+Getting input file from /media/bo/8E97-E8DD/KLOE_OUTPUT/output_vmd/crx3pi0.root
+Lumi. int [%] = 100
+input file = /media/bo/8E97-E8DD/KLOE_OUTPUT/output_vmd/crx3pi0.root
+isr3pi_sfw1d = 0.0422997
+1n3pi obs. = 1531.29+/-157.839, n3pi diff. = 50.7963+/-157.839
+2n3pi obs. = 2256.53+/-158.968, n3pi diff. = 313.436+/-158.968
+3n3pi obs. = 2658.61+/-162.48, n3pi diff. = 107.136+/-162.48
+4n3pi obs. = 3809.95+/-163.844, n3pi diff. = 293.999+/-163.844
+5n3pi obs. = 5201.69+/-168.178, n3pi diff. = 38.1488+/-168.178
+6n3pi obs. = 7774.4+/-174.988, n3pi diff. = -142.441+/-174.988
+7n3pi obs. = 11647+/-187.123, n3pi diff. = -278.006+/-187.123
+8n3pi obs. = 15993.7+/-199.377, n3pi diff. = 121.881+/-199.377
+9n3pi obs. = 17488.6+/-203.449, n3pi diff. = 177.198+/-203.449
+10n3pi obs. = 14977.9+/-198.577, n3pi diff. = -134.899+/-198.577
+11n3pi obs. = 11036.1+/-189.797, n3pi diff. = -45.6321+/-189.797
+12n3pi obs. = 7612.66+/-182.726, n3pi diff. = 131.167+/-182.726
+13n3pi obs. = 5343.03+/-178.123, n3pi diff. = 184.855+/-178.123
+14n3pi obs. = 3484.86+/-180.268, n3pi diff. = -286.672+/-180.268
+15n3pi obs. = 2433.58+/-181.285, n3pi diff. = -440.46+/-181.285
+chi2_sum = 22.2431, ndf = 12, chi2_sum / ndf = 1.85359
+fit_indx = 15
+prob = 0.0348838
+0.049098

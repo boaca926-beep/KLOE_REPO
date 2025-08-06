@@ -1,5 +1,6 @@
 const TString input_file = "../../input_norm_TDATA/omega_fit/omega_fit.root";
 const TString file_type = "norm";
+
 const TString outputPlot = "../../plot_omega/";
 
 

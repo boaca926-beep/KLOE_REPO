@@ -1,0 +1,5 @@
+const TString file_type = "norm";
+
+const TString infile_tmp = "/media/bo/8E97-E8DD/KLOE_OUTPUT/output_" + file_type + "/crx3pi0.root";
+
+const TString outputFile = "../../results_compr";

@@ -16,17 +16,27 @@ ls ${compr_path}
 path_header=../header/compr.h
 sed -i 's|\(const TString outputFile =\)\(.*\)|\1 "'"${compr_path}"'";|' "$path_header"
 
-compr_script=compr_script.C
-echo '#include <iostream>' > $compr_script
-echo "void compr_script() {" >> $compr_script
-echo '  gROOT->ProcessLine(".L ../run/mass_compr.C");' >> $compr_script
-echo '  gROOT->ProcessLine("mass_compr()");' >> $compr_script
+mass_script=mass_script.C
+echo '#include <iostream>' > $mass_script
+echo "void mass_script() {" >> $mass_script
+echo '  gROOT->ProcessLine(".L ../run/mass_compr.C");' >> $mass_script
+echo '  gROOT->ProcessLine("mass_compr()");' >> $mass_script
 
-#echo '  gROOT->ProcessLine(".L width_compr_new.C");' >> $compr_script
-#echo "  gROOT->ProcessLine(width_compr_new());" >> $compr_script
+#echo '  gROOT->ProcessLine(".L width_mass_new.C");' >> $mass_script
+#echo '  gROOT->ProcessLine("width_compr()");' >> $mass_script
 
-#echo '  gROOT->ProcessLine(".L branch_compr_new.C");' >> $compr_script
-#echo "  gROOT->ProcessLine(branch_compr_new());" >> $compr_script
-echo '}' >> $compr_script
-root -l -n -q -b $compr_script
-rm $compr_script
+#echo '  gROOT->ProcessLine(".L ../run/branch_compr.C");' >> $mass_script
+#echo '  gROOT->ProcessLine("branch_compr()");' >> $mass_script
+echo '}' >> $mass_script
+root -l -n -q -b $mass_script
+
+branch_script=branch_script.C
+echo '#include <iostream>' > $branch_script
+echo "void branch_script() {" >> $branch_script
+echo '  gROOT->ProcessLine(".L ../run/branch_compr.C");' >> $branch_script
+echo '  gROOT->ProcessLine("branch_compr()");' >> $branch_script
+echo '}' >> $branch_script
+root -l -n -q -b $branch_script
+
+rm $mass_script
+rm $branch_script

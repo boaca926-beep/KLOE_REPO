@@ -1,7 +1,7 @@
 #!/bin/bash
 
 sample_size=norm # norm; small; mini
-vari_indx=3 # Variable index: 0: egammamin 1: Zvmax 2: Rhovmax 3: nb_sigma_T_clust
+vari_indx=0 # Variable index: 0: egammamin 1: Zvmax 2: Rhovmax 3: nb_sigma_T_clust
 step_nb=1 # Number of variations (one side)
 
 exp_type=TDATA # TDATA 

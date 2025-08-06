@@ -4,11 +4,11 @@
 #FILE_TYPE=("vmd_mini" "mini")
 #FILE_TYPE=("norm" "vmd_norm" "isrlumi_norm")
 #FILE_TYPE=("chain")
-#FILE_TYPE=("norm")
+FILE_TYPE=("norm")
 #FILE_TYPE=("mini")
 #FILE_TYPE=("vertex")
 #FILE_TYPE=("isrlumi_norm" "norm")
-FILE_TYPE=("vmd_norm" "norm" "efficy_norm" "isrlumi_norm")
+#FILE_TYPE=("vmd_norm" "norm" "efficy_norm" "isrlumi_norm")
 
 #sample_size="mini"
 file_type1=${FILE_TYPE[0]}

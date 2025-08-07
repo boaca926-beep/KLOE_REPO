@@ -1,8 +1,7 @@
-#include "../plot.h"
-#include "compr.h"
-#include "../crx3pi/crx3pi.h"
+#include "../header/plot.h"
+#include "../header/compr.h"
 
-int branch_compr_new(){
+int branch_compr(){
 
   gErrorIgnoreLevel = kError;
   TGaxis::SetMaxDigits(4);
@@ -30,10 +29,10 @@ int branch_compr_new(){
   }
 
   // KLOE ISR (this work)
-  const double branch1 = 6.38;
+  const double branch1 = 5.47389;
   const double branch1_err = 0.06;
-  const double branch1_syst_err_plus = 0.13;
-  const double branch1_syst_err_minus = 0.12;
+  const double branch1_syst_err_plus = 0.11;
+  const double branch1_syst_err_minus = 0.08;
 
   double branch1_exl = 0.; // lower error for x
   double branch1_exh = 0.; // higher error for x
@@ -209,7 +208,7 @@ int branch_compr_new(){
   gf_label -> GetXaxis() -> SetLabelSize(0.06);
   gf_label -> GetXaxis() -> SetLabelOffset(0.01);
   gf_label -> GetYaxis() -> SetNdivisions(512);
-  gf_label -> GetYaxis() -> SetRangeUser(BRANCH_BAND[0] - 5. * band_limit, BRANCH_BAND[0] + 8. * band_limit);
+  gf_label -> GetYaxis() -> SetRangeUser(BRANCH_BAND[0] - 8. * band_limit, BRANCH_BAND[0] + 8. * band_limit);
   gf_label -> GetYaxis() -> SetTitleOffset(.9);
   gf_label -> GetYaxis() -> SetTitle("B(e^{+}e^{-}#rightarrow#omega)B(#omega#rightarrow#pi^{+}#pi^{-}#pi^{0}) [10^{-5}]");
   gf_label -> GetYaxis() -> CenterTitle();

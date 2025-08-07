@@ -89,7 +89,7 @@ int mergePlots() {
       //gf_mg1 -> Draw("C3");
       //pt -> Draw("Same");
 
-      const int list_size = gf_Z -> GetN();
+      const int list_size = 3; //gf_Z -> GetN();
       const double bar_width = 0.1 * (gf_Z -> GetX()[1] - gf_Z -> GetX()[0]);
       double XC[list_size]; // X centers
       double YH[list_size]; // Y height

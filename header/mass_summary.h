@@ -1,7 +1,7 @@
 // width
 const int list_size = 5;
 const TString para_nm = "mass_omega";
-const double value_nomi = 782.730; // nominal value
+const double value_nomi = 782.730; // nominal value (efficiency corrected)
 const double error_stat = 0.0398315; // statistical error
   
 const TString CUT_NM[list_size] = {"presel",

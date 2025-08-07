@@ -1,8 +1,8 @@
-const TString syst_path = "../../presel_syst_nb_sigma_T_clust/";
-const TString outputPlot = "../../plot_results/plot_preselect_syst_nb_sigma_T_clust/";
+const TString syst_path = "../../presel_syst_egammamin/";
+const TString outputPlot = "../../plot_results/plot_preselect_syst_egammamin/";
 
-const TString cut_label = "nb_sigma_T_clust";
-const TString cut_title = "n [#sigma_{t}] [ps]";
+const TString cut_label = "egammamin";
+const TString cut_title = "E^{min}_{clust} [MeV]";
 int err_type = 2;
 
 double XLIST[1000], XLIST_ERR[1000];

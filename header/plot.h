@@ -70,7 +70,7 @@ void PteAttr(TPaveText *pt) {
   pt -> SetTextSize(0.04);
   pt -> SetFillColor(0);
   pt -> SetTextAlign(12);
-
+  pt -> SetBorderSize(0);
 }
 
 void SetPte(TPaveText *pt, TString pt_text) {

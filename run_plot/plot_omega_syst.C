@@ -3,6 +3,7 @@
 #include "../header/plot_omega_syst.h"
 #include "../header/method.h"
 #include "../header/graph.h"
+#include "../header/plot.h"
 
 int plot_omega_syst() {
 
@@ -200,12 +201,10 @@ int plot_omega_syst() {
   cv_Z -> SetBottomMargin(0.15);
 
   TPaveText *pt = new TPaveText(0.4, 0.82, 0.5, 0.86, "NDC");
-  
-  pt -> SetTextSize(0.06);
-  pt -> SetFillColor(0);
-  pt -> SetTextAlign(12);
-  pt -> SetTextColor(kBlack);
 
+  PteAttr(pt);
+  pt -> SetTextSize(0.06); 
+  pt -> SetTextColor(kBlack);
   pt -> AddText(para_title);
 
   gf_Z -> SetMarkerColorAlpha(kWhite, 0);
@@ -214,12 +213,14 @@ int plot_omega_syst() {
   
   //TH1F *hgf_Z = new TH1F("hgf_Z", "Converted Bar Chart", gf_Z -> GetN(), 0, gf_Z -> GetN());
 
-  const int list_size = gf_Z -> GetN();
+  static const int list_size = 3; //gf_Z -> GetN();
+  
   const double bar_width = 0.1 * (gf_Z -> GetX()[1] - gf_Z -> GetX()[0]);
+  cout << "list_size = " << list_size << ", bar_width = " << bar_width << endl;
+
   double XC[list_size]; // X centers
   double YH[list_size]; // Y height
-  cout << "list_size = " << list_size << ", bar_width = " << bar_width << endl;
-  
+
   for (int i = 0; i < gf_Z -> GetN(); i++) {
     XC[i] = gf_Z -> GetX()[i];
     YH[i] = gf_Z -> GetY()[i];

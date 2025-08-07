@@ -1,8 +1,8 @@
 // BB
 const int list_size = 5;
 const TString para_nm = "BB";  
-const double value_nomi = 6.40793; // nominal value
-const double error_stat = 0.07; // statistical error
+const double value_nomi = 5.07; // nominal value (efficiency corrected)
+const double error_stat = 6.99985; // statistical error
 
 const TString CUT_NM[list_size] = {"presel",
 				   "bkg",

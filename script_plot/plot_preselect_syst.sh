@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cut_indx=0
+cut_indx=3
 
 ## Initialization
 CUT_LABEL=("egammamin"

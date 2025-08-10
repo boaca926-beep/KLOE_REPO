@@ -1,5 +1,4 @@
 #!/bin/bash
-
 ## Specify DATA or UFO
 sample_size=norm # norm; small; mini
 sample_path=../path_${sample_size}/ 
@@ -197,7 +196,7 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     tree_cut_script=tree_cut_script.C
     echo '#include <iostream>' > $tree_cut_script
     echo "void tree_cut_script() {" >> $tree_cut_script
-    echo 'gROOT->ProcessLine(".L ../run/tree_cut.C");' >> $tree_cut_script
+    echo 'gROOT->ProcessLine(".L ../run_vertex/tree_cut.C");' >> $tree_cut_script
     echo 'gROOT->ProcessLine("tree_cut()");' >> $tree_cut_script
     echo '}' >> $tree_cut_script
     root -l -n -q -b $tree_cut_script >> ${log_cut}

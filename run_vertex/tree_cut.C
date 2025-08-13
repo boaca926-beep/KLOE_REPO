@@ -142,6 +142,7 @@ int tree_cut(){
 
     if (Eisr > Eprompt_max) {
       Eprompt_max = Eisr;
+      //cout << Eprompt_max << endl;
     }
     
     evnt_tot ++;

@@ -114,26 +114,33 @@ int plot_efficy() {
   //gf_ratio_GeV -> SetName("gf_ratio_GeV");
   //gf_ratio_GeV -> Draw();
   
-  TGraphErrors* gf_ratio1 = (TGraphErrors*)gf_ratio -> Clone("gf_ratio1");
-  TGraphErrors* gf_ratio_cloned1 = (TGraphErrors*)gf_ratio -> Clone("gf_ratio_cloned1");
+  TGraphErrors* gf_ratio_poly2 = (TGraphErrors*)gf_ratio -> Clone("gf_ratio_poly2");
+  TGraphErrors* gf_ratio_linear = (TGraphErrors*)gf_ratio -> Clone("gf_ratio_linear");
+  TGraphErrors* gf_ratio_const = (TGraphErrors*)gf_ratio -> Clone("gf_ratio_const");
   TGraphErrors* gf_ratio_cloned = (TGraphErrors*)gf_ratio -> Clone("gf_ratio_cloned");
-
+  TGraphErrors* gf_ratio_cloned1 = (TGraphErrors*)gf_ratio -> Clone("gf_ratio_cloned1");
+  
   const double fit_range1 = 758., fit_range2 = 800.;
   //const double fit_range1 = 750., fit_range2 = 810.;
   TVirtualFitter::SetDefaultFitter("Minuit2");
 
-  /*
-  // fit gf_ratio_GeV
-  TFitResultPtr fitResult_GeV = gf_ratio_GeV -> Fit("pol2", "FS", "", fit_range1 * 1e-3, fit_range2 * 1e-3);
-  TF1 *f_ratio_GeV = gf_ratio_GeV -> GetFunction("pol2");
-  f_ratio_GeV -> SetLineWidth(2);
-  f_ratio_GeV -> SetLineColor(1);
-  f_ratio_GeV -> SetNpx(5000);
-  */
+  // fit gf_ratio to a const
+  TFitResultPtr fitResult_const = gf_ratio_const -> Fit("pol0", "FS", "", fit_range1, fit_range2);
+  TF1 *f_ratio_const = gf_ratio_const -> GetFunction("pol0");
+  f_ratio_const -> SetLineWidth(2);
+  f_ratio_const -> SetLineColor(1);
+  f_ratio_const -> SetNpx(5000);
+  
+  // fit gf_ratio to a linear
+  TFitResultPtr fitResult_linear = gf_ratio_linear -> Fit("pol1", "FS", "", fit_range1, fit_range2);
+  TF1 *f_ratio_linear = gf_ratio_linear -> GetFunction("pol1");
+  f_ratio_linear -> SetLineWidth(2);
+  f_ratio_linear -> SetLineColor(1);
+  f_ratio_linear -> SetNpx(5000);
   
   // fit gf_ratio to pol2
-  TFitResultPtr fitResult = gf_ratio -> Fit("pol2", "FS", "", fit_range1, fit_range2);
-  TF1 *f_ratio = gf_ratio -> GetFunction("pol2");
+  TFitResultPtr fitResult = gf_ratio_poly2 -> Fit("pol2", "FS", "", fit_range1, fit_range2);
+  TF1 *f_ratio = gf_ratio_poly2 -> GetFunction("pol2");
   f_ratio -> SetLineWidth(2);
   f_ratio -> SetLineColor(1);
   f_ratio -> SetNpx(5000);
@@ -150,7 +157,9 @@ int plot_efficy() {
        << "p1 = " << p1 << "+/-" << p1_err << "\n"
        << "p2 = " << p2 << "+/-" << p2_err << "\n";
 
-  // fit gf_ratio to a linear
+  
+  
+  /*
   // Define the sine function
   TF1 *f_sine = new TF1("f_sine", "[0]*sin([1]*x + [2]) + [3]", fit_range1, fit_range2);
   TF1 *f_cos = new TF1("f_cos", "[0]*cos([1]*x + [2]) + [3]", fit_range1, fit_range2);
@@ -164,10 +173,11 @@ int plot_efficy() {
   f_sine->SetParameter(3, 0.0);   // Offset (D)
  
   gf_ratio_cloned1 -> Fit("f_sine", "F", "", fit_range1, fit_range2);
-  TF1 *f_ratio2 = gf_ratio_cloned1 -> GetFunction("f_sine");
+  TF1 *f_ratio_linear = gf_ratio_cloned1 -> GetFunction("f_sine");
+  */
 
+  /*
   // fit gf_ratio to pol3
-
   gf_ratio_cloned -> Fit("pol3", "S", "", fit_range1, fit_range2);
   TF1 *f_ratio1 = gf_ratio_cloned -> GetFunction("pol3");
   f_ratio1 -> SetLineWidth(2);
@@ -188,6 +198,7 @@ int plot_efficy() {
        << "p31 = " << p31 << "+/-" << p31_err << "\n"
        << "p32 = " << p32 << "+/-" << p32_err << "\n"
        << "p33 = " << p33 << "+/-" << p33_err << "\n";
+  */
   
   /*
   TCanvas *cv = new TCanvas("cv_title", "cv", 1200, 800);
@@ -200,15 +211,15 @@ int plot_efficy() {
   //double PARA_FIT_POL3_ERR[4] = {p30_err, p31_err, p32_err, p33_err};
 
   // get corrected ratio
-  double *x_gf = gf_ratio -> GetX();
-  double *y_gf = gf_ratio -> GetY();
-  double *y_gf_err = gf_ratio -> GetEY();
+  double *x_gf = gf_ratio_poly2 -> GetX();
+  double *y_gf = gf_ratio_poly2 -> GetY();
+  double *y_gf_err = gf_ratio_poly2 -> GetEY();
 
   double x1 = 0., y1 = 0.;
   double x2 = 0., y2 = 0.;
 
-  gf_ratio -> GetPoint(0, x1, y1);
-  gf_ratio -> GetPoint(1, x2, y2);
+  gf_ratio_poly2 -> GetPoint(0, x1, y1);
+  gf_ratio_poly2 -> GetPoint(1, x2, y2);
 
   double Delta_m3pi = x2 - x1;
   double efficy_ratio = 0.;
@@ -223,8 +234,9 @@ int plot_efficy() {
 
     if (x_gf[i] >= mass_min - Delta_m3pi && x_gf[i] <= mass_max) {
 
-      efficy_ratio_p3 = f_ratio1 -> Eval(x_gf[i]); // 3nd poly fit results
-	
+      //efficy_ratio_p3 = f_ratio1 -> Eval(x_gf[i]); // 3nd poly fit results
+      efficy_ratio_p3 = 0.;
+      
       efficy_ratio_corr = f_ratio -> Eval(x_gf[i]); // 2nd poly fit results
       //efficy_ratio_corr_err = get_efficy_ratio_err(fitResult, x_gf[i]);
       
@@ -271,7 +283,7 @@ int plot_efficy() {
   //gf_ratio -> Draw("P");
   
   TFile *f_output = new TFile(input_folder + "/efficy_ratio.root", "update");
-  gf_ratio -> Write();
+  gf_ratio_poly2 -> Write();
   gf_ratio_corr -> Write();
   
 
@@ -306,7 +318,7 @@ int plot_efficy() {
   
   //TCanvas *cv_nb_ufo = plotting_nb("cv_nb_ufo", "Number of data events", gf_nb_sel_ufo, gf_nb_evtcls_ufo, gf_efficy_ufo, "Efficiency (#tilde{#varepsilon}_{ufo})", ymax_nb_ufo[0], note);
   
-  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio, gf_ratio_corr, ymax_efficy, note);
+  TCanvas *cv_efficy = plotting_efficy("cv_efficy", "Efficiency Comparsion", gf_efficy_sig, gf_efficy_ufo, gf_ratio_const, gf_ratio_corr, ymax_efficy, note);
 
   // Weighted average of gf_ratio
   //TGraphErrors *gf_ratio_omega_region = (TGraphErrors *)cv_efficy -> FindObject("gf_ratio");

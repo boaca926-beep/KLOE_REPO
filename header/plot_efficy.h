@@ -172,8 +172,8 @@ TCanvas *plotting_efficy(const TString cv_title, const TString cv_nm, TGraphErro
   gf_ratio -> GetXaxis() -> SetTitle("M_{3#pi} [MeV/c^{2}]");
   gf_ratio -> GetXaxis() -> CenterTitle();
 
-  gf_ratio -> SetLineColor(kBlack);
-  gf_ratio -> SetLineWidth(2);
+  //gf_ratio -> SetLineColor(kBlack);
+  //gf_ratio -> SetLineWidth(2);
   
   gf_ratio -> Draw("APZ");
   //gf_ratio_corr -> Draw("P");

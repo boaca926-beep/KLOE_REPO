@@ -1,0 +1,5 @@
+int g2_results(){
+
+  return 0;
+  
+}

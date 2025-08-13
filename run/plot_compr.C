@@ -1,7 +1,7 @@
-#include "compr.h"
-#include "../hist.h"
-#include "../plot.h"
-#include "../fitfun.h"
+#include "../header/bkg_compr.h"
+//#include "../hist.h"
+#include "../header/plot.h"
+//#include "../fitfun.h"
 
 int plot_compr(){
 
@@ -13,7 +13,7 @@ int plot_compr(){
   //gROOT->SetStyle("Plain");
   //gROOT->ForceStyle();
   
-  TFile* intree = new TFile("./output_" + var_nm + "/hist_" + var_nm + ".root");
+  TFile* intree = new TFile(output_folder + "/hist_" + var_nm + ".root");
   
   TIter next_tree(intree -> GetListOfKeys());
 
@@ -288,7 +288,7 @@ int plot_compr(){
   // save
   
   //cv_residul -> SaveAs("./output/cv_residul_" + var_nm + ".pdf");
-  //cv -> SaveAs("./output_" + var_nm + "/cv_compr_" + var_nm + ".pdf");
+  cv -> SaveAs(output_folder + "/cv_compr_" + var_nm + ".pdf");
  
   return 0;
   

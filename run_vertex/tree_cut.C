@@ -26,7 +26,7 @@ int tree_cut(){
   double ppIM = 0.;
   double IM3pi_7C = 0., IM3pi_true = 0.;
   double IM_pi0_7C = 0.;
-  double Eisr = 0.;
+  double Eisr = 0., Epi0_pho1 = 0., Epi0_pho2 = 0.;
   double pull_E1 = 0.;
   double pull_x1 = 0.;
   double pull_y1 = 0.;
@@ -95,6 +95,9 @@ int tree_cut(){
     tree_tmp -> Branch("Br_ppIM", &ppIM, "Br_ppIM/D");
 
     tree_tmp -> Branch("Br_Eisr", &Eisr, "Br_Eisr/D");
+    tree_tmp -> Branch("Br_Epi0_pho1", &Epi0_pho1, "Br_Epi0_pho1/D");
+    tree_tmp -> Branch("Br_Epi0_pho2", &Epi0_pho2, "Br_Epi0_pho2/D");
+    
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
 
@@ -138,12 +141,17 @@ int tree_cut(){
     IM3pi_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_7C") -> GetValue(0);
     IM_pi0_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM_pi0_7C") -> GetValue(0);
     IM3pi_true = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
-    Eisr = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(0);
 
-    if (Eisr > Eprompt_max) {
-      Eprompt_max = Eisr;
-      //cout << Eprompt_max << endl;
-    }
+    Eisr = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(0);
+    Epi0_pho1 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(1);
+    Epi0_pho2 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(3);
+
+    Eprompt_max = 0.;
+    if (Eisr > Eprompt_max) Eprompt_max = Eisr;
+    if (Epi0_pho1 > Eprompt_max) Eprompt_max = Epi0_pho1;
+    if (Epi0_pho2 > Eprompt_max) Eprompt_max = Epi0_pho2;
+
+    //cout << Epi0_pho1 << ", " << Epi0_pho2 << ", " << Eisr << ", Eprompt_max = " << Eprompt_max << endl;
     
     evnt_tot ++;
 

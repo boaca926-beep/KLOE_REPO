@@ -85,13 +85,12 @@ int bkg_compr(){
 	  
   const double evnb_sig_gen = ALLCHAIN_GEN -> GetEntries(); //number of generated signal events
 
-  /*
   // get MC recon.
   //TFile* intree = new TFile("./tree_final.root");
   //TFile* intree = new TFile("/home/bo/Desktop/analysis/crx3pi/output_angle_cut/tree_cut0.root");
   //TFile* intree = new TFile("/media/bo/8E97-E8DD/KLOE_OUTPUT/output_norm/tree_cut0.root");
      
-  TFile* intree = new TFile("/home/bo/Desktop/analysis/crx3pi/output_norm/tree_cut0.root");
+  TFile* intree = new TFile("/home/bo/Desktop/input_vertex_TDATA/cut/tree_pre.root");
   //TFile* intree = new TFile("/home/bo/Desktop/analysis/crx3pi/output_pre/tree_cut0.root");
 
   TIter next_tree(intree -> GetListOfKeys());
@@ -113,8 +112,6 @@ int bkg_compr(){
   }
 
   // check branches
-  //TDATA -> GetListOfLeaves() -> Print();
-
   TTree* TDATA = (TTree*)intree -> Get("TDATA");
   TTree* TEEG = (TTree*)intree -> Get("TEEG");
   TTree* TOMEGAPI = (TTree*)intree -> Get("TOMEGAPI");
@@ -125,11 +122,14 @@ int bkg_compr(){
   TTree* TBKGREST = (TTree*)intree -> Get("TBKGREST");
   TTree* TISR3PI_SIG = (TTree*)intree -> Get("TISR3PI_SIG");
 
+  //TDATA -> GetListOfLeaves() -> Print();
+
+  
   //bkg
   const int TLSize = 9;
   char name[TLSize], title[TLSize];
 
-  TTree * TrList[TLSize] = {TDATA, TEEG, TOMEGAPI, TKSL, TKPM, TRHOPI, TETAGAM, TBKGREST, TISR3PI_SIG};
+  TTree *TrList[TLSize] = {TDATA, TEEG, TOMEGAPI, TKSL, TKPM, TRHOPI, TETAGAM, TBKGREST, TISR3PI_SIG};
   const TString TrNm[TLSize] = {"data", "eeg", "omegapi" , "ksl", "kpm", "rhopi" , "etagam" , "bkgrest", "isr3pi"};
 
   int color_list[TLSize] = {1, 6, 7, 28, 46, 42, 3, 37, 4};
@@ -158,8 +158,8 @@ int bkg_compr(){
     h2d = new TH2D("h2d_discrp_" + TrNm[i], "", 200, 0.25, 0.65, 200, 0.3, 1.);
     h2d_pchi2 = new TH2D("h2d_pchi2_" + TrNm[i], "", 200, 0., 1., 200, 0., 100.);
 
-    //cout << TrNm[i] << endl;
-      
+    cout << TrNm[i] << ", Tree: " << TrList[i] -> GetName() << endl;
+
     for (Int_t irow = 0; irow < TrList[i] -> GetEntries(); irow++) {
       
       TrList[i] -> GetEntry(irow);
@@ -184,7 +184,7 @@ int bkg_compr(){
       IM2pi = TrList[i] -> GetLeaf("Br_ppIM") -> GetValue(0) * 1e-3;
       
       chi2 = TrList[i] -> GetLeaf("Br_lagvalue_min_7C") -> GetValue(0);
-      pvalue = TrList[i] -> GetLeaf("Br_pvalue") -> GetValue(0);
+      //pvalue = TrList[i] -> GetLeaf("Br_pvalue") -> GetValue(0);
 
       h2d -> Fill(IM2pi, betapi0);
       h2d_pchi2 -> Fill(pvalue, chi2);
@@ -213,7 +213,7 @@ int bkg_compr(){
     format_h(h, color_list[i], 2);
     Hlist.Add(h);
 
-    cout << h -> GetName() << endl;
+    //cout << h -> GetName() << endl;
     
     H2dlist.Add(h2d);
     H2dlist.Add(h2d_pchi2);
@@ -382,11 +382,9 @@ int bkg_compr(){
   Hlist.Write();
   H2dlist.Write();
   //hEisr_gen -> Write();
-  hangle_isr_gen -> Write();
+  //hangle_isr_gen -> Write();
     
   f_out -> Close();
-  */
-
   
   return 0;
   

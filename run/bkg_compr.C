@@ -34,7 +34,7 @@ int bkg_compr(){
   //cout << infile_nm << endl;
 
   // get generated signal
-  TFile* intree_gen = new TFile("/home/bo/Desktop/analysis/chains_norm/sig_gen.root");
+  TFile* intree_gen = new TFile("/home/bo/Desktop/input_vertex_TDATA/gen/tree_gen.root");
 
   TIter next_tree1(intree_gen -> GetListOfKeys());
 
@@ -55,12 +55,12 @@ int bkg_compr(){
     
   }
 
+  /*
   double Eisr_gen = 0., angle_isr_gen = 0.;
 
   TH1D* hEisr_gen = new TH1D("hEisr_gen", "", 200, 0., 500.);
   TH1D* hangle_isr_gen = new TH1D("hangle_isr_gen", "", 400, -1., 1.);
 
-  /*
   for (Int_t irow = 0; irow < ALLCHAIN_GEN -> GetEntries(); irow++) {
       
       ALLCHAIN_GEN -> GetEntry(irow);
@@ -81,10 +81,11 @@ int bkg_compr(){
   }
   */
 
-  TTree* ALLCHAIN_GEN = (TTree*)intree_gen -> Get("ALLCHAIN_GEN");
+  TTree* ALLCHAIN_GEN = (TTree*)intree_gen -> Get("TISR3PI_SIG_GEN");
 	  
   const double evnb_sig_gen = ALLCHAIN_GEN -> GetEntries(); //number of generated signal events
 
+  /*
   // get MC recon.
   //TFile* intree = new TFile("./tree_final.root");
   //TFile* intree = new TFile("/home/bo/Desktop/analysis/crx3pi/output_angle_cut/tree_cut0.root");
@@ -380,11 +381,11 @@ int bkg_compr(){
 
   Hlist.Write();
   H2dlist.Write();
-  hEisr_gen -> Write();
+  //hEisr_gen -> Write();
   hangle_isr_gen -> Write();
     
   f_out -> Close();
-
+  */
 
   
   return 0;

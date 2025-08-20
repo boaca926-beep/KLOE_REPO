@@ -66,19 +66,24 @@ int plot_efficy() {
   //gf_nb_evtcls_sig -> Draw("P");
   
   // calcualte ratio
-  int nPoints = gf_efficy_sig -> GetN();
+  //gf_efficy_sig->GetN(); //gf_efficy_sig->GetN();
+  //bins = 242;
+  const int nPoints = 242; //gf_efficy_sig->GetN();
+  
   double *x_efficy_sig = gf_efficy_sig -> GetX();
   double *x_efficy_sig_err = gf_efficy_sig -> GetEX();
 
-  double x_efficy_sig_GeV[nPoints];
-  double x_efficy_sig_err_GeV[nPoints];
+  //double x_efficy_sig_GeV[nPoints]; //  = gf_efficy_sig -> GetX();
+  //double x_efficy_sig_err_GeV[nPoints]; //= gf_efficy_sig -> GetEX();
 
   double *y_efficy_sig = gf_efficy_sig -> GetY();
   double *y_efficy_sig_err = gf_efficy_sig -> GetEY();
   
   double *y_efficy_ufo = gf_efficy_ufo -> GetY();
   double *y_efficy_ufo_err = gf_efficy_ufo -> GetEY();
-  
+
+  //std::vector<double> RATIO(nPoints);
+  //std::vector<double> RATIO_ERR(nPoints);
   double RATIO[nPoints], RATIO_ERR[nPoints];
 
   cout << "nPoints = " << nPoints << endl;
@@ -96,8 +101,8 @@ int plot_efficy() {
   
     }
 
-    x_efficy_sig_GeV[i] = x_efficy_sig[i] * 1e-3;
-    x_efficy_sig_err_GeV[i] = x_efficy_sig_err[i];
+    //x_efficy_sig_GeV[i] = x_efficy_sig[i] * 1e-3;
+    //x_efficy_sig_err_GeV[i] = x_efficy_sig_err[i];
     
     //cout << x_efficy_sig[i] << "+/-" << x_efficy_sig_err[i] << ", in GeV: " << x_efficy_sig_GeV[i] << "+/-" << x_efficy_sig_err_GeV[i] << endl;
     

@@ -147,15 +147,18 @@ int efficy_evtcls() {
   double nb_sel = 0., nb_sel_err = 0.;
   double nb_evtcls = 0., nb_evtcls_err = 0.;
 
+  const int bins = 1000;
+  double M3PI[bins], M3PI_ERR[bins];
+  double EFFICY[bins], EFFICY_ERR[bins];
+  double NB_SEL[bins], NB_SEL_ERR[bins];
+  double NB_EVTCLS[bins], NB_EVTCLS_ERR[bins];
+  
   const int binsize = H1DLIST[0] -> GetNbinsX();
+  cout << binsize << endl;
+
   double xmin = H1DLIST[0] -> GetXaxis() -> GetXmin();
   double xmax = H1DLIST[0] -> GetXaxis() -> GetXmax();
 
-  double M3PI[binsize], M3PI_ERR[binsize];
-  double EFFICY[binsize], EFFICY_ERR[binsize];
-  double NB_SEL[binsize], NB_SEL_ERR[binsize];
-  double NB_EVTCLS[binsize], NB_EVTCLS_ERR[binsize];
-  
   for (int i = 1; i <= binsize; i ++) {
 
     nb_sel = H1DLIST[0] -> GetBinContent(i);
@@ -203,27 +206,25 @@ int efficy_evtcls() {
   TGraphErrors *gf_nb_evtcls = get_graph_syst(M3PI, NB_EVTCLS, M3PI_ERR, NB_EVTCLS_ERR, binsize);
   gf_nb_evtcls -> SetName("gf_nb_evtcls_" + treeType);
 
-  /*
   // plot
-  TCanvas *cv_efficy = new TCanvas("cv_efficy", "cv_efficy", 1000, 800);
-  cv_efficy -> SetLeftMargin(0.1);
+  //TCanvas *cv_efficy = new TCanvas("cv_efficy", "cv_efficy", 1000, 800);
+  //cv_efficy -> SetLeftMargin(0.1);
 
-  gf_efficy -> GetYaxis() -> SetNdivisions(512);
-  gf_efficy -> GetYaxis() -> SetRangeUser(0., 1.);
-  gf_efficy -> GetYaxis() -> SetTitle("#varepsilon");
-  gf_efficy -> GetYaxis() -> SetTitleSize(0.04);
-  gf_efficy -> GetYaxis() -> SetTitleOffset(1.2);
-  gf_efficy -> GetYaxis() -> SetLabelSize(0.035);
-  gf_efficy -> GetYaxis() -> CenterTitle();
+  //gf_efficy -> GetYaxis() -> SetNdivisions(512);
+  //gf_efficy -> GetYaxis() -> SetRangeUser(0., 1.);
+  //gf_efficy -> GetYaxis() -> SetTitle("#varepsilon");
+  //gf_efficy -> GetYaxis() -> SetTitleSize(0.04);
+  //gf_efficy -> GetYaxis() -> SetTitleOffset(1.2);
+  //gf_efficy -> GetYaxis() -> SetLabelSize(0.035);
+  //gf_efficy -> GetYaxis() -> CenterTitle();
   
-  gf_efficy -> GetXaxis() -> SetTitle("M_{3#pi} [MeV/c^{2}]");
-  gf_efficy -> GetXaxis() -> SetTitleOffset(1.1);
-  gf_efficy -> GetXaxis() -> SetTitleSize(0.04);
-  gf_efficy -> GetXaxis() -> SetLabelSize(0.04);
-  gf_efficy -> GetXaxis() -> CenterTitle();
-  //gf_efficy -> GetXaxis() -> SetRangeUser(760., 800.);
+  //gf_efficy -> GetXaxis() -> SetTitle("M_{3#pi} [MeV/c^{2}]");
+  //gf_efficy -> GetXaxis() -> SetTitleOffset(1.1);
+  //gf_efficy -> GetXaxis() -> SetTitleSize(0.04);
+  //gf_efficy -> GetXaxis() -> SetLabelSize(0.04);
+  //gf_efficy -> GetXaxis() -> CenterTitle();
+  ////gf_efficy -> GetXaxis() -> SetRangeUser(760., 800.);
   
-  */
 
   //gf_efficy -> Draw("AP");
   //gf_nb_sel -> Draw("AP");
@@ -238,7 +239,7 @@ int efficy_evtcls() {
   gf_nb_evtcls -> Write();
   
   f_output -> Close();
-
+  
   return 0;
   
 }

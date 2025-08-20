@@ -162,7 +162,7 @@ int plot_compr(){
   hist_eeg_sc -> Draw("SameHist");
   pt34 -> Draw("Same");
   
-  //gPad->SetLogy();
+  gPad->SetLogy();
 
   TLegend *legd_cv = new TLegend(0.75, 0.35, 0.9, 0.9);
   

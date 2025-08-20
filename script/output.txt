@@ -1,24 +1,15 @@
 
-Processing compr_script.C...
-tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
-tree1: classnm = TTree, objnm = TISR3PI_SIG
-tree2: classnm = TTree, objnm = TOMEGAPI
-tree3: classnm = TTree, objnm = TKPM
-tree4: classnm = TTree, objnm = TKSL
-tree5: classnm = TTree, objnm = T3PIGAM
-tree6: classnm = TTree, objnm = TRHOPI
-tree7: classnm = TTree, objnm = TETAGAM
-tree8: classnm = TTree, objnm = TBKGREST
-tree9: classnm = TTree, objnm = TDATA
-tree10: classnm = TTree, objnm = TEEG
-tree11: classnm = TTree, objnm = TUFO
-data, Tree: TDATA
-eeg, Tree: TEEG
-omegapi, Tree: TOMEGAPI
-ksl, Tree: TKSL
-kpm, Tree: TKPM
-rhopi, Tree: TRHOPI
-etagam, Tree: TETAGAM
-bkgrest, Tree: TBKGREST
-isr3pi, Tree: TISR3PI_SIG
+Processing plot_script.C...
+../../bkg_compr_Eprompt_max/hist_Eprompt_max.root
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_Eprompt_max/hist_Eprompt_max.root
+(int) 0
+
+Processing plot_script.C...
+1534
+24187
+pvalue = 3.03017e-06
+ymax = 0.0783121
 (int) 0

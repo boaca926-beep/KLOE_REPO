@@ -72,7 +72,7 @@ for ((i=0;i<${#VAR_NM[@]};++i)); do
     echo '  gROOT->ProcessLine(".L ../run_plot/plot_hist.C");' >> $plot_script
     echo '  gROOT->ProcessLine("plot_hist()");' >> $plot_script
     echo '}' >> $plot_script
-    #root -l -n -q -b $plot_script >> output.txt
+    root -l -n -q -b $plot_script >> output.txt
     rm $plot_script
     
 done

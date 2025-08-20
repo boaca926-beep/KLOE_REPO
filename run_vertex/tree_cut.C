@@ -179,10 +179,11 @@ int tree_cut(){
 
     //// background rejection
 
-    if (lagvalue_min_7C > chi2_cut) continue;
-    else if (deltaE > deltaE_cut) continue;
-    else if (angle_pi0gam12 > angle_cut) continue;
-    else if (betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) continue;
+    if (lagvalue_min_7C > chi2_cut) continue; // reject kaons bkg
+    else if (deltaE > deltaE_cut) continue; // reject rhopi->3pi bkg
+    else if (angle_pi0gam12 > angle_cut) continue; // reject bhabha bkg
+    else if (betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) continue; // reject fake pi0
+    else if (Eprompt_max > 320.) continue; // reject etagam bkg
     //else if (betapi0 < GetFBeta(beta_cut, c0, c1, ppIM)) continue; // radiative background region
     
     //else if (IM3pi_7C > 850. || IM3pi_7C < 650.) continue; // reduce etagam background

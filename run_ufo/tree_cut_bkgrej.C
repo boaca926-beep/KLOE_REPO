@@ -188,9 +188,12 @@ int tree_cut_bkgrej(){
     //cout << fstate_indx << endl;
 
     //// background rejection
+    if (Eprompt_max > 320) continue;
+    
     if (lagvalue_min_7C > chi2_cut || deltaE > deltaE_cut || angle_pi0gam12 > angle_cut || betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) {
       sel_indx = 0;
       //cout << sel_indx << endl;
+      cout << lagvalue_min_7C << endl;
     }
     else {
       sel_indx = 1;

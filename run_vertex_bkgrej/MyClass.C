@@ -410,12 +410,24 @@ void MyClass::Main()
     // CUT0, reject redundant events saved at KLOE
     if(bit_select == 1) continue; 
 
-    if (IfTriggered()) continue; // CUT1, trigger
-    trigger_indx = 1;
-    evnt_trig ++;
+    // CUT1, trigger
+    if (IfTriggered()) {
+      trigger_indx = 0;
+    }
+    else {
+      trigger_indx = 1;
+    }
     
-    if (IfFilfoed()) continue; // CUT2, FILFO
-    filfo_indx = 1;
+    evnt_trig ++;
+
+    // CUT2, FILFO
+    if (IfFilfoed()) {// bit 20, standard FILFO cut
+      filfo_indx = 0;
+    }
+    else {
+      filfo_indx = 1;
+    }
+    
     evnt_filfo ++;
 
     /// Event classification
@@ -436,8 +448,14 @@ void MyClass::Main()
       }
     }
 
-    if (!IfStreamed(pstrnb)) continue; // CUT3, ksl stream
-    evtcls_indx = 1;
+    // CUT3, ksl stream
+    if (!IfStreamed(pstrnb)) {
+      evtcls_indx = 0;
+    }
+    else {
+      evtcls_indx = 1;
+    }
+    
     evnt_str ++;
     //cout << pstrnb << endl;
     
@@ -509,6 +527,7 @@ void MyClass::Main()
 
     }// end loop over tracks connected to vertices
 
+    // CUT4, two tracks
     if (ntv_vtxid != 2 || trkv_charge[0] * trkv_charge[1] >= 0) continue; // select 2 tracks with opposite signs
 
     TVector2 trkv_sel; // initialize selected vertex associated tracks
@@ -546,14 +565,6 @@ void MyClass::Main()
 
     evnt_trk ++; 
 
-    // pca 
-    //trknb_prompt = trkvect(0);
-    //trkindx1 = trkvect(1);
-    //trkindx2 = trkvect(2);
-    //Bool_t ifbroken = IfBroken(trkindx1, trkindx2);
-
-    //if (trknb_prompt != 2 || ifbroken ) continue; // CUT5, two tracks (pca)
-    
     /// Cluster Info
     TVector3 Pos_clust(0., 0., 0.);
     int promptnb = 0;
@@ -630,7 +641,8 @@ void MyClass::Main()
     Esum_clust = Esum_clust_tmp;
     hprompt_distr -> Fill(promptnb);
 
-    if (promptnb != 3 ) continue; // CUT6, 3 prompt photons
+    // CUT4, 3 prompt photons
+    if (promptnb != 3 ) continue; 
     evnt_photon ++;
 
     //nv .vs. iv_ip after the track and prompt photon selection
@@ -1082,7 +1094,7 @@ void MyClass::Main()
     //cout << "trkmass = " << ANGLELIST[0] << ", true = " << angle_pi0gam12_true << endl;
 
     /// fill trees
-    if (lagvalue_min_7C > 100.) continue; // cut 6
+    //if (lagvalue_min_7C > 100.) continue; // cut 6
     evnt_final ++;
 
     //cout << "SELECTED PHOTONS\n";

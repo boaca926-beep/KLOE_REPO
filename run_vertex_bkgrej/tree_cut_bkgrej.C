@@ -7,7 +7,7 @@
 TStopwatch timer;
 timer.Start();
   
-int tree_cut_evtcls(){
+int tree_cut_bkgrej(){
 
   //const TString f_path = folder_in + "/" + data_type + ".root";
   cout << "input path: " << sampleFile << endl;
@@ -40,8 +40,8 @@ int tree_cut_evtcls(){
   int filfo28_indx = -1;
   int evtcls_indx = -1;
   int sel_indx = -1;
-  
-  //int fstate_indx = 0;
+
+  //int fstate_indx = -1;
   int bkg_indx = 0, recon_indx = 0;
 
   double evnt_tot = 0; // total number of events
@@ -50,7 +50,7 @@ int tree_cut_evtcls(){
   double evnt_trigger = 0; // number of events after trigger
   double evnt_filfo = 0; // number of events after fiflo
   double evnt_evtcls = 0; // number of events after event classification
-
+  
   double Eprompt_max = 0.;
   
   TFile *f_output = new TFile(outputCut + "tree_pre.root", "update");
@@ -96,7 +96,7 @@ int tree_cut_evtcls(){
     tree_tmp -> Branch("Br_filfo_indx", &filfo_indx, "Br_filfo_indx/I");
     tree_tmp -> Branch("Br_filfo28_indx", &filfo28_indx, "Br_filfo28_indx/I");
     tree_tmp -> Branch("Br_evtcls_indx", &evtcls_indx, "Br_evtcls_indx/I");
-
+    
     tree_tmp -> Branch("Br_IM3pi_7C", &IM3pi_7C, "Br_IM3pi_7C/D");
     tree_tmp -> Branch("Br_IM3pi_true", &IM3pi_true, "Br_IM3pi_true/D");
     tree_tmp -> Branch("Br_IM_pi0_7C", &IM_pi0_7C, "Br_IM_pi0_7C/D");
@@ -110,14 +110,15 @@ int tree_cut_evtcls(){
     
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
-    tree_tmp -> Branch("Br_Eprompt_max", &Eprompt_max, "Br_Eprompt_max/D");
 
     tree_tmp -> Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
     tree_tmp -> Branch("Br_deltaE", &deltaE, "Br_deltaE/D");
-    //tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
-    //tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
-    
+    tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
+    tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
+    tree_tmp -> Branch("Br_Eprompt_max", &Eprompt_max, "Br_Eprompt_max/D");
+	  
   }
+  
 
   for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow ++) {// loop trees
 	  
@@ -135,11 +136,11 @@ int tree_cut_evtcls(){
     evtcls_indx = ALLCHAIN_CUT -> GetLeaf("Br_evtcls_indx") -> GetValue(0);
     //fstate_indx = ALLCHAIN_CUT -> GetLeaf("Br_fstate_indx") -> GetValue(0);
 
-    sig_type = ALLCHAIN_CUT -> GetLeaf("Br_sig_type") -> GetValue(0);
     bkg_indx = ALLCHAIN_CUT -> GetLeaf("Br_bkg_indx") -> GetValue(0);
     recon_indx = ALLCHAIN_CUT -> GetLeaf("Br_recon_indx") -> GetValue(0);
     
     phid = ALLCHAIN_CUT -> GetLeaf("Br_phid") -> GetValue(0);
+    sig_type = ALLCHAIN_CUT -> GetLeaf("Br_sig_type") -> GetValue(0);
     lagvalue_min_7C = ALLCHAIN_CUT -> GetLeaf("Br_lagvalue_min_7C") -> GetValue(0);
     deltaE = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(2); 
     angle_pi0gam12 = ALLCHAIN_CUT -> GetLeaf("Br_ANGLELIST") -> GetValue(0);
@@ -156,13 +157,13 @@ int tree_cut_evtcls(){
     Epi0_pho1 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(1);
     Epi0_pho2 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(3);
 
-    //cout << Epi0_pho1 << ", " << Epi0_pho2 << endl;
-
     Eprompt_max = 0.;
     if (Eisr > Eprompt_max) Eprompt_max = Eisr;
     if (Epi0_pho1 > Eprompt_max) Eprompt_max = Epi0_pho1;
     if (Epi0_pho2 > Eprompt_max) Eprompt_max = Epi0_pho2;
 
+    //cout << Epi0_pho1 << ", " << Epi0_pho2 << ", " << Eisr << ", Eprompt_max = " << Eprompt_max << endl;
+    
     evnt_tot ++;
 
     //if (evnt_tot > 1e5) break;
@@ -180,9 +181,12 @@ int tree_cut_evtcls(){
     evnt_evtcls ++;
     
     //// background rejection
+    //if (Eprompt_max > 320) continue;
+    
     if (lagvalue_min_7C > chi2_cut || deltaE > deltaE_cut || angle_pi0gam12 > angle_cut || betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) {
       sel_indx = 0;
       //cout << sel_indx << endl;
+      cout << lagvalue_min_7C << endl;
     }
     else {
       sel_indx = 1;
@@ -196,12 +200,14 @@ int tree_cut_evtcls(){
     */
     
     evnt_sel ++;
+    
+    //cout << deltaE << endl;
 
-    // fill trees
     TTList[0]-> Fill(); // data
     TTList[8]-> Fill(); // ufo
     TTList[9]-> Fill(); // eeg
     TTList[10]-> Fill(); // sig
+    
 
     if (phid == 0) {// omegapi
       TTList[1] -> Fill();
@@ -267,36 +273,36 @@ int tree_cut_evtcls(){
     cout << "All trees in KSL saved" << endl;
   }
 
-  // Summary
-  cout << f_output -> GetName() << endl;
+    
   
-  cout << "Cut parameters: \n"
-       << "chi2_cut = " << chi2_cut << "\n"
-       << "angle_cut = " << angle_cut << "\n"
-       << "deltaE_cut = " << deltaE_cut << "\n"
-       << "beta_cut = " << beta_cut << "\n\n";
-
+  // Summary
+  cout << "=========================================\n"
+       << f_output -> GetName() << endl;
+  
   cout << "evnt_tot = " << evnt_tot << "\n"
        << "evnt_trigger = " << evnt_trigger << "\n"
        << "evnt_filfo = " << evnt_filfo << "\n"
        << "evnt_evtcls = " << evnt_evtcls << "\n"
        << "evnt_sel = " << evnt_sel << "\n";
   
-    
-  
+  cout << "Cut parameters: \n"
+       << "chi2_cut = " << chi2_cut << "\n"
+       << "angle_cut = " << angle_cut << "\n"
+       << "deltaE_cut = " << deltaE_cut << "\n"
+       << "beta_cut = " << beta_cut << "\n";
+       
+  /// histos
+
   /// save
   f_output -> Close();
 
-
-  /*
   double realTime = timer.RealTime();  // Wall clock time in seconds
   double expect_time = realTime / 60; // Expected time used in mins
   //cout << "Real time = " << realTime << endl;
-  //cout << "Expected time: " << expect_time << " mins" << endl;
+  cout << "Expected time: " << expect_time << " mins" << endl;
 
   timer.Stop();
   timer.Print();
-  */
   
   return 0;
   

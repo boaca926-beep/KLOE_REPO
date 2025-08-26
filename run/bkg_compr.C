@@ -34,7 +34,8 @@ int bkg_compr(){
   //cout << infile_nm << endl;
 
   // get generated signal
-  TFile* intree_gen = new TFile("/home/bo/Desktop/input_vertex_TDATA/gen/tree_gen.root");
+  //TFile* intree_gen = new TFile("/home/bo/Desktop/input_vertex_TDATA/gen/tree_gen.root");
+  TFile* intree_gen = new TFile("/home/bo/Desktop/input_chain_TUFO/gen/tree_gen.root");
 
   TIter next_tree1(intree_gen -> GetListOfKeys());
 
@@ -90,7 +91,9 @@ int bkg_compr(){
   //TFile* intree = new TFile("/home/bo/Desktop/analysis/crx3pi/output_angle_cut/tree_cut0.root");
   //TFile* intree = new TFile("/media/bo/8E97-E8DD/KLOE_OUTPUT/output_norm/tree_cut0.root");
      
-  TFile* intree = new TFile("/home/bo/Desktop/input_vertex_TDATA/cut/tree_pre.root");
+  //TFile* intree = new TFile("/home/bo/Desktop/input_vertex_TDATA/cut/tree_pre.root");
+  TFile* intree = new TFile("/home/bo/Desktop/input_chain_TUFO/cut/tree_pre.root");
+  
   //TFile* intree = new TFile("/home/bo/Desktop/analysis/crx3pi/output_pre/tree_cut0.root");
 
   TIter next_tree(intree -> GetListOfKeys());

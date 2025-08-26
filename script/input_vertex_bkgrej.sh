@@ -129,18 +129,6 @@ sed -i 's|\(const TString outputSfw1D =\)\(.*\)|\1 "'"${sfw1d_path}"'";|' "$path
 sfw1d_script=sfw1d_script.C
 sed -i 's|\(const TString outputOmega =\)\(.*\)|\1 "'"${omega_path}"'";|' "$path_header"
 
-#omega_header=../run/omega_fit.C
-#sfw1d_header=../run/sfw1d.C
-#sfw2d_header=../run/sfw2d.C
-
-#sed -i 's|\(TString myfile_nm =\)\(.*\)|\1 "'"${sfw2d_path}sfw2d.txt"'";|' "$sfw2d_header"
-
-#sed -i 's|\(TString myfile_nm =\)\(.*\)|\1 "'"${sfw1d_path}sfw1d.txt"'";|' "$sfw1d_header"
-#sed -i "s|\".*/sfw2d.txt\"|\"${sfw2d_path}sfw2d.txt\"|g" "$sfw1d_header"
-
-#sed -i "s|\".*/sfw1d.txt\"|\"${sfw1d_path}sfw1d.txt\"|g" "$omega_header"
-#sed -i "s|\".*/sfw2d.txt\"|\"${sfw2d_path}sfw2d.txt\"|g" "$omega_header"
-
 log_input=${log_path}log_input.txt
 #echo "" > ${log_input}
 touch $log_input
@@ -184,8 +172,8 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     run_script=run_script.C
     
     echo "void run_script() {" > $run_script
-    echo '  gROOT->ProcessLine(".L ../run_vertex/MyClass.C");' >> $run_script
-    echo '  gROOT->ProcessLine(".L ../run/Analys_class.C");' >> $run_script
+    echo '  gROOT->ProcessLine(".L ../run_vertex_bkgrej/MyClass.C");' >> $run_script
+    echo '  gROOT->ProcessLine(".L ../run_vertex_bkgrej/Analys_class.C");' >> $run_script
     echo '  gROOT->ProcessLine("Analys_class(rootFile, sampleFile)");' >> $run_script
     echo '}' >> $run_script
     root -l -n -q -b $run_script >> ${log_input}
@@ -196,8 +184,8 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     tree_cut_script=tree_cut_script.C
     echo '#include <iostream>' > $tree_cut_script
     echo "void tree_cut_script() {" >> $tree_cut_script
-    echo 'gROOT->ProcessLine(".L ../run_vertex/tree_cut.C");' >> $tree_cut_script
-    echo 'gROOT->ProcessLine("tree_cut()");' >> $tree_cut_script
+    echo 'gROOT->ProcessLine(".L ../run_vertex_bkgrej/tree_cut_bkgrej.C");' >> $tree_cut_script
+    echo 'gROOT->ProcessLine("tree_cut_bkgrej()");' >> $tree_cut_script
     echo '}' >> $tree_cut_script
     root -l -n -q -b $tree_cut_script >> ${log_cut}
 done

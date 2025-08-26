@@ -189,15 +189,16 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     echo '  gROOT->ProcessLine("Analys_class(rootFile, sampleFile)");' >> $run_script
     echo '}' >> $run_script
     root -l -n -q -b $run_script >> ${log_input}
-    
     ## Selection cuts
     sed -i 's|\(const TString outputCut =\)\(.*\)|\1 "'"${cut_path}"'";|' "$path_header"
     sed -i 's|\(const TString data_type =\)\(.*\)|\1 "'"${data_type}"'";|' "$path_header"
     tree_cut_script=tree_cut_script.C
     echo '#include <iostream>' > $tree_cut_script
     echo "void tree_cut_script() {" >> $tree_cut_script
-    echo 'gROOT->ProcessLine(".L ../run_vertex/tree_cut.C");' >> $tree_cut_script
-    echo 'gROOT->ProcessLine("tree_cut()");' >> $tree_cut_script
+    #echo 'gROOT->ProcessLine(".L ../run_vertex/tree_cut.C");' >> $tree_cut_script
+    #echo 'gROOT->ProcessLine("tree_cut()");' >> $tree_cut_script
+    echo 'gROOT->ProcessLine(".L ../run_vertex/tree_cut_bkgrej.C");' >> $tree_cut_script
+    echo 'gROOT->ProcessLine("tree_cut_bkgrej()");' >> $tree_cut_script
     echo '}' >> $tree_cut_script
     root -l -n -q -b $tree_cut_script >> ${log_cut}
 done

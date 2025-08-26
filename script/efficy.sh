@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # input folder
-sample_size=chain # norm; chain; small
+sample_size=vertex # norm; chain; small; vertex
 syst_type=evtcls # evtcls, filfo, trigger
-exp_type=TUFO # UFO
+#exp_type=TUFO # UFO
+exp_type=TDATA # TDATA
 input_path=../../input_${sample_size}_${exp_type}
 #echo $input_path
 

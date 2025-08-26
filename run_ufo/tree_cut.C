@@ -19,6 +19,7 @@ int tree_cut(){
   TTree *ALLCHAIN_CUT = (TTree*)f_input -> Get("ALLCHAIN_CUT");
   
   // define variables
+  double Eprompt_max = 0.;
   double lagvalue_min_7C = 0.;
   double deltaE = 0.;
   double angle_pi0gam12 = 0.;  
@@ -100,11 +101,12 @@ int tree_cut(){
     tree_tmp -> Branch("Br_Eisr", &Eisr, "Br_Eisr/D");
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
+    tree_tmp -> Branch("Br_Eprompt_max", &Eprompt_max, "Br_Eprompt_max/D");
 
     tree_tmp -> Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
     tree_tmp -> Branch("Br_deltaE", &deltaE, "Br_deltaE/D");
-    tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
-    tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
+    //tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
+    //tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
     
   }
 
@@ -141,6 +143,8 @@ int tree_cut(){
     IM3pi_true = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
     Eisr = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(0);
 
+    Eprompt_max = 0.;
+    
     evnt_tot ++;
 
     //if (evnt_tot > 1e5) break;

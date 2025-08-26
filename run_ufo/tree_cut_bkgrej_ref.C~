@@ -7,7 +7,7 @@
 TStopwatch timer;
 timer.Start();
   
-int tree_cut(){
+int tree_cut_bkgrej_ref(){
 
   //const TString f_path = folder_in + "/" + data_type + ".root";
   cout << "input path: " << sampleFile << endl;

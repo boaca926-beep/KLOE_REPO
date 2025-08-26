@@ -201,10 +201,12 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     tree_cut_script=tree_cut_script.C
     echo '#include <iostream>' > $tree_cut_script
     echo "void tree_cut_script() {" >> $tree_cut_script
-    #echo 'gROOT->ProcessLine(".L ../run_ufo/tree_cut_'${syst_type}'.C");' >> $tree_cut_script
-    #echo 'gROOT->ProcessLine("tree_cut_'${syst_type}'()");' >> $tree_cut_script
-    echo 'gROOT->ProcessLine(".L ../run_ufo/tree_cut_bkgrej.C");' >> $tree_cut_script
-    echo 'gROOT->ProcessLine("tree_cut_bkgrej()");' >> $tree_cut_script
+    echo 'gROOT->ProcessLine(".L ../run_ufo/tree_cut_'${syst_type}'.C");' >> $tree_cut_script
+    echo 'gROOT->ProcessLine("tree_cut_'${syst_type}'()");' >> $tree_cut_script
+    #echo 'gROOT->ProcessLine(".L ../run_ufo/tree_cut_bkgrej.C");' >> $tree_cut_script
+    #echo 'gROOT->ProcessLine("tree_cut_bkgrej()");' >> $tree_cut_script
+    #echo 'gROOT->ProcessLine(".L ../run_ufo/tree_cut_bkgrej_ref.C");' >> $tree_cut_script
+    #echo 'gROOT->ProcessLine("tree_cut_bkgrej_ref()");' >> $tree_cut_script
     echo '}' >> $tree_cut_script
     root -l -n -q -b $tree_cut_script >> ${log_cut}
 done

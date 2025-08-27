@@ -173,7 +173,7 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     
     echo "void run_script() {" > $run_script
     echo '  gROOT->ProcessLine(".L ../run_vertex_bkgrej/MyClass.C");' >> $run_script
-    echo '  gROOT->ProcessLine(".L ../run_vertex_bkgrej/Analys_class.C");' >> $run_script
+    echo '  gROOT->ProcessLine(".L ../run/Analys_class.C");' >> $run_script
     echo '  gROOT->ProcessLine("Analys_class(rootFile, sampleFile)");' >> $run_script
     echo '}' >> $run_script
     root -l -n -q -b $run_script >> ${log_input}

@@ -7,7 +7,7 @@ sample_path=../path_${sample_size}/
 exp_type=TDATA # DATA
 gsf=1 # DATA
 
-result_path=../../input_vertex_${exp_type}
+result_path=../../input_vertex_${exp_type}_bkgrej
 
 ## Initialize the normial conditions
 # Pre-selection

@@ -7,7 +7,7 @@ sample_path=../path_${sample_size}/
 exp_type=TDATA # DATA
 gsf=1 # DATA
 
-result_path=../../input_vertex_${exp_type}
+result_path=../../input_vertex_${exp_type}_bkgrej
 
 ## Initialize the normial conditions
 # Pre-selection
@@ -173,7 +173,7 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     
     echo "void run_script() {" > $run_script
     echo '  gROOT->ProcessLine(".L ../run_vertex_bkgrej/MyClass.C");' >> $run_script
-    echo '  gROOT->ProcessLine(".L ../run_vertex_bkgrej/Analys_class.C");' >> $run_script
+    echo '  gROOT->ProcessLine(".L ../run/Analys_class.C");' >> $run_script
     echo '  gROOT->ProcessLine("Analys_class(rootFile, sampleFile)");' >> $run_script
     echo '}' >> $run_script
     root -l -n -q -b $run_script >> ${log_input}

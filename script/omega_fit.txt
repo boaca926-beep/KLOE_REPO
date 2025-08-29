@@ -2,10 +2,11 @@
 Fit Results Summary
 gsf = 1, Lumi_int = 1.72447e+06
 xmax = 1020, xmin = 380, binsize = 242
-chi2_sum_crx3pi (FCN) = 20.6043(20.604), ndf = 12, chi2_sum / ndf = 1.71703
-Mass_omega_fit [MeV/c^2] = 782.865 +/- 0.128464
-Gam_omega_fit [MeV/c^2] = 11.1138 +/- 0.412493
-BB_fit[10^5] = 0.423123 +/- 0.0130559
-crx3pi_max [nb] = 101.349
-amin_crx3pi = 20.604
+chi2_sum_crx3pi (FCN) = 14.795(14.7941), ndf = 12, chi2_sum / ndf = 1.23292
+Mass_omega_fit [MeV/c^2] = 782.104 +/- 0.250399
+Gam_omega_fit [MeV/c^2] = 13.9814 +/- 0.835377
+BB_fit[10^5] = 0.0844189 +/- 0.0036884
+crx3pi_max [nb] = 20.2599
+amin_crx3pi = 14.7941
+>>>>>>> 11f2190218f4018640a6305487e7aaecb8c41327
 

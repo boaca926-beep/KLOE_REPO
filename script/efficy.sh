@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # input folder
-sample_size=chain # norm; chain; small; vertex
+sample_size=vertex # norm; chain; small; vertex
 syst_type=evtcls # evtcls, filfo, trigger
 #exp_type=TUFO # UFO
 exp_type=TDATA_bkgrej # TDATA

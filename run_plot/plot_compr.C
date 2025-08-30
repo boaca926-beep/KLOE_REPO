@@ -125,7 +125,7 @@ int plot_compr(){
   hist_data -> GetXaxis() -> SetTitleOffset(1.0);
   hist_data -> GetXaxis() -> SetLabelOffset(0.01);
   hist_data -> GetXaxis() -> SetLabelSize(0.05);//0.03
-  hist_data -> GetXaxis() -> SetRangeUser(0., 40.); //chi2
+  //hist_data -> GetXaxis() -> SetRangeUser(0., 40.); //chi2
   //hist_data -> GetXaxis() -> SetRangeUser(20., 140.); //pi0angle
   //hist_data -> GetXaxis() -> SetRangeUser(0.5, 1.);
   //hist_data -> GetXaxis() -> SetRangeUser(650., 950.); // 3pi mass omega region
@@ -162,7 +162,7 @@ int plot_compr(){
   hist_eeg_sc -> Draw("SameHist");
   pt34 -> Draw("Same");
   
-  gPad->SetLogy();
+  //gPad->SetLogy();
 
   TLegend *legd_cv = new TLegend(0.75, 0.35, 0.9, 0.9);
   

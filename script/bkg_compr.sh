@@ -2,12 +2,48 @@
 
 echo -e "\nPlotting histo comparison ..."
 
-#VAR_NM="lagvalue_min_7C"                                                                                                                                            
-#VAR_SYMB="#chi^{2}_{7C}"                                                                                                                                            
+##################################################################                                                                                                    
+#VAR_NM=("deltaE")
+#VAR_SYMB=("E_{diff}")
+#UNIT=("[MeV]")                                                                                                                                                       
+#XMIN=(-500) #-700, -500
+#XMAX=(50) #-200, 50
+#BINS=(350) #150, 550
+
+##################################################################                                                                                                    
+#VAR_NM=("IM_pi0_7C")
+#VAR_SYMB=("M_{#gamma#gamma}")
+#UNIT=("[MeV\/c^{2}]")                                                                    
+
+#XMIN=(110)
+#XMAX=(200)
+#BINS=(180)
+
+##################################################################                                                                                                    
+#VAR_NM=("angle_pi0gam12")
+#VAR_SYMB=("#angle_{#gamma#gamma}")
+#UNIT=("[#circ]")                                                                         
+
+#XMIN=(0) #20
+#XMAX=(180) #140
+#BINS=(180) #120
+
+##################################################################                        
+#VAR_NM="betapi0"
+#VAR_SYMB="#beta_{#pi}"
+#UNIT=""                                                                                  
+
+#XMIN=0.3
+#XMAX=1
+#BINS=200
+
+##########################################################
+#VAR_NM="lagvalue_min_7C"
+#VAR_SYMB="#chi^{2}_{7C}"
 #UNIT=""
 
-#XMIN=0                                                                                                                                                              
-#XMAX=100                                                                                                                                                            
+#XMIN=0
+#XMAX=100
 #BINS=200
 
 ##########################################################
@@ -54,7 +90,7 @@ for ((i=0;i<${#VAR_NM[@]};++i)); do
     echo '  gROOT->ProcessLine(".L ../run/bkg_compr.C");' >> $compr_script
     echo '  gROOT->ProcessLine("bkg_compr()");' >> $compr_script
     echo '}' >> $compr_script
-    #root -l -n -q -b $compr_script >> output.txt
+    root -l -n -q -b $compr_script >> output.txt
     rm $compr_script
 
     plot_script=plot_script.C

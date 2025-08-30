@@ -72,6 +72,7 @@ int plot_hist(){
   TH1D* hist_bkgsum_sc = (TH1D *)intree -> Get("hist_bkgsum_sc");
   TH1D* hist_isr3pi_sc = (TH1D *)intree -> Get("hist_isr3pi_sc");
   TH1D* hist_etagam_sc = (TH1D *)intree -> Get("hist_etagam_sc");
+  TH1D* hist_omegapi_sc = (TH1D *)intree -> Get("hist_omegapi_sc");
   
   // mcsum 
   TH1D* hist_mcsum_sc = (TH1D*) hist_bkgsum_sc -> Clone();
@@ -143,8 +144,8 @@ int plot_hist(){
   
   //TH1D* hbkg_normed = (TH1D*) hist_eeg_sc -> Clone();
   //TH1D* hbkg_normed = (TH1D*) hist_ksl_sc -> Clone();
-  TH1D* hbkg_normed = (TH1D*) hist_etagam_sc -> Clone();
-  //TH1D* hbkg_normed = (TH1D*) hist_omegapi_sc -> Clone();
+  //TH1D* hbkg_normed = (TH1D*) hist_etagam_sc -> Clone();
+  TH1D* hbkg_normed = (TH1D*) hist_omegapi_sc -> Clone();
   //TH1D* hbkg_normed = (TH1D*) hist_rhopi -> Clone();
 
   TH1D* hsig_normed = (TH1D*) hist_isr3pi_sc -> Clone();
@@ -177,12 +178,12 @@ int plot_hist(){
   arrow.SetFillStyle(1001);
   arrow.SetFillColor(kBlack);
 
-  SetCVAttr(hbkg_normed);
+  SetCVAttr(hsig_normed);
   
   format_h(hist_mcsum_sc, 1, 2);
 
-  hbkg_normed -> Draw("Hist");
-  hsig_normed -> Draw("SameHist");
+  hsig_normed -> Draw("Hist");
+  hbkg_normed -> Draw("SameHist");
   arrow.DrawClone();
   //hist_mcsum_sc -> Draw("SameHist");
   //hist_isr3pi_sc -> Draw("SameHist");
@@ -204,11 +205,11 @@ int plot_hist(){
   //legd_cv -> SetNColumns(2);
 
   //const TString bkg_str = "e^{+}e^{-}#gamma";
-  //const TString bkg_str = "#omega#pi^{0}";
+  const TString bkg_str = "#omega#pi^{0}";
   //const TString bkg_str = "K_{L}K_{S}";
   //const TString bkg_str = "#eta#gamma";
   //const TString bkg_str = "#phi#rightarrow#rho#pi#rightarrow#pi^{+}#pi^{-}#pi^{0}#gamma";
-  const TString bkg_str = "#phi#rightarrow#eta#gamma";
+  //const TString bkg_str = "#phi#rightarrow#eta#gamma";
   //const TString bkg_str = "#rho#pi";
   
   

@@ -47,13 +47,22 @@ echo -e "\nPlotting histo comparison ..."
 #BINS=200
 
 ##########################################################
-VAR_NM=("Eprompt_max")
-VAR_SYMB=("E_{#gamma}^{max}")
+#VAR_NM=("Eprompt_max")
+#VAR_SYMB=("E_{#gamma}^{max}")
+#UNIT=("[MeV]")
+
+#XMIN=(150)
+#XMAX=(450)
+#BINS=(300)
+
+##########################################################
+VAR_NM=("Ephi_miss")
+VAR_SYMB=("E_{#phi}^{miss}")
 UNIT=("[MeV]")
 
-XMIN=(150)
-XMAX=(450)
-BINS=(300)
+XMIN=(-300)
+XMAX=(200)
+BINS=(250)
 
 output_folder="../../bkg_compr_"${VAR_NM[0]}
 

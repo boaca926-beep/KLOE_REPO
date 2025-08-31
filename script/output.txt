@@ -579,3 +579,111 @@ Processing plot_script.C...
 pvalue = 3.03017e-06
 ymax = 0.0352581
 (int) 0
+
+Processing compr_script.C...
+/home/bo/Desktop/input_vertex_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_Eprompt_max/hist_Eprompt_max.root
+(int) 0
+
+Processing plot_script.C...
+1486
+21134
+pvalue = 3.03017e-06
+ymax = 0.0350695
+(int) 0
+
+Processing compr_script.C...
+/home/bo/Desktop/input_vertex_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_Ephi_miss/hist_Ephi_miss.root
+(int) 0
+
+Processing plot_script.C...
+1484
+21012
+pvalue = 3.03017e-06
+ymax = 0.00907223
+(int) 0
+
+Processing compr_script.C...
+/home/bo/Desktop/input_vertex_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_Ephi_miss/hist_Ephi_miss.root
+(int) 0
+
+Processing plot_script.C...
+1484
+21012
+pvalue = 3.03017e-06
+ymax = 0.0180533
+(int) 0

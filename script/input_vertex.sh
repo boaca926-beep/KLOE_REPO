@@ -1,6 +1,6 @@
 #!/bin/bash
 ## Specify DATA or UFO
-sample_size=norm # norm; small; mini; chain
+sample_size=chain # norm; small; mini; chain
 sample_path=../path_${sample_size}/ 
 #sample_path=../../path_${sample_size}/ 
 

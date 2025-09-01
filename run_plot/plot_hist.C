@@ -3,6 +3,15 @@
 //#include "../fitfun.h"
 #include "../header/plot.h"
 
+void SetArrowAttr(TArrow *arrow) {
+
+  arrow -> SetLineWidth(4);
+  arrow -> SetLineColor(1);
+  arrow -> SetFillStyle(1001);
+  arrow -> SetFillColor(kBlack);
+  
+}
+
 void SetCVAttr(TH1D *h1d) {
 
   const double ymax_normed = h1d -> GetMaximum();
@@ -13,7 +22,7 @@ void SetCVAttr(TH1D *h1d) {
   h1d -> GetXaxis() -> SetTitleSize(0.07);
   h1d -> GetXaxis() -> SetTitleOffset(.9);
   h1d -> GetXaxis() -> SetLabelOffset(.01);
-  h1d -> GetXaxis() -> SetLabelSize(0.05);//0.03
+  h1d -> GetXaxis() -> SetLabelSize(0.04);//0.03
   //h1d -> GetXaxis() -> SetRangeUser(110., 450.);
   //h1d -> GetXaxis() -> SetRangeUser(-500., 50.);
   //h1d -> GetXaxis() -> SetRangeUser(20., 180.);
@@ -169,22 +178,23 @@ int plot_hist(){
   cout << "pvalue = " << pvalue << endl;
   
   // arrow
-  const double cut_tmp = 320;
-  //TArrow arrow(cut_tmp, 8e4, cut_tmp, 2e-3, 0.02,"|>");
-  TArrow arrow(cut_tmp, 0.03, cut_tmp, 2e-3, 0.02,"|>");
+  const double cut1 = 126;
+  const double cut2 = 142;
+  //TArrow arrow(cut1, 8e4, cut1, 2e-3, 0.02,"|>");
+  TArrow *arrow1 = new TArrow(cut1, 0.03, cut1, 2e-3, 0.02,"|>");
+  TArrow *arrow2 = new TArrow(cut2, 0.03, cut2, 2e-3, 0.02,"|>");
 
-  arrow.SetLineWidth(4);
-  arrow.SetLineColor(1);
-  arrow.SetFillStyle(1001);
-  arrow.SetFillColor(kBlack);
-
+  SetArrowAttr(arrow1);
+  SetArrowAttr(arrow2);
+  
   SetCVAttr(hsig_normed);
   
   format_h(hist_mcsum_sc, 1, 2);
 
   hsig_normed -> Draw("Hist");
   hbkg_normed -> Draw("SameHist");
-  arrow.DrawClone();
+  arrow1 -> DrawClone();
+  arrow2 -> DrawClone();
   //hist_mcsum_sc -> Draw("SameHist");
   //hist_isr3pi_sc -> Draw("SameHist");
   //hist_omegapi_sc -> Draw("SameHist");

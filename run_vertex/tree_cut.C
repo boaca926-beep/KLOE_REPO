@@ -34,6 +34,8 @@ int tree_cut(){
   double pull_z1 = 0.;
   double pull_t1 = 0.;
   double m02 = 0., mplus2 = 0.;
+  double trkmass = 0.;
+  double Epho_sum_recoil = 0.;
   
   int phid = 0, sig_type = 0;
   //int trigger_indx = 0;
@@ -94,10 +96,12 @@ int tree_cut(){
     tree_tmp -> Branch("Br_mplus2", &mplus2, "Br_mplus2/D");
     tree_tmp -> Branch("Br_m02", &m02, "Br_m02/D");
     tree_tmp -> Branch("Br_ppIM", &ppIM, "Br_ppIM/D");
+    tree_tmp -> Branch("Br_trkmass", &trkmass, "Br_trkmass/D");
 
     tree_tmp -> Branch("Br_Eisr", &Eisr, "Br_Eisr/D");
     tree_tmp -> Branch("Br_Epi0_pho1", &Epi0_pho1, "Br_Epi0_pho1/D");
     tree_tmp -> Branch("Br_Epi0_pho2", &Epi0_pho2, "Br_Epi0_pho2/D");
+    tree_tmp -> Branch("Br_Epho_sum_recoil", &Epho_sum_recoil, "Br_Epho_sum_recoil/D");
     
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
@@ -141,6 +145,7 @@ int tree_cut(){
     ppIM = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(5);
     m02 = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(10);
     mplus2 = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(11);
+    trkmass = ALLCHAIN_CUT -> GetLeaf("Br_trkmass") -> GetValue(0);
     
     IM3pi_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_7C") -> GetValue(0);
     IM_pi0_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM_pi0_7C") -> GetValue(0);
@@ -149,6 +154,7 @@ int tree_cut(){
     Eisr = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(0);
     Epi0_pho1 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(1);
     Epi0_pho2 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(3);
+    Epho_sum_recoil = ALLCHAIN_CUT -> GetLeaf("Br_Epho_sum_recoil") -> GetValue(0);
 
     Eprompt_max = 0.;
   
@@ -192,6 +198,7 @@ int tree_cut(){
     else if (angle_pi0gam12 > angle_cut) continue; // reject bhabha bkg
     else if (betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) continue; // reject fake pi0
     else if (Eprompt_max > 320.) continue; // reject etagam bkg
+    else if (IM_pi0_7C < 142. && IM_pi0_7C > 126.) continue; // reject omegapi0 bkg
     //else if (betapi0 < GetFBeta(beta_cut, c0, c1, ppIM)) continue; // radiative background region
     
     //else if (IM3pi_7C > 850. || IM3pi_7C < 650.) continue; // reduce etagam background

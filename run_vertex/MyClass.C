@@ -22,7 +22,6 @@ void MyClass::Main()
   int fiduial_indx = -1;
   int trigger_indx = -1;
   int filfo_indx = -1;
-  int filfo28_indx = -1; 
   int evtcls_indx = -1;
 
   double evnt_sum = 0;
@@ -66,6 +65,9 @@ void MyClass::Main()
   double Emax_clust = 0., Esum_clust = 0.;
   double Esum = 0., E_radiv1 = 0., E_radiv2 = 0.;
   double deltaE = 0.;
+  double Ephi_miss = 0.;
+  double Epho_sum_recoil = 0.;
+  
   // angle
   double Angle_pho_isr = 0.;
   double Angle_clust = 0.;
@@ -125,7 +127,6 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_trigger_indx", &trigger_indx, "Br_trigger_indx/I");
   ALLCHAIN_CUT.Branch("Br_evtcls_indx", &evtcls_indx, "Br_evtcls_indx/I");
   ALLCHAIN_CUT.Branch("Br_filfo_indx", &filfo_indx, "Br_filfo_indx/I");
-  ALLCHAIN_CUT.Branch("Br_filfo28_indx", &filfo28_indx, "Br_filfo28_indx/I");
   
   //
   //ALLCHAIN_CUT.Branch("Br_Rhov", &Rhov, "Br_Rhov/D");  
@@ -153,7 +154,9 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_angle_pi0gam12_true", &angle_pi0gam12_true, "Br_angle_pi0gam12_true/D");
   ALLCHAIN_CUT.Branch("Br_Emax_clust", &Emax_clust, "Br_Emax_clust/D");
   ALLCHAIN_CUT.Branch("Br_Esum_clust", &Esum_clust, "Br_Esum_clust/D");
-
+  ALLCHAIN_CUT.Branch("Br_Ephi_miss", &Ephi_miss, "Br_Ephi_miss/D");
+  ALLCHAIN_CUT.Branch("Br_Epho_sum_recoil", &Epho_sum_recoil, "Br_Epho_sum_recoil/D");
+  
   //
   ALLCHAIN_CUT.Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
   ALLCHAIN_CUT.Branch("Br_pvalue", &pvalue, "Br_pvalue/D");
@@ -831,9 +834,13 @@ void MyClass::Main()
     TLorentzVector TLVector_pi0pho1 = Getphoton4vector(inputvect_ordered(5), inputvect_ordered(6), inputvect_ordered(7), inputvect_ordered(8));
     TLorentzVector TLVector_pi0pho2 = Getphoton4vector(inputvect_ordered(10), inputvect_ordered(11), inputvect_ordered(12), inputvect_ordered(13));
     TLorentzVector TLvector_isrpho_miss = Beam - (TLVector_pi0pho1 + TLVector_pi0pho2 + TLVector_ppl + TLVector_pmi);
+    TLorentzVector TLvector_phi_miss = Beam - (TLVector_pi0pho1 + TLVector_pi0pho2 + TLVector_isrpho + TLVector_ppl + TLVector_pmi);
+    TLorentzVector TLvector_pho_sum_recoil = Beam - (TLVector_ppl + TLVector_pmi);
 
     IMisrpho_miss = TLvector_isrpho_miss.M2();
-    
+    Ephi_miss = TLvector_phi_miss.E();
+    Epho_sum_recoil = TLvector_pho_sum_recoil.E();
+      
     //cout << (TLVector_pi0pho1 + TLVector_pi0pho2).M() << endl;
     
     // masses

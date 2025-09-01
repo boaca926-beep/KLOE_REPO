@@ -21,6 +21,7 @@ int tree_cut(){
   // define variables
   double lagvalue_min_7C = 0.;
   double deltaE = 0.;
+  double Ephi_miss = 0.;
   double angle_pi0gam12 = 0.;  
   double betapi0 = 0.;
   double ppIM = 0.;
@@ -103,6 +104,7 @@ int tree_cut(){
 
     tree_tmp -> Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
     tree_tmp -> Branch("Br_deltaE", &deltaE, "Br_deltaE/D");
+    tree_tmp -> Branch("Br_Ephi_miss", &Ephi_miss, "Br_Ephi_miss/D");
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
     tree_tmp -> Branch("Br_Eprompt_max", &Eprompt_max, "Br_Eprompt_max/D");
@@ -131,7 +133,9 @@ int tree_cut(){
     phid = ALLCHAIN_CUT -> GetLeaf("Br_phid") -> GetValue(0);
     sig_type = ALLCHAIN_CUT -> GetLeaf("Br_sig_type") -> GetValue(0);
     lagvalue_min_7C = ALLCHAIN_CUT -> GetLeaf("Br_lagvalue_min_7C") -> GetValue(0);
-    deltaE = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(2); 
+    deltaE = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(2);
+    Ephi_miss = ALLCHAIN_CUT -> GetLeaf("Br_Ephi_miss") -> GetValue(0); 
+    
     angle_pi0gam12 = ALLCHAIN_CUT -> GetLeaf("Br_ANGLELIST") -> GetValue(0);
     betapi0 = ALLCHAIN_CUT -> GetLeaf("Br_betapi0") -> GetValue(0);
     ppIM = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(5);

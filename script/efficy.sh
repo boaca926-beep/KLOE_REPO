@@ -1,10 +1,10 @@
 #!/bin/bash
 
 # input folder
-sample_size=chain # norm; chain; small; vertex
+sample_size=vertex # norm; chain; small; vertex
 syst_type=evtcls # evtcls, filfo, trigger
-exp_type=TUFO # UFO
-#exp_type=TDATA_bkgrej # TDATA
+#exp_type=TUFO # UFO
+exp_type=TDATA_bkgrej # TDATA
 input_path=../../input_${sample_size}_${exp_type}
 #echo $input_path
 
@@ -73,8 +73,8 @@ echo '}' >> $plot_efficy_script
 root -l -n -q -b $plot_efficy_script
 
 rm $plot_efficy_script
-exp_type=TUFO # UFO
-input_path=../../input_${sample_size}_${exp_type}
+#exp_type=TUFO # UFO
+#input_path=../../input_${sample_size}_${exp_type}
 #echo $input_path
 
 if [[ -d "$input_path" ]]; then
@@ -86,7 +86,7 @@ else
 fi
 
 # Main folder
-efficy_path=../../efficy_${syst_type}
+efficy_path=../../efficy_${syst_type}_${exp_type}
 if [[ -d "$efficy_path" ]]; then
     ls $efficy_path
     echo "Remove syst. folder"

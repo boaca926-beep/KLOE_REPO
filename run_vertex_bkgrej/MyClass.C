@@ -427,6 +427,13 @@ void MyClass::Main()
     else {
       filfo_indx = 1;
     }
+
+    if (((eclfilfo & ( 1 << 28 )) >> 28) == 1) {// bit 28 on, work also for UFO
+      filfo28_indx = 1;
+    }
+    else {// bit 28 off
+      filfo28_indx = 0;
+    }
     
     evnt_filfo ++;
 

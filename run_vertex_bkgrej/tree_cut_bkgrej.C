@@ -183,7 +183,10 @@ int tree_cut_bkgrej(){
     //// background rejection
     //if (Eprompt_max > 320) continue;
     
-    if (lagvalue_min_7C > chi2_cut || deltaE > deltaE_cut || angle_pi0gam12 > angle_cut || betapi0 > GetFBeta(beta_cut, c0, c1, ppIM) || Eprompt_max > 320 || IM_pi0_7C > 142. || IM_pi0_7C < 126.) {
+    //if (lagvalue_min_7C > chi2_cut || deltaE > deltaE_cut || angle_pi0gam12 > angle_cut || betapi0 > GetFBeta(beta_cut, c0, c1, ppIM) || Eprompt_max > 320 || IM_pi0_7C > 142. || IM_pi0_7C < 126.) {
+      
+    if (lagvalue_min_7C > chi2_cut || deltaE > deltaE_cut || angle_pi0gam12 > angle_cut || betapi0 > GetFBeta(beta_cut, c0, c1, ppIM) || Eprompt_max > 320) {
+    
       sel_indx = 0;
       //cout << sel_indx << endl;
       cout << lagvalue_min_7C << endl;

@@ -198,7 +198,7 @@ int tree_cut(){
     else if (angle_pi0gam12 > angle_cut) continue; // reject bhabha bkg
     else if (betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) continue; // reject fake pi0
     else if (Eprompt_max > 320.) continue; // reject etagam bkg
-    else if (IM_pi0_7C > 142. || IM_pi0_7C < 126.) continue; // reject omegapi0 bkg
+    //else if (IM_pi0_7C > 142. || IM_pi0_7C < 126.) continue; // reject omegapi0 bkg
     //else if (betapi0 < GetFBeta(beta_cut, c0, c1, ppIM)) continue; // radiative background region
     
     //else if (IM3pi_7C > 850. || IM3pi_7C < 650.) continue; // reduce etagam background

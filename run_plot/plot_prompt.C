@@ -54,9 +54,10 @@ int plot_prompt() {
   cout << "bar_width = " << bar_width << endl;
   
   for (int i = 1; i <= prompt_distr->GetNbinsX(); i++) {
-    XC[i-1] = i;
-    YH[i-1] = prompt_distr -> GetBinContent(i);
-	
+    XC[i - 1] = i - 1;
+    YH[i - 1] = prompt_distr -> GetBinContent(i);
+
+    /*
     //hprompt -> Fill(i-1, prompt_distr -> GetBinContent(i));
     cout << i << ", bin content = " << XC[i-1] << ", bin center = " << YH[i-1] << endl;
 
@@ -71,6 +72,8 @@ int plot_prompt() {
     bar->SetFillColor(kBlue);
     bar->SetLineWidth(1);
     bar->Draw();
+    */
+    
   }
 
   TGraph *gf_prompt = new TGraph(10, XC, YH);
@@ -92,7 +95,9 @@ int plot_prompt() {
   gf_prompt -> GetYaxis() -> SetTitleSize(0.08);
   gf_prompt -> GetYaxis() -> SetLabelSize(0.05);  
   gf_prompt -> GetYaxis() -> CenterTitle();
-  gf_prompt -> GetYaxis() -> SetTitle("Probabilities");
+  gf_prompt -> GetYaxis() -> SetTitle("Probability");
+
+  gf_prompt -> GetXaxis() -> SetNdivisions(510, kTRUE);
   
   //formatfill_h(gf_prompt, 4, 3001);
 

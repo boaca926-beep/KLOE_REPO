@@ -216,9 +216,9 @@ int plot_efficy() {
   //double PARA_FIT_POL3_ERR[4] = {p30_err, p31_err, p32_err, p33_err};
 
   // get corrected ratio
-  double *x_gf = gf_ratio_poly2 -> GetX();
-  double *y_gf = gf_ratio_poly2 -> GetY();
-  double *y_gf_err = gf_ratio_poly2 -> GetEY();
+  double *x_gf = gf_ratio_const -> GetX();
+  double *y_gf = gf_ratio_const -> GetY();
+  double *y_gf_err = gf_ratio_const -> GetEY();
 
   double x1 = 0., y1 = 0.;
   double x2 = 0., y2 = 0.;
@@ -242,7 +242,9 @@ int plot_efficy() {
       //efficy_ratio_p3 = f_ratio1 -> Eval(x_gf[i]); // 3nd poly fit results
       efficy_ratio_p3 = 0.;
       
-      efficy_ratio_corr = f_ratio -> Eval(x_gf[i]); // 2nd poly fit results
+      //efficy_ratio_corr = f_ratio -> Eval(x_gf[i]); // 2nd poly fit correction
+      efficy_ratio_corr = f_ratio_const -> Eval(x_gf[i]); // const fit correction
+      
       //efficy_ratio_corr_err = get_efficy_ratio_err(fitResult, x_gf[i]);
       
       efficy_ratio_corr_err = 0.;// TMath::Abs(efficy_ratio_corr - efficy_ratio_p3); //get_efficy_ratio_err(PARA_FIT, PARA_FIT_ERR, x_gf[i]);
@@ -290,6 +292,8 @@ int plot_efficy() {
   TFile *f_output = new TFile(input_folder + "/efficy_ratio.root", "update");
   gf_ratio_poly2 -> Write();
   gf_ratio_corr -> Write();
+  gf_ratio_const -> Write();
+  gf_ratio -> Write();
   
 
   TTree* TRESULT = new TTree("TRESULT", "recreate");

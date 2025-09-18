@@ -35,6 +35,7 @@ int bkg_compr(){
 
   // get generated signal
   const TString input_folder = "/home/bo/Desktop/input_vertex_TDATA";
+  //const TString input_folder = "/home/bo/Desktop/input_vertex_TDATA_bkgrej_more";
   cout <<  input_folder << endl;
   
   TFile* intree_gen = new TFile(input_folder + "/gen/tree_gen.root");

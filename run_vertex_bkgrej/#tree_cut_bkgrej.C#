@@ -7,7 +7,7 @@
 TStopwatch timer;
 timer.Start();
   
-int tree_cut(){
+int tree_cut_bkgrej(){
 
   //const TString f_path = folder_in + "/" + data_type + ".root";
   cout << "input path: " << sampleFile << endl;
@@ -21,7 +21,6 @@ int tree_cut(){
   // define variables
   double lagvalue_min_7C = 0.;
   double deltaE = 0.;
-  double Ephi_miss = 0.;
   double angle_pi0gam12 = 0.;  
   double betapi0 = 0.;
   double ppIM = 0.;
@@ -34,22 +33,24 @@ int tree_cut(){
   double pull_z1 = 0.;
   double pull_t1 = 0.;
   double m02 = 0., mplus2 = 0.;
-  double trkmass = 0.;
-  double Epho_sum_recoil = 0.;
   
   int phid = 0, sig_type = 0;
-  //int trigger_indx = 0;
-  //int filfo_indx = 0;
-  //int evtcls_indx = 0;
-  //int fstate_indx = 0;
+  int trigger_indx = -1;
+  int filfo_indx = -1;
+  int filfo28_indx = -1;
+  int evtcls_indx = -1;
+  int sel_indx = -1;
+
+  //int fstate_indx = -1;
   int bkg_indx = 0, recon_indx = 0;
 
   double evnt_tot = 0; // total number of events
+  double evnt_sel = 0.; // number of selected events
+  
   double evnt_trigger = 0; // number of events after trigger
   double evnt_filfo = 0; // number of events after fiflo
   double evnt_evtcls = 0; // number of events after event classification
-  double evnt_fstate = 0; // number of events after 2 tracks and 3 prompt photons
-
+  
   double Eprompt_max = 0.;
   
   TFile *f_output = new TFile(outputCut + "tree_pre.root", "update");
@@ -89,26 +90,29 @@ int tree_cut(){
     tree_tmp -> Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
     tree_tmp -> Branch("Br_bkg_indx", &bkg_indx, "Br_bkg_indx/I");
     tree_tmp -> Branch("Br_recon_indx", &recon_indx, "Br_recon_indx/I");
+    tree_tmp -> Branch("Br_sel_indx", &sel_indx, "Br_sel_indx/I");
 
+    tree_tmp -> Branch("Br_trigger_indx", &trigger_indx, "Br_trigger_indx/I");
+    tree_tmp -> Branch("Br_filfo_indx", &filfo_indx, "Br_filfo_indx/I");
+    tree_tmp -> Branch("Br_filfo28_indx", &filfo28_indx, "Br_filfo28_indx/I");
+    tree_tmp -> Branch("Br_evtcls_indx", &evtcls_indx, "Br_evtcls_indx/I");
+    
     tree_tmp -> Branch("Br_IM3pi_7C", &IM3pi_7C, "Br_IM3pi_7C/D");
     tree_tmp -> Branch("Br_IM3pi_true", &IM3pi_true, "Br_IM3pi_true/D");
     tree_tmp -> Branch("Br_IM_pi0_7C", &IM_pi0_7C, "Br_IM_pi0_7C/D");
     tree_tmp -> Branch("Br_mplus2", &mplus2, "Br_mplus2/D");
     tree_tmp -> Branch("Br_m02", &m02, "Br_m02/D");
     tree_tmp -> Branch("Br_ppIM", &ppIM, "Br_ppIM/D");
-    tree_tmp -> Branch("Br_trkmass", &trkmass, "Br_trkmass/D");
 
     tree_tmp -> Branch("Br_Eisr", &Eisr, "Br_Eisr/D");
     tree_tmp -> Branch("Br_Epi0_pho1", &Epi0_pho1, "Br_Epi0_pho1/D");
     tree_tmp -> Branch("Br_Epi0_pho2", &Epi0_pho2, "Br_Epi0_pho2/D");
-    tree_tmp -> Branch("Br_Epho_sum_recoil", &Epho_sum_recoil, "Br_Epho_sum_recoil/D");
     
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
 
     tree_tmp -> Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
     tree_tmp -> Branch("Br_deltaE", &deltaE, "Br_deltaE/D");
-    tree_tmp -> Branch("Br_Ephi_miss", &Ephi_miss, "Br_Ephi_miss/D");
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
     tree_tmp -> Branch("Br_Eprompt_max", &Eprompt_max, "Br_Eprompt_max/D");
@@ -126,9 +130,10 @@ int tree_cut(){
     pull_z1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(3);
     pull_t1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(4);
 
-    //trigger_indx = ALLCHAIN_CUT -> GetLeaf("Br_trigger_indx") -> GetValue(0);
-    //filfo_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo_indx") -> GetValue(0);
-    //evtcls_indx = ALLCHAIN_CUT -> GetLeaf("Br_evtcls_indx") -> GetValue(0);
+    trigger_indx = ALLCHAIN_CUT -> GetLeaf("Br_trigger_indx") -> GetValue(0);
+    filfo_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo_indx") -> GetValue(0);
+    filfo28_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo28_indx") -> GetValue(0);
+    evtcls_indx = ALLCHAIN_CUT -> GetLeaf("Br_evtcls_indx") -> GetValue(0);
     //fstate_indx = ALLCHAIN_CUT -> GetLeaf("Br_fstate_indx") -> GetValue(0);
 
     bkg_indx = ALLCHAIN_CUT -> GetLeaf("Br_bkg_indx") -> GetValue(0);
@@ -137,15 +142,12 @@ int tree_cut(){
     phid = ALLCHAIN_CUT -> GetLeaf("Br_phid") -> GetValue(0);
     sig_type = ALLCHAIN_CUT -> GetLeaf("Br_sig_type") -> GetValue(0);
     lagvalue_min_7C = ALLCHAIN_CUT -> GetLeaf("Br_lagvalue_min_7C") -> GetValue(0);
-    deltaE = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(2);
-    Ephi_miss = ALLCHAIN_CUT -> GetLeaf("Br_Ephi_miss") -> GetValue(0); 
-    
+    deltaE = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(2); 
     angle_pi0gam12 = ALLCHAIN_CUT -> GetLeaf("Br_ANGLELIST") -> GetValue(0);
     betapi0 = ALLCHAIN_CUT -> GetLeaf("Br_betapi0") -> GetValue(0);
     ppIM = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(5);
     m02 = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(10);
     mplus2 = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(11);
-    trkmass = ALLCHAIN_CUT -> GetLeaf("Br_trkmass") -> GetValue(0);
     
     IM3pi_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_7C") -> GetValue(0);
     IM_pi0_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM_pi0_7C") -> GetValue(0);
@@ -154,67 +156,54 @@ int tree_cut(){
     Eisr = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(0);
     Epi0_pho1 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(1);
     Epi0_pho2 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(3);
-    Epho_sum_recoil = ALLCHAIN_CUT -> GetLeaf("Br_Epho_sum_recoil") -> GetValue(0);
 
     Eprompt_max = 0.;
-  
     if (Eisr > Eprompt_max) Eprompt_max = Eisr;
     if (Epi0_pho1 > Eprompt_max) Eprompt_max = Epi0_pho1;
     if (Epi0_pho2 > Eprompt_max) Eprompt_max = Epi0_pho2;
 
-    //if (Eprompt_max == 0.) cout << Epi0_pho1 << ", " << Epi0_pho2 << ", " << Eisr << ", Eprompt_max = " << Eprompt_max << endl;
-    
-    
     //cout << Epi0_pho1 << ", " << Epi0_pho2 << ", " << Eisr << ", Eprompt_max = " << Eprompt_max << endl;
     
     evnt_tot ++;
 
     //if (evnt_tot > 1e5) break;
 
-    //// trigger cut
-    //if (trigger_indx == 1) continue;
-    //evnt_trigger ++;
+    //// preselection cut
+    //if (trigger_indx == 0) continue; // CUT I
+    evnt_trigger ++;
     //cout << trigger_indx << endl;
 
-    //// filfo cut
-    //if (filfo_indx == 1) continue;
-    //evnt_filfo ++;
+    //if (filfo_indx == 0) continue; // CUT II
+    evnt_filfo ++;
     //cout << filfo_indx << endl;
 
-    //// event classification cut
-    //if (evtcls_indx == 1) continue;
-    //evnt_evtcls ++;
-    //cout << evtcls_indx << endl;
-
-    //// 2 tracks and 3 prompt photons cut
-    //if (fstate_indx == 1) continue;
-    //evnt_fstate ++;
-    //cout << fstate_indx << endl;
-
+    //if (evtcls_indx == 0) continue; // CUT III
+    evnt_evtcls ++;
+    
     //// background rejection
 
-    if (lagvalue_min_7C > chi2_cut) continue; // reject kaons bkg
-    else if (deltaE > deltaE_cut) continue; // reject rhopi->3pi bkg
-    else if (angle_pi0gam12 > angle_cut) continue; // reject bhabha bkg
-    else if (betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) continue; // reject fake pi0
-    else if (Eprompt_max > 320.) continue; // reject etagam bkg
-    else if (IM_pi0_7C > 142. || IM_pi0_7C < 126.) continue; // reject omegapi0 bkg
-    else if (IM3pi_7C > 750. && IM3pi_7C < 800. || IM3pi_7C < 650. || IM3pi_7C > 900.) continue;
-    //else if (IM3pi_7C > 850. || IM3pi_7C < 650.) continue; // reduce etagam background
-    
-    //else if (betapi0 < GetFBeta(beta_cut, c0, c1, ppIM)) continue; // radiative background region
-    
-    
-    //cout << pull_E1 << endl;
-    
-    /*
-    cout << chi2_cut << "\n"
-	 << deltaE_cut << "\n"
-	 << angle_cut << "\n"
-	 << betapi0 << endl;
-    */
+    // further bkg reduction
+    //if (lagvalue_min_7C > chi2_cut || deltaE > deltaE_cut || angle_pi0gam12 > angle_cut || betapi0 > GetFBeta(beta_cut, c0, c1, ppIM) || Eprompt_max > 320 || IM_pi0_7C > 142. || IM_pi0_7C < 126.) {
 
-    //cout << bkg_indx << ", " << recon_indx << endl;
+    // bkg reduction for KSL systmatic analysis
+    if (lagvalue_min_7C > chi2_cut || deltaE > deltaE_cut || angle_pi0gam12 > angle_cut || betapi0 > GetFBeta(beta_cut, c0, c1, ppIM) || Eprompt_max > 320) {
+    
+      sel_indx = 0;
+      //cout << sel_indx << endl;
+      cout << lagvalue_min_7C << endl;
+    }
+    else {
+      sel_indx = 1;
+    }
+
+    /*
+    if (lagvalue_min_7C > chi2_cut) continue;
+    else if (deltaE > deltaE_cut) continue;
+    else if (angle_pi0gam12 > angle_cut) continue;
+    else if (betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) continue;
+    */
+    
+    evnt_sel ++;
     
     //cout << deltaE << endl;
 
@@ -295,8 +284,11 @@ int tree_cut(){
        << f_output -> GetName() << endl;
   
   cout << "evnt_tot = " << evnt_tot << "\n"
-       << "2 tacks and 3 prompt photons: " << evnt_fstate << "\n";
-
+       << "evnt_trigger = " << evnt_trigger << "\n"
+       << "evnt_filfo = " << evnt_filfo << "\n"
+       << "evnt_evtcls = " << evnt_evtcls << "\n"
+       << "evnt_sel = " << evnt_sel << "\n";
+  
   cout << "Cut parameters: \n"
        << "chi2_cut = " << chi2_cut << "\n"
        << "angle_cut = " << angle_cut << "\n"

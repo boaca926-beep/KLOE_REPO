@@ -98,7 +98,7 @@ int plot_compr(){
 
   TPaveText *pt34 = new TPaveText(0.2, 0.75, 0.4, 0.8, "NDC");
   PteAttr(pt34); pt34 -> SetTextSize(0.1);
-  pt34 -> AddText("(a)");
+  //pt34 -> AddText("(a)");
   //pt34 -> AddText("(b)");
   //pt34 -> AddText("(c)");
   //pt34 -> AddText("(d)");
@@ -181,7 +181,7 @@ int plot_compr(){
   legd_cv -> AddEntry(hist_eeg_sc, "e^{+}e^{-}#gamma", "l");
   legd_cv -> AddEntry(hist_mcrest_sc, "Others", "l");
   
-  legd_cv -> Draw("Same");
+  //legd_cv -> Draw("Same");
   
   legtextsize(legd_cv, 0.04);
   

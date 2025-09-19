@@ -115,10 +115,10 @@ TH2D *getCorrMatrix_good(int bins, double xmin, double xmax) {// good signal eve
     IM3pi_true = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
     IM3pi = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_7C") -> GetValue(0);
     
-    TH2D *h2d_corr = new TH2D("", "", bins, xmin, xmax, bins, xmin, xmax);
+    //if (irow > 1e5) break;
 
-    if (irow > 1e4) break;
-    
+    //h2d_corr -> Fill(IM3pi_true, IM3pi);
+	
     if (phid == 0) {// e+ e- -> omega pi0
       
       //hist -> Fill(IM3pi);
@@ -126,11 +126,13 @@ TH2D *getCorrMatrix_good(int bins, double xmin, double xmax) {// good signal eve
       
       if (recon_indx == 2 && bkg_indx == 1) {
 	h2d_corr -> Fill(IM3pi_true, IM3pi);
-	cout << IM3pi_true << ", " << IM3pi << endl;
+	//cout << IM3pi_true << ", " << IM3pi << endl;
 	
 	//h1d_resol_Eisr -> Fill(Eisr_resol);
       }
       else {
+	//h2d_corr -> Fill(IM3pi_true, IM3pi);
+	
 	//hist_wrong -> Fill(IM3pi);
 	//h2d_scatter_wrong -> Fill(IM3pi_true, IM3pi);
       }
@@ -179,6 +181,7 @@ int scatter_matr() {
   hcorrmatrix_good = getCorrMatrix_good(binsize, IM3pi_min, IM3pi_max);
   hcorrmatrix_good -> Draw();
   //hcorrmatrix_tuned -> Draw();
+
   /*
   //TH2D * h2d = (TH2D*)infile -> Get("h2d_scatter" + hist_nm); // smeared matrix
   TH2D * h2d = (TH2D*)infile -> Get("h2d_scatter");  // reconstructed matrix

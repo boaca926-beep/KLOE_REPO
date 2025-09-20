@@ -45,7 +45,8 @@ int plot_discrp(){
   //gROOT->SetStyle("Plain");
   //gROOT->ForceStyle();
 
-  TFile* intree = new TFile("./output_" + var_nm + "/hist_" + var_nm + ".root");
+  //TFile* intree = new TFile("./output_" + var_nm + "/hist_" + var_nm + ".root");
+  TFile* intree = new TFile("/home/bo/Desktop/bkg_compr_lagvalue_min_7C/hist_lagvalue_min_7C.root");
   
   TIter next_tree(intree -> GetListOfKeys());
 
@@ -66,9 +67,23 @@ int plot_discrp(){
     
   }
 
-  TObjArray *H2dlist = (TObjArray *)intree -> Get("H2dlist");
-  checkArray(H2dlist);
+  //TObjArray *H2dlist = (TObjArray *)intree -> Get("H2dlist");
+  //checkArray(H2dlist);
 
+  TH2D *h2d_discrp_data = (TH2D *) intree -> Get("h2d_discrp_data");
+  h2d_discrp_data -> Draw();
+  TH2D *h2d_discrp_eeg = (TH2D *) intree -> Get("h2d_discrp_eeg");
+  TH2D *h2d_discrp_rhopi = (TH2D *) intree -> Get("h2d_discrp_rhopi");
+  
+  TH2D *h2d_discrp_eeg_sc = (TH2D *) intree -> Get("h2d_discrp_eeg_sc");
+  TH2D *h2d_discrp_isr3pi_sc = (TH2D *) intree -> Get("h2d_discrp_isr3pi_sc");
+  TH2D *h2d_discrp_omegapi_sc = (TH2D *) intree -> Get("h2d_discrp_omegapi_sc");
+  TH2D *h2d_discrp_etagam_sc = (TH2D *) intree -> Get("h2d_discrp_etagam_sc");
+  TH2D *h2d_discrp_ksl_sc = (TH2D *) intree -> Get("h2d_discrp_ksl_sc");
+  TH2D *h2d_discrp_mcrest_sc = (TH2D *) intree -> Get("h2d_discrp_mcrest_sc");
+  TH2D *h2d_discrp_bkgsum_sc = (TH2D *) intree -> Get("h2d_discrp_bkgsum_sc");
+  
+  /*
   TH2D *h2d_discrp_data = (TH2D *) H2dlist -> At(0);
   TH2D *h2d_discrp_eeg = (TH2D *) H2dlist -> At(2);
   TH2D *h2d_discrp_rhopi = (TH2D *) H2dlist -> At(10);
@@ -80,7 +95,8 @@ int plot_discrp(){
   TH2D *h2d_discrp_ksl_sc = (TH2D *) H2dlist -> At(23);
   TH2D *h2d_discrp_mcrest_sc = (TH2D *) H2dlist -> At(24);
   TH2D *h2d_discrp_bkgsum_sc = (TH2D *) H2dlist -> At(25);
-
+  */
+  
   /*
     [0]: h2d_discrp_data
     [1]: h2d_pchi2_data

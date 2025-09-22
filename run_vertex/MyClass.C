@@ -981,6 +981,7 @@ void MyClass::Main()
     ENERGYLIST[4] = TLVector_isrpho.E();
     //cout << "!!!!!!!!!!!!!!!!! " << ENERGYLIST[3] << endl;
 
+    /*
     // photons 4 vectors
     // pi0 photon1
     MOM4PHO1[0] = TLVector_pi0pho1_kinfit7C.E();
@@ -1010,7 +1011,8 @@ void MyClass::Main()
     MOM4TRKMINS[1] = TLVector_pmi.X();
     MOM4TRKMINS[2] = TLVector_pmi.Y();
     MOM4TRKMINS[3] = TLVector_pmi.Z();
-
+    */
+    
     /*
     cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
 	 << "ppl (E, px, py, pz) = (" << MOM4TRKPLUS[0] << ", " << MOM4TRKPLUS[1] << ", " << MOM4TRKPLUS[2] << ", " << MOM4TRKPLUS[3] << ")\n";
@@ -1088,7 +1090,36 @@ void MyClass::Main()
     PULLIST[12] = pullkinfit(12);
     PULLIST[13] = pullkinfit(13);
     PULLIST[14] = pullkinfit(14);
+
+    // pi0 photon1
+    PULLIST[15] = TLVector_pi0pho1_kinfit7C.E();
+    PULLIST[16] = TLVector_pi0pho1_kinfit7C.X();
+    PULLIST[17] = TLVector_pi0pho1_kinfit7C.Y();
+    PULLIST[18] = TLVector_pi0pho1_kinfit7C.Z();
+
+    // pi0 photon2
+    PULLIST[0] = TLVector_pi0pho2_kinfit7C.E();
+    PULLIST[1] = TLVector_pi0pho2_kinfit7C.X();
+    PULLIST[2] = TLVector_pi0pho2_kinfit7C.Y();
+    PULLIST[3] = TLVector_pi0pho2_kinfit7C.Z();
+
+    // pi0 photon3
+    PULLIST[0] = TLVector_isrpho_kinfit7C.E();
+    PULLIST[1] = TLVector_isrpho_kinfit7C.X();
+    PULLIST[2] = TLVector_isrpho_kinfit7C.Y();
+    PULLIST[3] = TLVector_isrpho_kinfit7C.Z();
     
+    // track 4 vectors
+    PULLIST[0] = TLVector_ppl.E();
+    PULLIST[1] = TLVector_ppl.X();
+    PULLIST[2] = TLVector_ppl.Y();
+    PULLIST[3] = TLVector_ppl.Z();
+
+    PULLIST[0] = TLVector_pmi.E();
+    PULLIST[1] = TLVector_pmi.X();
+    PULLIST[2] = TLVector_pmi.Y();
+    PULLIST[3] = TLVector_pmi.Z();
+
     //cout << Row << pullkinfit(0) << endl;
     test_value = ENERGYLIST[2];//DeltaE(TLVector_ppl_boost, TLVector_pmi_boost);
 

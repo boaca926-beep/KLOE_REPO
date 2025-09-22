@@ -36,6 +36,10 @@ int tree_cut(){
   double m02 = 0., mplus2 = 0.;
   double trkmass = 0.;
   double Epho_sum_recoil = 0.;
+  double phoE1 = 0., phoE2 = 0., phoE3 = 0., trkplusE = 0., trkminE = 0.;
+  double phox1 = 0., phox2 = 0., phox3 = 0., trkplusx = 0., trkminx = 0.;
+  double phoy1 = 0., phoy2 = 0., phoy3 = 0., trkplusy = 0., trkminy = 0.;
+  double phoz1 = 0., phoz2 = 0., phoz3 = 0., trkplusz = 0., trkminz = 0.;
   
   int phid = 0, sig_type = 0;
   //int trigger_indx = 0;
@@ -86,6 +90,19 @@ int tree_cut(){
     tree_tmp -> Branch("Br_pull_z1", &pull_z1, "Br_pull_z1/D");
     tree_tmp -> Branch("Br_pull_t1", &pull_t1, "Br_pull_t1/D");
 
+    /*
+    double phoE1 = 0., phoE2 = 0., phoE3 = 0., trkplusE = 0., trkminE = 0.;
+    double phox1 = 0., phox2 = 0., phox3 = 0., trkplusx = 0., trkminx = 0.;
+    double phoy1 = 0., phoy2 = 0., phoy3 = 0., trkplusy = 0., trkminy = 0.;
+    double phoz1 = 0., phoz2 = 0., phoz3 = 0., trkplusz = 0., trkminz = 0.;
+    */
+
+    tree_tmp -> Branch("Br_phoE1", &phoE1, "Br_phoE1/D");
+    tree_tmp -> Branch("Br_phox1", &phox1, "Br_phox1/D");
+    tree_tmp -> Branch("Br_phoy1", &phoy1, "Br_phoy1/D");
+    tree_tmp -> Branch("Br_phoz1", &phoz1, "Br_phoz1/D");
+
+    //
     tree_tmp -> Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
     tree_tmp -> Branch("Br_bkg_indx", &bkg_indx, "Br_bkg_indx/I");
     tree_tmp -> Branch("Br_recon_indx", &recon_indx, "Br_recon_indx/I");
@@ -126,6 +143,12 @@ int tree_cut(){
     pull_z1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(3);
     pull_t1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(4);
 
+    phoE1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(15);
+    //phox1 = ALLCHAIN_CUT -> GetLeaf("Br_MOM4PHO1") -> GetValue(1);
+    //phoy1 = ALLCHAIN_CUT -> GetLeaf("Br_MOM4PHO1") -> GetValue(2);
+    //phoz1 = ALLCHAIN_CUT -> GetLeaf("Br_MOM4PHO1") -> GetValue(3);
+    //cout << phoE1 << endl;
+    
     //trigger_indx = ALLCHAIN_CUT -> GetLeaf("Br_trigger_indx") -> GetValue(0);
     //filfo_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo_indx") -> GetValue(0);
     //evtcls_indx = ALLCHAIN_CUT -> GetLeaf("Br_evtcls_indx") -> GetValue(0);

@@ -1,5 +1,5 @@
 #define MyClass_cxx
-#include "MyClass.h"
+#include "../header_vertex/MyClass.h"
 #include "TMatrixD.h"
 #include "TVectorD.h"
 #include <TH2.h>
@@ -65,6 +65,9 @@ void MyClass::Main()
   double Emax_clust = 0., Esum_clust = 0.;
   double Esum = 0., E_radiv1 = 0., E_radiv2 = 0.;
   double deltaE = 0.;
+  double Ephi_miss = 0.;
+  double Epho_sum_recoil = 0.;
+  
   // angle
   double Angle_pho_isr = 0.;
   double Angle_clust = 0.;
@@ -151,7 +154,9 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_angle_pi0gam12_true", &angle_pi0gam12_true, "Br_angle_pi0gam12_true/D");
   ALLCHAIN_CUT.Branch("Br_Emax_clust", &Emax_clust, "Br_Emax_clust/D");
   ALLCHAIN_CUT.Branch("Br_Esum_clust", &Esum_clust, "Br_Esum_clust/D");
-
+  ALLCHAIN_CUT.Branch("Br_Ephi_miss", &Ephi_miss, "Br_Ephi_miss/D");
+  ALLCHAIN_CUT.Branch("Br_Epho_sum_recoil", &Epho_sum_recoil, "Br_Epho_sum_recoil/D");
+  
   //
   ALLCHAIN_CUT.Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
   ALLCHAIN_CUT.Branch("Br_pvalue", &pvalue, "Br_pvalue/D");
@@ -188,7 +193,12 @@ void MyClass::Main()
 
   ALLCHAIN_CUT.Branch("Br_PULLIST", &PULLIST, "Br_PULLIST[100]/D");
 
-  //ALLCHAIN_CUT.Branch("Br_MOM4TRKPLUS", &MOM4TRKPLUS, "MOM4TRKPLUS[4]/D");
+  ALLCHAIN_CUT.Branch("Br_MOM4PHO1", &MOM4PHO1, "MOM4PHO1[4]/D");
+  ALLCHAIN_CUT.Branch("Br_MOM4PHO2", &MOM4PHO2, "MOM4PHO2[4]/D");
+  ALLCHAIN_CUT.Branch("Br_MOM4PHO3", &MOM4PHO3, "MOM4PHO3[4]/D");
+  
+  ALLCHAIN_CUT.Branch("Br_MOM4TRKPLUS", &MOM4TRKPLUS, "MOM4TRKPLUS[4]/D");
+  ALLCHAIN_CUT.Branch("Br_MOM4TRKMINS", &MOM4TRKMINS, "MOM4TRKMINS[4]/D");
 
   //
   TTree ALLCHAIN_TEST ("ALLCHAIN_TEST", "recreate"); ALLCHAIN_TEST.SetAutoSave(0);
@@ -219,6 +229,29 @@ void MyClass::Main()
     //TVector3 Boost3vector = -Beam.BoostVector();
     //cout << "beam (bpx, bpy, bpz, bene) = " << "(" << bpx << ", " << bpy << ", " << bpz << ", " << bene << ") \n";
 
+    /// select signal events (according to Antonio)
+    cout << "nvtxmc = " << nvtxmc << endl;
+    
+    for (int kv = 0; kv < nvtxmc; kv ++) {
+
+      cout << "mother[" << kv << "] = " << mother[kv] << ", kinmom = " << kinmom[kv] << ", trkvtxmc = " << trkvtxmc[kv] << endl;
+
+    }
+
+    cout << "ntmc = " << ntmc << endl;
+    
+    for (int i = 0; i < ntmc; i ++) {// loop over number of MC "tracks==particles"
+
+      if (pidmc[i] == 8) {// pi+, kine = 1
+      //if (pidmc[i] == 9) {// pi-, kine = 2
+      //if (pidmc[i] == 7) {// pi0, kine = 3
+      //if (kine[i] == 4 && pidmc[i] == 1) {// pi0 photons
+    	cout << "pidmc[i] = " << pidmc[i] << ", kine[i] = " << kine[i]  << ", virmom[i] = " << virmom[i] << ", indv[i] = " << indv[i] << endl;
+      }
+      
+    }
+
+    
     /// define isr 3pi signals
     double nb_pho_radiv = 0, nb_pi = 0, nb_pi0pho = 0;
     int pi0gam1_ntmc = 0, pi0gam2_ntmc = 0; 
@@ -567,9 +600,9 @@ void MyClass::Main()
 
 	// fill prompt cluster info: E, X, Y, Z and T
 	E_list[promptnb] = enecl[i]; 
-	X_list[promptnb] = xcl[i]; 
-	Y_list[promptnb] = ycl[i];
-	Z_list[promptnb] = zcl[i];
+	X_list[promptnb] = xcl[i] - xv_nvip1; 
+	Y_list[promptnb] = ycl[i] - yv_nvip1;
+	Z_list[promptnb] = zcl[i] - zv_nvip1;
 	T_list[promptnb] = tcl[i];
 
 	pho_indx[promptnb] = Pnum1[i] - 1;
@@ -753,8 +786,8 @@ void MyClass::Main()
       //sigma2vect_permut = Fillpermutvector(Row, sigma2vectorkinfit_min_7C, nr1, nr2, nr3); //sigma2vect_permut.Print();
 
       // filling pi0 photon candidates in permutation
-      pionphoton1_tmp = Getphoton4vector(inputvect_permut(5), inputvect_permut(6) - xv_nvip1, inputvect_permut(7) - yv_nvip1, inputvect_permut(8) - zv_nvip1);
-      pionphoton2_tmp = Getphoton4vector(inputvect_permut(10), inputvect_permut(11) - xv_nvip1, inputvect_permut(12) - yv_nvip1, inputvect_permut(13) - zv_nvip1);
+      pionphoton1_tmp = Getphoton4vector(inputvect_permut(5), inputvect_permut(6), inputvect_permut(7), inputvect_permut(8));
+      pionphoton2_tmp = Getphoton4vector(inputvect_permut(10), inputvect_permut(11), inputvect_permut(12), inputvect_permut(13));
       //pionphoton1_tmp.Print();
       //pionphoton2_tmp.Print();
 
@@ -802,13 +835,17 @@ void MyClass::Main()
     //cout << "!!!! chi2mgg_min = " << chi2mgg_min << endl;
     
     // without kin.fit
-    TLorentzVector TLVector_isrpho = Getphoton4vector(inputvect_ordered(0),inputvect_ordered(1) - xv_nvip1, inputvect_ordered(2) - yv_nvip1, inputvect_ordered(3) - zv_nvip1);
-    TLorentzVector TLVector_pi0pho1 = Getphoton4vector(inputvect_ordered(5), inputvect_ordered(6) - xv_nvip1, inputvect_ordered(7) - yv_nvip1, inputvect_ordered(8) - zv_nvip1);
-    TLorentzVector TLVector_pi0pho2 = Getphoton4vector(inputvect_ordered(10), inputvect_ordered(11) - xv_nvip1, inputvect_ordered(12) - yv_nvip1, inputvect_ordered(13) - zv_nvip1);
+    TLorentzVector TLVector_isrpho = Getphoton4vector(inputvect_ordered(0), inputvect_ordered(1), inputvect_ordered(2), inputvect_ordered(3));
+    TLorentzVector TLVector_pi0pho1 = Getphoton4vector(inputvect_ordered(5), inputvect_ordered(6), inputvect_ordered(7), inputvect_ordered(8));
+    TLorentzVector TLVector_pi0pho2 = Getphoton4vector(inputvect_ordered(10), inputvect_ordered(11), inputvect_ordered(12), inputvect_ordered(13));
     TLorentzVector TLvector_isrpho_miss = Beam - (TLVector_pi0pho1 + TLVector_pi0pho2 + TLVector_ppl + TLVector_pmi);
+    TLorentzVector TLvector_phi_miss = Beam - (TLVector_pi0pho1 + TLVector_pi0pho2 + TLVector_isrpho + TLVector_ppl + TLVector_pmi);
+    TLorentzVector TLvector_pho_sum_recoil = Beam - (TLVector_ppl + TLVector_pmi);
 
     IMisrpho_miss = TLvector_isrpho_miss.M2();
-    
+    Ephi_miss = TLvector_phi_miss.E();
+    Epho_sum_recoil = TLvector_pho_sum_recoil.E();
+      
     //cout << (TLVector_pi0pho1 + TLVector_pi0pho2).M() << endl;
     
     // masses
@@ -823,13 +860,15 @@ void MyClass::Main()
     
     // fill 7C kin.fitted values
     //inputvect_fitted_ordered.Print();
-    TLorentzVector TLVector_isrpho_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(0), inputvect_fitted_ordered(1) - xv_nvip1, inputvect_fitted_ordered(2) - yv_nvip1, inputvect_fitted_ordered(3) - zv_nvip1);
-    TLorentzVector TLVector_pi0pho1_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(5), inputvect_fitted_ordered(6) - xv_nvip1, inputvect_fitted_ordered(7) - yv_nvip1, inputvect_fitted_ordered(8) - zv_nvip1);
-    TLorentzVector TLVector_pi0pho2_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(10), inputvect_fitted_ordered(11) - xv_nvip1, inputvect_fitted_ordered(12) - yv_nvip1, inputvect_fitted_ordered(13) - zv_nvip1);
+    TLorentzVector TLVector_isrpho_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(0), inputvect_fitted_ordered(1), inputvect_fitted_ordered(2), inputvect_fitted_ordered(3));
+    TLorentzVector TLVector_pi0pho1_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(5), inputvect_fitted_ordered(6), inputvect_fitted_ordered(7), inputvect_fitted_ordered(8));
+    TLorentzVector TLVector_pi0pho2_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(10), inputvect_fitted_ordered(11), inputvect_fitted_ordered(12), inputvect_fitted_ordered(13));
+
     TLorentzVector TLVector_pi0gg12_kinfit7C = TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C;
     TLorentzVector TLVector_3pi_kinfit7C = TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C + TLVector_ppl + TLVector_pmi;
     TLorentzVector TLVector_2pi_kinfit7C = TLVector_ppl + TLVector_pmi;
 
+    // final state 4-vector
     IM3pi_7C = (TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C + TLVector_ppl + TLVector_pmi).M();
     IM_3pi_nofit = (TLVector_pi0pho1 + TLVector_pi0pho2 + TLVector_ppl + TLVector_pmi).M();
 
@@ -942,6 +981,7 @@ void MyClass::Main()
     ENERGYLIST[4] = TLVector_isrpho.E();
     //cout << "!!!!!!!!!!!!!!!!! " << ENERGYLIST[3] << endl;
 
+    /*
     // photons 4 vectors
     // pi0 photon1
     MOM4PHO1[0] = TLVector_pi0pho1_kinfit7C.E();
@@ -971,7 +1011,8 @@ void MyClass::Main()
     MOM4TRKMINS[1] = TLVector_pmi.X();
     MOM4TRKMINS[2] = TLVector_pmi.Y();
     MOM4TRKMINS[3] = TLVector_pmi.Z();
-
+    */
+    
     /*
     cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
 	 << "ppl (E, px, py, pz) = (" << MOM4TRKPLUS[0] << ", " << MOM4TRKPLUS[1] << ", " << MOM4TRKPLUS[2] << ", " << MOM4TRKPLUS[3] << ")\n";
@@ -1049,7 +1090,36 @@ void MyClass::Main()
     PULLIST[12] = pullkinfit(12);
     PULLIST[13] = pullkinfit(13);
     PULLIST[14] = pullkinfit(14);
+
+    // pi0 photon1
+    PULLIST[15] = TLVector_pi0pho1_kinfit7C.E();
+    PULLIST[16] = TLVector_pi0pho1_kinfit7C.X();
+    PULLIST[17] = TLVector_pi0pho1_kinfit7C.Y();
+    PULLIST[18] = TLVector_pi0pho1_kinfit7C.Z();
+
+    // pi0 photon2
+    PULLIST[19] = TLVector_pi0pho2_kinfit7C.E();
+    PULLIST[20] = TLVector_pi0pho2_kinfit7C.X();
+    PULLIST[21] = TLVector_pi0pho2_kinfit7C.Y();
+    PULLIST[22] = TLVector_pi0pho2_kinfit7C.Z();
+
+    // pi0 photon3
+    PULLIST[23] = TLVector_isrpho_kinfit7C.E();
+    PULLIST[24] = TLVector_isrpho_kinfit7C.X();
+    PULLIST[25] = TLVector_isrpho_kinfit7C.Y();
+    PULLIST[26] = TLVector_isrpho_kinfit7C.Z();
     
+    // track 4 vectors
+    PULLIST[27] = TLVector_ppl.E();
+    PULLIST[28] = TLVector_ppl.X();
+    PULLIST[29] = TLVector_ppl.Y();
+    PULLIST[30] = TLVector_ppl.Z();
+
+    PULLIST[31] = TLVector_pmi.E();
+    PULLIST[32] = TLVector_pmi.X();
+    PULLIST[33] = TLVector_pmi.Y();
+    PULLIST[34] = TLVector_pmi.Z();
+
     //cout << Row << pullkinfit(0) << endl;
     test_value = ENERGYLIST[2];//DeltaE(TLVector_ppl_boost, TLVector_pmi_boost);
 

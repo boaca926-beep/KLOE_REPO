@@ -1,13 +1,14 @@
 #!/bin/bash
 ## Specify DATA or UFO
-sample_size=chain # norm; small; mini; chain
+sample_size=chain
+# norm; small; mini; chain
 sample_path=../path_${sample_size}/ 
 #sample_path=../../path_${sample_size}/ 
 
 exp_type=TDATA # DATA
 gsf=1 # DATA
 
-result_path=../../input_vertex_${exp_type}
+result_path=../../ntuples
 
 ## Initialize the normial conditions
 # Pre-selection
@@ -196,10 +197,8 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     tree_cut_script=tree_cut_script.C
     echo '#include <iostream>' > $tree_cut_script
     echo "void tree_cut_script() {" >> $tree_cut_script
-    #echo 'gROOT->ProcessLine(".L ../run_vertex/tree_cut.C");' >> $tree_cut_script
-    #echo 'gROOT->ProcessLine("tree_cut()");' >> $tree_cut_script
-    echo 'gROOT->ProcessLine(".L ../run_vertex/tree_cut_bkgrej.C");' >> $tree_cut_script
-    echo 'gROOT->ProcessLine("tree_cut_bkgrej()");' >> $tree_cut_script
+    echo 'gROOT->ProcessLine(".L ../run_vertex/ntuples.C");' >> $tree_cut_script
+    echo 'gROOT->ProcessLine("ntuples()");' >> $tree_cut_script
     echo '}' >> $tree_cut_script
     root -l -n -q -b $tree_cut_script >> ${log_cut}
 done

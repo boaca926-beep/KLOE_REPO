@@ -1,5 +1,5 @@
 #include "../header/sm_para.h"
-#include "../header/path.h"
+#include "../header/path_ntuples.h"
 #include "../header/cut_para.h"
 #include "../header/method.h"
 #include <TStopwatch.h>
@@ -7,7 +7,7 @@
 TStopwatch timer;
 timer.Start();
   
-int tree_cut(){
+int ntuples(){
 
   //const TString f_path = folder_in + "/" + data_type + ".root";
   cout << "input path: " << sampleFile << endl;

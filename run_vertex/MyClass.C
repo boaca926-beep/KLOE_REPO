@@ -193,7 +193,12 @@ void MyClass::Main()
 
   ALLCHAIN_CUT.Branch("Br_PULLIST", &PULLIST, "Br_PULLIST[100]/D");
 
-  //ALLCHAIN_CUT.Branch("Br_MOM4TRKPLUS", &MOM4TRKPLUS, "MOM4TRKPLUS[4]/D");
+  ALLCHAIN_CUT.Branch("Br_MOM4PHO1", &MOM4PHO1, "MOM4PHO1[4]/D");
+  ALLCHAIN_CUT.Branch("Br_MOM4PHO2", &MOM4PHO2, "MOM4PHO2[4]/D");
+  ALLCHAIN_CUT.Branch("Br_MOM4PHO3", &MOM4PHO3, "MOM4PHO3[4]/D");
+  
+  ALLCHAIN_CUT.Branch("Br_MOM4TRKPLUS", &MOM4TRKPLUS, "MOM4TRKPLUS[4]/D");
+  ALLCHAIN_CUT.Branch("Br_MOM4TRKMINS", &MOM4TRKMINS, "MOM4TRKMINS[4]/D");
 
   //
   TTree ALLCHAIN_TEST ("ALLCHAIN_TEST", "recreate"); ALLCHAIN_TEST.SetAutoSave(0);
@@ -863,6 +868,7 @@ void MyClass::Main()
     TLorentzVector TLVector_3pi_kinfit7C = TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C + TLVector_ppl + TLVector_pmi;
     TLorentzVector TLVector_2pi_kinfit7C = TLVector_ppl + TLVector_pmi;
 
+    // final state 4-vector
     IM3pi_7C = (TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C + TLVector_ppl + TLVector_pmi).M();
     IM_3pi_nofit = (TLVector_pi0pho1 + TLVector_pi0pho2 + TLVector_ppl + TLVector_pmi).M();
 

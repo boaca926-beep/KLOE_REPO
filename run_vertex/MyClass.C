@@ -24,6 +24,7 @@ void MyClass::Main()
   int filfo_indx = -1;
   int evtcls_indx = -1;
 
+  int nan_value = 0;
   double evnt_sum = 0;
   double evnt_unstr = 0, evnt_cls = 0;
   double evnt_sig = 0, evnt_bkg = 0;
@@ -230,15 +231,15 @@ void MyClass::Main()
     //cout << "beam (bpx, bpy, bpz, bene) = " << "(" << bpx << ", " << bpy << ", " << bpz << ", " << bene << ") \n";
 
     /// select signal events (according to Antonio)
-    cout << "nvtxmc = " << nvtxmc << endl;
+    //cout << "nvtxmc = " << nvtxmc << endl;
     
     for (int kv = 0; kv < nvtxmc; kv ++) {
 
-      cout << "mother[" << kv << "] = " << mother[kv] << ", kinmom = " << kinmom[kv] << ", trkvtxmc = " << trkvtxmc[kv] << endl;
+      //cout << "mother[" << kv << "] = " << mother[kv] << ", kinmom = " << kinmom[kv] << ", trkvtxmc = " << trkvtxmc[kv] << endl;
 
     }
 
-    cout << "ntmc = " << ntmc << endl;
+    //cout << "ntmc = " << ntmc << endl;
     
     for (int i = 0; i < ntmc; i ++) {// loop over number of MC "tracks==particles"
 
@@ -246,7 +247,7 @@ void MyClass::Main()
       //if (pidmc[i] == 9) {// pi-, kine = 2
       //if (pidmc[i] == 7) {// pi0, kine = 3
       //if (kine[i] == 4 && pidmc[i] == 1) {// pi0 photons
-    	cout << "pidmc[i] = " << pidmc[i] << ", kine[i] = " << kine[i]  << ", virmom[i] = " << virmom[i] << ", indv[i] = " << indv[i] << endl;
+    	//cout << "pidmc[i] = " << pidmc[i] << ", kine[i] = " << kine[i]  << ", virmom[i] = " << virmom[i] << ", indv[i] = " << indv[i] << endl;
       }
       
     }
@@ -1069,8 +1070,8 @@ void MyClass::Main()
     */
     
     // resolutions
-    RESOLIST[0] = TLVector_pi0gg12_kinfit7C.M() - massneupion; // Mpi
-    RESOLIST[1] = IM_3pi; // M3pi
+    //RESOLIST[0] = TLVector_pi0gg12_kinfit7C.M() - massneupion; // Mpi
+    //RESOLIST[1] = IM_3pi; // M3pi
 
     //cout << "RESOLIST[0] = " << RESOLIST[0] << "\n";
 
@@ -1092,34 +1093,52 @@ void MyClass::Main()
     PULLIST[14] = pullkinfit(14);
 
     // pi0 photon1
-    PULLIST[15] = TLVector_pi0pho1_kinfit7C.E();
-    PULLIST[16] = TLVector_pi0pho1_kinfit7C.X();
-    PULLIST[17] = TLVector_pi0pho1_kinfit7C.Y();
-    PULLIST[18] = TLVector_pi0pho1_kinfit7C.Z();
+    RESOLIST[0] = TLVector_pi0pho1_kinfit7C.E();
+    RESOLIST[1] = TLVector_pi0pho1_kinfit7C.X();
+    RESOLIST[2] = TLVector_pi0pho1_kinfit7C.Y();
+    RESOLIST[3] = TLVector_pi0pho1_kinfit7C.Z();
 
     // pi0 photon2
-    PULLIST[0] = TLVector_pi0pho2_kinfit7C.E();
-    PULLIST[1] = TLVector_pi0pho2_kinfit7C.X();
-    PULLIST[2] = TLVector_pi0pho2_kinfit7C.Y();
-    PULLIST[3] = TLVector_pi0pho2_kinfit7C.Z();
-
-    // pi0 photon3
-    PULLIST[0] = TLVector_isrpho_kinfit7C.E();
-    PULLIST[1] = TLVector_isrpho_kinfit7C.X();
-    PULLIST[2] = TLVector_isrpho_kinfit7C.Y();
-    PULLIST[3] = TLVector_isrpho_kinfit7C.Z();
+    RESOLIST[4] = TLVector_pi0pho2_kinfit7C.E();
+    RESOLIST[5] = TLVector_pi0pho2_kinfit7C.X();
+    RESOLIST[6] = TLVector_pi0pho2_kinfit7C.Y();
+    RESOLIST[7] = TLVector_pi0pho2_kinfit7C.Z();
+    //cout << RESOLIST[4] << endl;
+    //if (std::isnan(RESOLIST[4])) {
+    
+    
+    // isr photon3
+    RESOLIST[8] = TLVector_isrpho_kinfit7C.E();
+    RESOLIST[9] = TLVector_isrpho_kinfit7C.X();
+    RESOLIST[10] = TLVector_isrpho_kinfit7C.Y();
+    RESOLIST[11] = TLVector_isrpho_kinfit7C.Z();
     
     // track 4 vectors
-    PULLIST[0] = TLVector_ppl.E();
-    PULLIST[1] = TLVector_ppl.X();
-    PULLIST[2] = TLVector_ppl.Y();
-    PULLIST[3] = TLVector_ppl.Z();
+    RESOLIST[12] = TLVector_ppl.E();
+    RESOLIST[13] = TLVector_ppl.X();
+    RESOLIST[14] = TLVector_ppl.Y();
+    RESOLIST[15] = TLVector_ppl.Z();
 
-    PULLIST[0] = TLVector_pmi.E();
-    PULLIST[1] = TLVector_pmi.X();
-    PULLIST[2] = TLVector_pmi.Y();
-    PULLIST[3] = TLVector_pmi.Z();
+    RESOLIST[16] = TLVector_pmi.E();
+    RESOLIST[17] = TLVector_pmi.X();
+    RESOLIST[18] = TLVector_pmi.Y();
+    RESOLIST[19] = TLVector_pmi.Z();
 
+    if (std::isnan(RESOLIST[0])) continue;
+
+    if (std::isnan(RESOLIST[4])) continue;
+
+    if (std::isnan(RESOLIST[8])) continue;
+
+    if (std::isnan(RESOLIST[12])) continue;
+
+    if (std::isnan(RESOLIST[16])) continue;
+
+    if (std::isnan(RESOLIST[5])) {
+      nan_value ++;
+      cout << "find -nan value" << endl;
+    }
+    
     //cout << Row << pullkinfit(0) << endl;
     test_value = ENERGYLIST[2];//DeltaE(TLVector_ppl_boost, TLVector_pmi_boost);
 
@@ -1299,6 +1318,8 @@ void MyClass::Main()
        << "Zvmax = " << Zvmax << "\n"
        << "Rhovmax = " << Rhovmax << "\n"
        << "nb_sigma_T_clust = " << nb_sigma_T_clust << "\n";
+
+  cout << "nan values: " << nan_value << endl;
   
   //myfile.close();
   

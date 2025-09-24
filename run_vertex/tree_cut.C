@@ -6,6 +6,24 @@
 
 TStopwatch timer;
 timer.Start();
+
+TLorentzVector Getphoton4vector(double E, double x, double y, double z) {
+  //given a cluster index returns the 4-mom of a photon
+  TVector3 gamma(x,y,z);
+  
+  Double_t scale1;
+  scale1=E/gamma.Mag();
+  TLorentzVector gamma4mom(scale1*gamma, E);
+  //cout << gamma4mom.M() << endl;
+  return gamma4mom;
+
+}
+
+const double IM3pi_min = 380; //
+const double IM3pi_max = 1020; //
+
+TH1D *hIM3pi_good = new TH1D("hIM3pi_good", "", 100, IM3pi_min, IM3pi_max);
+TH1D *hIM3pi_bad = new TH1D("hIM3pi_bad", "", 100, IM3pi_min, IM3pi_max);
   
 int tree_cut(){
 
@@ -40,13 +58,17 @@ int tree_cut(){
   double phox1 = 0., phox2 = 0., phox3 = 0., trkplusx = 0., trkminx = 0.;
   double phoy1 = 0., phoy2 = 0., phoy3 = 0., trkplusy = 0., trkminy = 0.;
   double phoz1 = 0., phoz2 = 0., phoz3 = 0., trkplusz = 0., trkminz = 0.;
+
+  TLorentzVector p0gam1, p0gam2, isrgam, trkplus, trkmin;
+  double m3pi_ntu = 0., mpi0_ntu = 0.;
+  double m3pi_ntu_good = 0., m3pi_ntu_bad = 0.;
   
-  int phid = 0, sig_type = 0;
+  int phid = 9999, sig_type = 9999;
   //int trigger_indx = 0;
   //int filfo_indx = 0;
   //int evtcls_indx = 0;
   //int fstate_indx = 0;
-  int bkg_indx = 0, recon_indx = 0;
+  int bkg_indx = 9999, recon_indx = 9999;
 
   double evnt_tot = 0; // total number of events
   double evnt_trigger = 0; // number of events after trigger
@@ -90,18 +112,31 @@ int tree_cut(){
     tree_tmp -> Branch("Br_pull_z1", &pull_z1, "Br_pull_z1/D");
     tree_tmp -> Branch("Br_pull_t1", &pull_t1, "Br_pull_t1/D");
 
-    /*
-    double phoE1 = 0., phoE2 = 0., phoE3 = 0., trkplusE = 0., trkminE = 0.;
-    double phox1 = 0., phox2 = 0., phox3 = 0., trkplusx = 0., trkminx = 0.;
-    double phoy1 = 0., phoy2 = 0., phoy3 = 0., trkplusy = 0., trkminy = 0.;
-    double phoz1 = 0., phoz2 = 0., phoz3 = 0., trkplusz = 0., trkminz = 0.;
-    */
-
     tree_tmp -> Branch("Br_phoE1", &phoE1, "Br_phoE1/D");
     tree_tmp -> Branch("Br_phox1", &phox1, "Br_phox1/D");
     tree_tmp -> Branch("Br_phoy1", &phoy1, "Br_phoy1/D");
     tree_tmp -> Branch("Br_phoz1", &phoz1, "Br_phoz1/D");
 
+    tree_tmp -> Branch("Br_phoE2", &phoE2, "Br_phoE2/D");
+    tree_tmp -> Branch("Br_phox2", &phox2, "Br_phox2/D");
+    tree_tmp -> Branch("Br_phoy2", &phoy2, "Br_phoy2/D");
+    tree_tmp -> Branch("Br_phoz2", &phoz2, "Br_phoz2/D");
+
+    tree_tmp -> Branch("Br_phoE3", &phoE3, "Br_phoE3/D");
+    tree_tmp -> Branch("Br_phox3", &phox3, "Br_phox3/D");
+    tree_tmp -> Branch("Br_phoy3", &phoy3, "Br_phoy3/D");
+    tree_tmp -> Branch("Br_phoz3", &phoz3, "Br_phoz3/D");
+
+    tree_tmp -> Branch("Br_trkplusE", &trkplusE, "Br_trkplusE/D");
+    tree_tmp -> Branch("Br_trkplusx", &trkplusx, "Br_trkplusx/D");
+    tree_tmp -> Branch("Br_trkplusy", &trkplusy, "Br_trkplusy/D");
+    tree_tmp -> Branch("Br_trkplusz", &trkplusz, "Br_trkplusz/D");
+
+    tree_tmp -> Branch("Br_trkminE", &trkminE, "Br_trkminE/D");
+    tree_tmp -> Branch("Br_trkminx", &trkminx, "Br_trkminx/D");
+    tree_tmp -> Branch("Br_trkminy", &trkminy, "Br_trkminy/D");
+    tree_tmp -> Branch("Br_trkminz", &trkminz, "Br_trkminz/D");
+    
     //
     tree_tmp -> Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
     tree_tmp -> Branch("Br_bkg_indx", &bkg_indx, "Br_bkg_indx/I");
@@ -129,7 +164,12 @@ int tree_cut(){
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
     tree_tmp -> Branch("Br_Eprompt_max", &Eprompt_max, "Br_Eprompt_max/D");
-	  
+
+    // ntuples
+    tree_tmp -> Branch("Br_m3pi_ntu", &m3pi_ntu, "Br_m3pi_ntu/D");
+    tree_tmp -> Branch("Br_mpi0_ntu", &mpi0_ntu, "Br_mpi0_ntu/D");
+    tree_tmp -> Branch("Br_m3pi_ntu_good", &m3pi_ntu_good, "Br_m3pi_ntu_good/D");
+    tree_tmp -> Branch("Br_m3pi_ntu_bad", &m3pi_ntu_bad, "Br_m3pi_ntu_bad");
   }
   
 
@@ -143,11 +183,55 @@ int tree_cut(){
     pull_z1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(3);
     pull_t1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(4);
 
-    phoE1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(15);
-    //phox1 = ALLCHAIN_CUT -> GetLeaf("Br_MOM4PHO1") -> GetValue(1);
-    //phoy1 = ALLCHAIN_CUT -> GetLeaf("Br_MOM4PHO1") -> GetValue(2);
-    //phoz1 = ALLCHAIN_CUT -> GetLeaf("Br_MOM4PHO1") -> GetValue(3);
-    //cout << phoE1 << endl;
+    //
+    phoE1 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(0);
+    phox1 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(1);
+    phoy1 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(2);
+    phoz1 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(3);
+
+    //p0gam1, p0gam2, isrgam, trkplus, trkmin
+    p0gam1 = Getphoton4vector(phoE1, phox1, phoy1, phoz1);
+    //cout << p0gam1.E() << endl;
+    
+    //
+    phoE2 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(4);
+    phox2 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(5);
+    phoy2 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(6);
+    phoz2 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(7);
+
+    p0gam2 = Getphoton4vector(phoE2, phox2, phoy2, phoz2);
+
+    //
+    phoE3 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(8);
+    phox3 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(9);
+    phoy3 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(10);
+    phoz3 = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(11);
+
+    isrgam = Getphoton4vector(phoE3, phox3, phoy3, phoz3);
+
+    //
+    trkplusE = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(12);
+    trkplusx = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(13);
+    trkplusy = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(14);
+    trkplusz = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(15);
+
+    trkplus = Getphoton4vector(trkplusE, trkplusx, trkplusy, trkplusz);
+
+    //
+    trkminE = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(16);
+    trkminx = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(17);
+    trkminy = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(18);
+    trkminz = ALLCHAIN_CUT -> GetLeaf("Br_RESOLIST") -> GetValue(19);
+
+    trkmin = Getphoton4vector(trkminE, trkminx, trkminy, trkminz);
+
+    // check ntuple results
+    m3pi_ntu = (p0gam1 + p0gam2 + trkplus + trkmin).M();
+    mpi0_ntu = (p0gam1 + p0gam2).M();
+
+    // good pi0 photon pairs: only for signal and etagam
+    //cout << recon_indx << ", " << bkg_indx << endl;
+
     
     //trigger_indx = ALLCHAIN_CUT -> GetLeaf("Br_trigger_indx") -> GetValue(0);
     //filfo_indx = ALLCHAIN_CUT -> GetLeaf("Br_filfo_indx") -> GetValue(0);
@@ -180,7 +264,19 @@ int tree_cut(){
     Epho_sum_recoil = ALLCHAIN_CUT -> GetLeaf("Br_Epho_sum_recoil") -> GetValue(0);
 
     Eprompt_max = 0.;
-  
+
+    if (phid == 0) {
+      if (recon_indx == 2 && bkg_indx == 1) {
+	//m3pi_ntu_good = (p0gam1 + p0gam2 + trkplus + trkmin).M();
+	hIM3pi_good -> Fill(m3pi_ntu);
+      }
+      else {
+	//m3pi_ntu_bad = (p0gam1 + p0gam2 + trkplus + trkmin).M();
+	hIM3pi_bad -> Fill(m3pi_ntu);
+	cout << m3pi_ntu << ", " << IM3pi_7C << endl;
+      }
+    }
+    
     if (Eisr > Eprompt_max) Eprompt_max = Eisr;
     if (Epi0_pho1 > Eprompt_max) Eprompt_max = Epi0_pho1;
     if (Epi0_pho2 > Eprompt_max) Eprompt_max = Epi0_pho2;
@@ -329,6 +425,9 @@ int tree_cut(){
   /// histos
 
   /// save
+  hIM3pi_good -> Write();
+  hIM3pi_bad -> Write();
+  
   f_output -> Close();
 
   double realTime = timer.RealTime();  // Wall clock time in seconds

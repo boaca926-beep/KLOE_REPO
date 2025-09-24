@@ -11,14 +11,19 @@ const double IM3pi_max = 1020; //
 const TString hist_nm = "_corred";
 //const TString infile_nm = "/home/bo/Desktop/analysis/crx3pi/output_norm/crx3pi0.root";
 //const TString infile_nm = "/home/bo/Desktop/analysis_root_v6/input_vertex_TDATA_bkgrej";
-const TString infile_nm = "/home/bo/Desktop/input_norm_TDATA";
+//const TString infile_nm = "/home/bo/Desktop/input_norm_TDATA";
+const TString infile_nm = "/home/bo/Desktop/input_vertex_TDATA";
+
 TFile *infile = new TFile(infile_nm + "/cut/tree_pre.root");
 TFile *inputfile = new TFile(infile_nm + "/input/sig.root"); 
 TFile *f_hist = new TFile(infile_nm + "/hist/hist.root"); 
 TList *HIM3pi_fit = (TList *)f_hist -> Get("HIM3pi_fit");
 TH1D *hdata = (TH1D *)HIM3pi_fit -> FindObject("h1d_IM3pi_TDATA") -> Clone();
 //hdata -> Draw();
+TH1D *hist = new TH1D("hist", "", 100, IM3pi_min, IM3pi_max);
+TH1D *hist_wrong = new TH1D("hist_wrong", "", 100, IM3pi_min, IM3pi_max);
 
+  
 TH2D *hcorrmatrix_tuned;
 TH2D *hcorrmatrix_good;  
 
@@ -101,7 +106,7 @@ void getCorrMatrix_good(TH2D *h2d_good, TH2D *h2d_bad) {// good signal events
   double IM3pi = 0., IM3pi_true = 0.;
   double IM3pi_corred = 0.;
   double PARA[5] = {frac, smallBias, smallSigma, wideBias, wideSigma};
-  
+
   for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow++) {// loop chain
 
     ALLCHAIN_CUT -> GetEntry(irow);
@@ -120,20 +125,19 @@ void getCorrMatrix_good(TH2D *h2d_good, TH2D *h2d_bad) {// good signal events
 	
     if (phid == 0) {// e+ e- -> omega pi0
       
-      //hist -> Fill(IM3pi);
       //h2d_scatter -> Fill(IM3pi_true, IM3pi);
 
       //if (recon_indx == 2) {
       if (recon_indx == 2 && bkg_indx == 1) {
 	h2d_good -> Fill(IM3pi_true, IM3pi);
-	//cout << IM3pi_true << ", " << IM3pi << endl;
+	hist -> Fill(IM3pi);
+      	//cout << IM3pi_true << ", " << IM3pi << endl;
 	
 	//h1d_resol_Eisr -> Fill(Eisr_resol);
       }
       else {
 	h2d_bad -> Fill(IM3pi_true, IM3pi);
-	
-	//hist_wrong -> Fill(IM3pi);
+	hist_wrong -> Fill(IM3pi);
 	//h2d_scatter_wrong -> Fill(IM3pi_true, IM3pi);
       }
 
@@ -184,13 +188,11 @@ int scatter_matr() {
   
   getCorrMatrix_good(hcorrmatrix_good, hcorrmatrix_bad);
   //hcorrmatrix_good -> Draw();
+  hcorrmatrix_bad -> Draw();
+  
   //hcorrmatrix_tuned -> Draw();
 
   /*
-  //TH2D * h2d = (TH2D*)infile -> Get("h2d_scatter" + hist_nm); // smeared matrix
-  TH2D * h2d = (TH2D*)infile -> Get("h2d_scatter");  // reconstructed matrix
-  */
-  
   double norm_factor = hcorrmatrix_tuned -> Integral();
   //hcorrmatrix_tuned -> Scale(1. / norm_factor);
   cout << norm_factor << ", hcorrmatrix_tuned:" << hcorrmatrix_tuned -> GetName() << endl;
@@ -296,17 +298,21 @@ int scatter_matr() {
   //line4 -> Draw("Same");
 
   gPad -> SetLogz();
+  */
   
   // save
-  //TFile *fout = new TFile("./plots/smearmatr.root", "recreate");
+  TFile *fout = new TFile("smearmatr.root", "recreate");
 
   //cout << cv_nm << endl;
   //cv -> SaveAs("./plots/scatter" + hist_nm +  ".pdf");
-  cv -> SaveAs("./corrmatrix_tunned.pdf");
-  cv1 -> SaveAs("./corrmatrix_good.pdf");
-  
-  //fout -> Close();
+  //cv -> SaveAs("./corrmatrix_tunned.pdf");
+  //cv1 -> SaveAs("./corrmatrix_good.pdf");
 
+  hist -> Write();
+  hist_wrong -> Write();
+  
+  fout -> Close();
+  
   return 0;
 
 }

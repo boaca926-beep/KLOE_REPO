@@ -267,11 +267,11 @@ int tree_cut(){
 
     if (phid == 0) {
       if (recon_indx == 2 && bkg_indx == 1) {
-	//m3pi_ntu_good = (p0gam1 + p0gam2 + trkplus + trkmin).M();
+	m3pi_ntu_good = (p0gam1 + p0gam2 + trkplus + trkmin).M();
 	hIM3pi_good -> Fill(m3pi_ntu);
       }
       else {
-	//m3pi_ntu_bad = (p0gam1 + p0gam2 + trkplus + trkmin).M();
+	m3pi_ntu_bad = (p0gam1 + p0gam2 + trkplus + trkmin).M();
 	hIM3pi_bad -> Fill(m3pi_ntu);
 	cout << m3pi_ntu << ", " << IM3pi_7C << endl;
       }

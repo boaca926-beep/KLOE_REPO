@@ -408,9 +408,6 @@ int tree_cut(){
     cout << "All trees in KSL saved" << endl;
   }
 
-  TCanvas *cv = new TCanvas("cv", " ", 800, 700);
-  hIM3pi_good -> Draw();
-  
   // Summary
   cout << "=========================================\n"
        << f_output -> GetName() << endl;

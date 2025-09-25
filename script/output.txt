@@ -1,0 +1,303 @@
+
+Processing compr_script.C...
+/home/bo/Desktop/input_vertex_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+tree12: classnm = TTree, objnm = TUFO
+tree13: classnm = TTree, objnm = TUFO
+tree14: classnm = TTree, objnm = TUFO
+tree15: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+
+Processing compr_script.C...
+/home/bo/Desktop/input_vertex_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+tree12: classnm = TTree, objnm = TUFO
+tree13: classnm = TTree, objnm = TUFO
+tree14: classnm = TTree, objnm = TUFO
+tree15: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_IM3pi_7C/hist_IM3pi_7C.root
+(int) 0
+
+Processing plot_script.C...
+9
+96
+pvalue = 3.03017e-06
+ymax = 0.0421482
+(int) 0
+
+Processing compr_script.C...
+/home/bo/Desktop/input_norm_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_IM3pi_7C/hist_IM3pi_7C.root
+(int) 0
+
+Processing plot_script.C...
+2055
+170284
+pvalue = 3.03017e-06
+ymax = 0.0251727
+(int) 0
+
+Processing compr_script.C...
+/home/bo/Desktop/input_norm_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+
+Processing compr_script.C...
+/home/bo/Desktop/input_chain_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_IM3pi_7C/hist_IM3pi_7C.root
+(int) 0
+
+Processing plot_script.C...
+5
+1006
+pvalue = 3.03017e-06
+ymax = 0.0155189
+(int) 0
+
+Processing compr_script.C...
+/home/bo/Desktop/input_norm_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_IM3pi_7C/hist_IM3pi_7C.root
+(int) 0
+
+Processing plot_script.C...
+57
+14388
+pvalue = 3.03017e-06
+ymax = 0.012963
+(int) 0
+
+Processing compr_script.C...
+/home/bo/Desktop/input_chain_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_IM3pi_7C/hist_IM3pi_7C.root
+(int) 0
+
+Processing plot_script.C...
+5
+1006
+pvalue = 3.03017e-06
+ymax = 0.0155189
+(int) 0
+
+Processing compr_script.C...
+/home/bo/Desktop/input_norm_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_IM3pi_7C/hist_IM3pi_7C.root
+(int) 0
+
+Processing plot_script.C...
+57
+14388
+pvalue = 3.03017e-06
+ymax = 0.012963
+(int) 0
+
+Processing compr_script.C...
+/home/bo/Desktop/input_chain_TDATA
+tree1: classnm = TTree, objnm = TISR3PI_SIG_GEN
+tree1: classnm = TTree, objnm = TISR3PI_SIG
+tree2: classnm = TTree, objnm = TOMEGAPI
+tree3: classnm = TTree, objnm = TKPM
+tree4: classnm = TTree, objnm = TKSL
+tree5: classnm = TTree, objnm = T3PIGAM
+tree6: classnm = TTree, objnm = TRHOPI
+tree7: classnm = TTree, objnm = TETAGAM
+tree8: classnm = TTree, objnm = TBKGREST
+tree9: classnm = TTree, objnm = TDATA
+tree10: classnm = TTree, objnm = TEEG
+tree11: classnm = TTree, objnm = TUFO
+data, Tree: TDATA
+eeg, Tree: TEEG
+omegapi, Tree: TOMEGAPI
+ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+(int) 0
+
+Processing plot_script.C...
+../../bkg_compr_IM3pi_7C/hist_IM3pi_7C.root
+(int) 0
+
+Processing plot_script.C...
+5
+1006
+pvalue = 3.03017e-06
+ymax = 0.0155189
+(int) 0

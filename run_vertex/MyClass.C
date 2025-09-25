@@ -873,6 +873,52 @@ void MyClass::Main()
     IM3pi_7C = (TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C + TLVector_ppl + TLVector_pmi).M();
     IM_3pi_nofit = (TLVector_pi0pho1 + TLVector_pi0pho2 + TLVector_ppl + TLVector_pmi).M();
 
+    // pi0 photon1
+    RESOLIST[0] = TLVector_pi0pho1_kinfit7C.E();
+    RESOLIST[1] = TLVector_pi0pho1_kinfit7C.X();
+    RESOLIST[2] = TLVector_pi0pho1_kinfit7C.Y();
+    RESOLIST[3] = TLVector_pi0pho1_kinfit7C.Z();
+
+    // pi0 photon2
+    RESOLIST[4] = TLVector_pi0pho2_kinfit7C.E();
+    RESOLIST[5] = TLVector_pi0pho2_kinfit7C.X();
+    RESOLIST[6] = TLVector_pi0pho2_kinfit7C.Y();
+    RESOLIST[7] = TLVector_pi0pho2_kinfit7C.Z();
+    //cout << RESOLIST[4] << endl;
+    //if (std::isnan(RESOLIST[4])) {
+    
+    
+    // isr photon3
+    RESOLIST[8] = TLVector_isrpho_kinfit7C.E();
+    RESOLIST[9] = TLVector_isrpho_kinfit7C.X();
+    RESOLIST[10] = TLVector_isrpho_kinfit7C.Y();
+    RESOLIST[11] = TLVector_isrpho_kinfit7C.Z();
+    
+    // track 4 vectors
+    RESOLIST[12] = TLVector_ppl.E();
+    RESOLIST[13] = TLVector_ppl.X();
+    RESOLIST[14] = TLVector_ppl.Y();
+    RESOLIST[15] = TLVector_ppl.Z();
+
+    RESOLIST[16] = TLVector_pmi.E();
+    RESOLIST[17] = TLVector_pmi.X();
+    RESOLIST[18] = TLVector_pmi.Y();
+    RESOLIST[19] = TLVector_pmi.Z();
+
+    if (std::isnan(RESOLIST[0])) continue;
+
+    if (std::isnan(RESOLIST[4])) continue;
+
+    if (std::isnan(RESOLIST[8])) continue;
+
+    if (std::isnan(RESOLIST[12])) continue;
+
+    if (std::isnan(RESOLIST[16])) continue;
+
+    if (std::isnan(RESOLIST[5])) {
+      nan_value ++;
+      cout << "find -nan value" << endl;
+    }
     
 
     //if (TLVector_pi0pho1_kinfit7C.M2() < 0. || TLVector_pi0pho2_kinfit7C.M2() < 0. || TLVector_isrpho_kinfit7C.M2() < 0.) continue;
@@ -1092,6 +1138,7 @@ void MyClass::Main()
     PULLIST[13] = pullkinfit(13);
     PULLIST[14] = pullkinfit(14);
 
+    /*
     // pi0 photon1
     RESOLIST[0] = TLVector_pi0pho1_kinfit7C.E();
     RESOLIST[1] = TLVector_pi0pho1_kinfit7C.X();
@@ -1138,6 +1185,7 @@ void MyClass::Main()
       nan_value ++;
       cout << "find -nan value" << endl;
     }
+    */
     
     //cout << Row << pullkinfit(0) << endl;
     test_value = ENERGYLIST[2];//DeltaE(TLVector_ppl_boost, TLVector_pmi_boost);

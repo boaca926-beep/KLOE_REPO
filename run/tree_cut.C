@@ -26,7 +26,7 @@ int tree_cut(){
   double ppIM = 0.;
   double IM3pi_7C = 0., IM3pi_true = 0.;
   double IM_pi0_7C = 0.;
-  double Eisr = 0.;
+  double Eisr = 0., Epi0_pho1 = 0., Epi0_pho2 = 0.;
   double pull_E1 = 0.;
   double pull_x1 = 0.;
   double pull_y1 = 0.;
@@ -46,6 +46,7 @@ int tree_cut(){
   double evnt_filfo = 0; // number of events after fiflo
   double evnt_evtcls = 0; // number of events after event classification
   double evnt_fstate = 0; // number of events after 2 tracks and 3 prompt photons
+  double Eprompt_max = 0.;
   
   TFile *f_output = new TFile(outputCut + "tree_pre.root", "update");
 
@@ -93,8 +94,11 @@ int tree_cut(){
     tree_tmp -> Branch("Br_ppIM", &ppIM, "Br_ppIM/D");
 
     tree_tmp -> Branch("Br_Eisr", &Eisr, "Br_Eisr/D");
+    tree_tmp -> Branch("Br_Epi0_pho1", &Epi0_pho1, "Br_Epi0_pho1/D");
+    tree_tmp -> Branch("Br_Epi0_pho2", &Epi0_pho2, "Br_Epi0_pho2/D");
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
+    tree_tmp -> Branch("Br_Eprompt_max", &Eprompt_max, "Br_Eprompt_max/D");
 
     tree_tmp -> Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
     tree_tmp -> Branch("Br_deltaE", &deltaE, "Br_deltaE/D");
@@ -136,8 +140,16 @@ int tree_cut(){
     IM_pi0_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM_pi0_7C") -> GetValue(0);
     IM3pi_true = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
     Eisr = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(0);
-
+    Epi0_pho1 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(1);
+    Epi0_pho2 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(3);
+    
     evnt_tot ++;
+
+    Eprompt_max = 0.;
+
+    if (Eisr > Eprompt_max) Eprompt_max = Eisr;
+    if (Epi0_pho1 > Eprompt_max) Eprompt_max = Epi0_pho1;
+    if (Epi0_pho2 > Eprompt_max) Eprompt_max = Epi0_pho2;
 
     //if (evnt_tot > 1e5) break;
 
@@ -161,13 +173,15 @@ int tree_cut(){
     //evnt_fstate ++;
     //cout << fstate_indx << endl;
 
-    //// background rejection
-
+    //// background rejection (nominal condtions)
     if (lagvalue_min_7C > chi2_cut) continue;
     else if (deltaE > deltaE_cut) continue;
     else if (angle_pi0gam12 > angle_cut) continue;
     else if (betapi0 > GetFBeta(beta_cut, c0, c1, ppIM)) continue;
     //else if (betapi0 < GetFBeta(beta_cut, c0, c1, ppIM)) continue; // radiative background region
+
+    //// background rejection (preserve etagam bkg)
+    else if (Eprompt_max < 320.) continue;
     
     //else if (IM3pi_7C > 850. || IM3pi_7C < 650.) continue; // reduce etagam background
     

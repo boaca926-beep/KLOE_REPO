@@ -47,13 +47,13 @@ echo -e "\nPlotting histo comparison ..."
 #BINS=150
 
 ##########################################################
-#VAR_NM=("Eprompt_max")
-#VAR_SYMB=("E_{#gamma}^{max}")
-#UNIT=("[MeV]")
+VAR_NM=("Eprompt_max")
+VAR_SYMB=("E_{#gamma}^{max}")
+UNIT=("[MeV]")
 
-#XMIN=(150)
-#XMAX=(350)
-#BINS=(150)
+XMIN=(150)
+XMAX=(350)
+BINS=(150)
 
 ##########################################################
 #VAR_NM=("Ephi_miss")
@@ -65,13 +65,13 @@ echo -e "\nPlotting histo comparison ..."
 #BINS=(150)
 
 ##########################################################
-VAR_NM=("IM3pi_7C")
-VAR_SYMB=("M_{3#pi}")
-UNIT=("[MeV]")
+#VAR_NM=("IM3pi_7C")
+#VAR_SYMB=("M_{3#pi}")
+#UNIT=("[MeV]")
 
-XMIN=(520)
-XMAX=(580)
-BINS=(150)
+#XMIN=(520)
+#XMAX=(580)
+#BINS=(150)
 
 output_folder="../../bkg_compr_"${VAR_NM[0]}
 

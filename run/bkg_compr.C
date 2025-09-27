@@ -34,8 +34,8 @@ int bkg_compr(){
   //cout << infile_nm << endl;
 
   // get generated signal
-  const TString input_folder = "/home/bo/Desktop/input_chain_TDATA";
-  //const TString input_folder = "/home/bo/Desktop/input_norm_TDATA";
+  //const TString input_folder = "/home/bo/Desktop/input_chain_TDATA";
+  const TString input_folder = "/home/bo/Desktop/input_etagam_TDATA";
   //const TString input_folder = "/home/bo/Desktop/input_vertex_TDATA";
   //const TString input_folder = "/home/bo/Desktop/input_vertex_TDATA_bkgrej_more";
   cout << input_folder << endl;

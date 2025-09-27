@@ -29,8 +29,8 @@ double gaussianPeak(double *x, double *par) {
 Double_t fitFunction(Double_t *x, Double_t *par) {
   double *p1 = &par[0];
   double *p2 = &par[2];
-  //return gaussianPeak(x, &par[3]);
-  return background(x, p1) + gaussianPeak(x, p2);
+  return gaussianPeak(x, p1);
+  //return background(x, p1) + gaussianPeak(x, p2);
 }
 
 int etapeak() {
@@ -126,8 +126,8 @@ int etapeak() {
   //hist_data -> GetYaxis() -> SetTitleFont(43);
   //hist_data -> GetYaxis() -> SetLabelFont(43); // Absolute font size in pixel (precision 3)
 
-  TPaveText *pt34 = new TPaveText(0.2, 0.75, 0.4, 0.8, "NDC");
-  PteAttr(pt34); pt34 -> SetTextSize(0.1);
+  TPaveText *pt34 = new TPaveText(0.2, 0.8, 0.4, 0.85, "NDC");
+  PteAttr(pt34); pt34 -> SetTextSize(0.06);
   //pt34 -> AddText("(a)");
   //pt34 -> AddText("(b)");
   //pt34 -> AddText("(c)");
@@ -141,11 +141,13 @@ int etapeak() {
   double mean = hist_data -> GetMean();
   double peak = hist_data -> GetMaximum();
   //double bin_width = getbinwidth(hist_data);
-  double fitpara[5] = {1, -1, peak, mean, rms};
+  //double fitpara[5] = {1, -1, peak, mean, rms};
+  double fitpara[3] = {peak, mean, rms};
+  
   //TF1 *fitFcn = new TF1("fitFcn", "[0] + [1]*x + [2]*exp(-0.5*((x-[3])/[4])^2)", 540, 560);
   const double fit_min = 545.;
-  const double fit_max = 550.;
-  TF1 *fitFcn = new TF1("fitFcn", fitFunction, fit_min, fit_max, 5);
+  const double fit_max = 551.;
+  TF1 *fitFcn = new TF1("fitFcn", fitFunction, fit_min, fit_max, 3);
   fitFcn -> SetParameters(fitpara);
   fitFcn -> SetLineColor(kRed);
   fitFcn -> SetLineWidth(1);
@@ -158,6 +160,24 @@ int etapeak() {
   fit_fun -> SetLineWidth(1);
   fit_fun -> SetNpx(5000);
 
+  // Calculate significance
+  const double etamass_pdg = 547.862;
+  const double etamass_pdg_err = 0.017;
+
+  const double etamass_thesis = fit_fun -> GetParameter(1);
+  const double etamass_thesis_err = fit_fun -> GetParError(1);
+  double etamass_diff_thesis = TMath::Abs(etamass_thesis - etamass_pdg) * 1e3;
+  
+  const double etamass_kloe2007 = 547.873;
+  const double etamass_kloe2007_err = TMath::Sqrt(0.007 * 0.007 + 0.031 *0.031);
+  double etamass_diff_kloe2007 = TMath::Abs(etamass_kloe2007 - etamass_pdg) * 1e3;
+  
+  // https://arxiv.org/pdf/0707.4616
+  
+  cout << "eta mass pdg: " << etamass_pdg << "+/-" << etamass_pdg_err << "\n"
+       << "thesis: " << etamass_thesis << "+/-" << etamass_thesis_err << ", mass - pdg: " << etamass_diff_thesis << " keV/c^2\n"
+       << "kloe2007: " << etamass_kloe2007 << "+/-" << etamass_kloe2007_err << ", mass - pdg: " << etamass_diff_kloe2007 << " keV/c^2\n";
+  
   // Draw
   TCanvas *cv = new TCanvas("cv", " ", 800, 700);
   cv -> SetBottomMargin(0.15);//0.007
@@ -210,7 +230,7 @@ int etapeak() {
   
   hist_data -> Draw();
   fit_fun -> Draw("Same");
-  
+
   /*
   hist_mcsum_sc -> Draw("SameHist");
   hist_isr3pi_sc -> Draw("SameHist");
@@ -220,7 +240,9 @@ int etapeak() {
   hist_mcrest_sc -> Draw("SameHist");
   hist_eeg_sc -> Draw("SameHist");
   */
-  //pt34 -> Draw("Same");
+  
+  pt34 -> AddText(Form("M_{#eta}=%0.3f#pm%0.3f [MeV/c^{2}]", fit_fun -> GetParameter(1), fit_fun -> GetParError(1)));
+  pt34 -> Draw("Same");
   
   //gPad->SetLogy();
 
@@ -244,7 +266,9 @@ int etapeak() {
   //legd_cv -> Draw("Same");
   
   legtextsize(legd_cv, 0.04);
-  
+
+  cv -> SaveAs("etamass.pdf");
+ 
   return 0;
   
 }

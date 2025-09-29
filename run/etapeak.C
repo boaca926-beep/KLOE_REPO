@@ -1,6 +1,6 @@
 #include "../header/plot.h"
 
-const TString output_folder = "../../bkg_compr_IM3pi_7C";
+const TString output_folder = "../../eta_IM3pi_7C";
 const TString var_nm = "IM3pi_7C";
 const TString unit = "[MeV]";
 const TString var_symb = "M_{3#pi}";
@@ -150,14 +150,14 @@ int etapeak() {
   TF1 *fitFcn = new TF1("fitFcn", fitFunction, fit_min, fit_max, 3);
   fitFcn -> SetParameters(fitpara);
   fitFcn -> SetLineColor(kRed);
-  fitFcn -> SetLineWidth(1);
+  fitFcn -> SetLineWidth(2);
   fitFcn -> SetNpx(5000);
     
   TFitResultPtr r = hist_data -> Fit("fitFcn", "LM0", "", fit_min, fit_max);
   TF1 *fit_fun = hist_data -> GetFunction("fitFcn");
   fit_fun -> SetLineColor(kRed);
   fit_fun -> SetLineStyle(1);
-  fit_fun -> SetLineWidth(1);
+  fit_fun -> SetLineWidth(4);
   fit_fun -> SetNpx(5000);
 
   // Calculate significance
@@ -171,12 +171,13 @@ int etapeak() {
   const double etamass_kloe2007 = 547.873;
   const double etamass_kloe2007_err = TMath::Sqrt(0.007 * 0.007 + 0.031 *0.031);
   double etamass_diff_kloe2007 = TMath::Abs(etamass_kloe2007 - etamass_pdg) * 1e3;
+  double etamass_emc_syst = TMath::Sqrt(4 * 4 + 4 * 4 + 8 * 8);
   
   // https://arxiv.org/pdf/0707.4616
   
   cout << "eta mass pdg: " << etamass_pdg << "+/-" << etamass_pdg_err << "\n"
        << "thesis: " << etamass_thesis << "+/-" << etamass_thesis_err << ", mass - pdg: " << etamass_diff_thesis << " keV/c^2\n"
-       << "kloe2007: " << etamass_kloe2007 << "+/-" << etamass_kloe2007_err << ", mass - pdg: " << etamass_diff_kloe2007 << " keV/c^2\n";
+       << "kloe2007: " << etamass_kloe2007 << "+/-" << etamass_kloe2007_err << ", mass - pdg: " << etamass_diff_kloe2007 << " keV/c^2, " << etamass_emc_syst << " keV/c^2\n";
   
   // Draw
   TCanvas *cv = new TCanvas("cv", " ", 800, 700);
@@ -231,7 +232,8 @@ int etapeak() {
   hist_data -> Draw();
   fit_fun -> Draw("Same");
 
-  /*
+  formatfill_h(hist_etagam_sc, 3, 3001);
+
   hist_mcsum_sc -> Draw("SameHist");
   hist_isr3pi_sc -> Draw("SameHist");
   hist_omegapi_sc -> Draw("SameHist");
@@ -239,7 +241,6 @@ int etapeak() {
   hist_ksl_sc -> Draw("SameHist");
   hist_mcrest_sc -> Draw("SameHist");
   hist_eeg_sc -> Draw("SameHist");
-  */
   
   pt34 -> AddText(Form("M_{#eta}=%0.3f#pm%0.3f [MeV/c^{2}]", fit_fun -> GetParameter(1), fit_fun -> GetParError(1)));
   pt34 -> Draw("Same");

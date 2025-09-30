@@ -5,7 +5,7 @@ echo -e "\nPlotting histo comparison ..."
 ##################################################################
 #VAR_NM=("deltaE")
 #VAR_SYMB=("E_{diff}")
-#UNIT=("[MeV]")                                                                                                                                                       
+#UNIT=("[MeV]")                                                                      
 #XMIN=(-600) #-700, -500
 #XMAX=(-50) #-200, 50
 #BINS=(150) #150, 550
@@ -23,16 +23,15 @@ echo -e "\nPlotting histo comparison ..."
 #VAR_NM=("angle_pi0gam12")
 #VAR_SYMB=("#angle_{#gamma#gamma}")
 #UNIT=("[#circ]")                                                                         
-
 #XMIN=(0) #20
 #XMAX=(180) #140
 #BINS=(180) #120
 
-##################################################################                        
+##################################################################
 #VAR_NM="betapi0"
 #VAR_SYMB="#beta_{#pi}"
-#UNIT=""                                                                                  
 
+#UNIT=""                                                                         
 #XMIN=0.6
 #XMAX=1
 #BINS=150
@@ -47,13 +46,13 @@ echo -e "\nPlotting histo comparison ..."
 #BINS=150
 
 ##########################################################
-VAR_NM=("Eprompt_max")
-VAR_SYMB=("E_{#gamma}^{max}")
-UNIT=("[MeV]")
+#VAR_NM=("Eprompt_max")
+#VAR_SYMB=("E_{#gamma}^{max}")
+#UNIT=("[MeV]")
 
-XMIN=(150)
-XMAX=(350)
-BINS=(150)
+#XMIN=(150)
+#XMAX=(350)
+#BINS=(150)
 
 ##########################################################
 #VAR_NM=("Ephi_miss")
@@ -72,6 +71,15 @@ BINS=(150)
 #XMIN=(520)
 #XMAX=(580)
 #BINS=(150)
+
+##########################################################
+VAR_NM=("IM_pi0_7C")
+VAR_SYMB=("M_{#gamma#gamma}")
+UNIT=("[MeV\/c^{2}]")                                                           
+
+XMIN=(120)
+XMAX=(150)
+BINS=(100)
 
 output_folder="../../bkg_compr_"${VAR_NM[0]}
 

@@ -30,6 +30,14 @@ echo '  gROOT->ProcessLine("mass_compr()");' >> $mass_script
 echo '}' >> $mass_script
 root -l -n -q -b $mass_script
 
+width_script=width_script.C
+echo '#include <iostream>' > $width_script
+echo "void width_script() {" >> $width_script
+echo '  gROOT->ProcessLine(".L ../run/width_compr.C");' >> $width_script
+echo '  gROOT->ProcessLine("width_compr()");' >> $width_script
+echo '}' >> $width_script
+root -l -n -q -b $width_script
+
 branch_script=branch_script.C
 echo '#include <iostream>' > $branch_script
 echo "void branch_script() {" >> $branch_script
@@ -40,3 +48,5 @@ root -l -n -q -b $branch_script
 
 rm $mass_script
 rm $branch_script
+rm $width_script
+

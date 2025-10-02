@@ -86,12 +86,11 @@ int plot_models_compr() {
   cout << f2 -> GetName() << endl;
   cout << PARA_LABEL[0] << ": " << OMEGA_PARA_F2[0] << "+/-" << PARA_LABEL[1] << "; " << OMEGA_PARA_ERR_F2[0] << ": " << OMEGA_PARA_F2[1] << "+/-" << OMEGA_PARA_ERR_F2[1] << "; " << PARA_LABEL[2] << "; " << OMEGA_PARA_F2[2] << "+/-" << OMEGA_PARA_ERR_F2[2] << "\n\n";
 
-  /*
-  cout << "Lumi_int_fit_f2 = " << Lumi_int_fit_f2 << "\n"
-       << "chi2_sum_f2 = " << chi2_sum_f2 << "\n"
-       << "ndf_f2 = " << ndf_f2 << "\n\n";
-  */
-
+  
+  //cout << "Lumi_int_fit_f2 = " << Lumi_int_fit_f2 << "\n"
+  //     << "chi2_sum_f2 = " << chi2_sum_f2 << "\n"
+  //     << "ndf_f2 = " << ndf_f2 << "\n\n";
+  
   //// Calculate errors
   double y_diff = 0.;
   double y_uncorr_err = 0.;
@@ -109,8 +108,8 @@ int plot_models_compr() {
 
   }
   //// Pull; difference between BW & VMD result
-  const int nbins = n3pi_fit_f1 -> GetN();
-  //cout << "nbins = " << nbins << endl;
+  const int nbins = 15;
+  cout << "nbins = " << n3pi_fit_f1 -> GetN() << endl;
 
   double ZVALUE[nbins], ZVALUE_ERR[nbins];
   double MVALUE[nbins], MVALUE_ERR[nbins];
@@ -148,17 +147,17 @@ int plot_models_compr() {
   gf_Z -> Draw();
 
   //// Plot
-  TCanvas *cv_n3pi_fit = new TCanvas("cv_n3pi_fit", "Nobs 3pi", 0, 0, 1200, 800);
+  TCanvas *cv_n3pi_fit = new TCanvas("cv_n3pi_fit", "Nobs 3pi", 0, 0, 1400, 800);
 
   cv_n3pi_fit -> SetLeftMargin(0.1);
-  cv_n3pi_fit -> SetBottomMargin(0.1);//0.007
+  cv_n3pi_fit -> SetBottomMargin(0.12);//0.007
   
   char display1[50], display2[50], display3[50], display4[50], display5[50];
 
-  TPaveText *pt1 = new TPaveText(0.12, 0.70, 0.43, 0.72, "NDC");
-  TPaveText *pt2 = new TPaveText(0.12, 0.64, 0.43, 0.66, "NDC");
-  TPaveText *pt3 = new TPaveText(0.12, 0.58, 0.43, 0.60, "NDC");
-  TPaveText *pt4 = new TPaveText(0.12, 0.52, 0.43, 0.54, "NDC");
+  TPaveText *pt1 = new TPaveText(0.14, 0.70, 0.33, 0.72, "NDC");
+  TPaveText *pt2 = new TPaveText(0.14, 0.64, 0.33, 0.66, "NDC");
+  TPaveText *pt3 = new TPaveText(0.14, 0.58, 0.33, 0.60, "NDC");
+  TPaveText *pt4 = new TPaveText(0.14, 0.52, 0.33, 0.54, "NDC");
 
   TPaveText *pt11 = new TPaveText(0.65, 0.70, 0.80, 0.72, "NDC");
   TPaveText *pt22 = new TPaveText(0.65, 0.64, 0.80, 0.66, "NDC");
@@ -195,8 +194,9 @@ int plot_models_compr() {
   n3pi_obs_f2 -> SetLineWidth(2);
 
   n3pi_obs_f2 -> GetXaxis() -> SetTitleOffset(1);
-  n3pi_obs_f2 -> GetXaxis() -> SetLabelOffset(1.2);
-  n3pi_obs_f2 -> GetXaxis() -> SetLabelSize(0.04);
+  //n3pi_obs_f2 -> GetXaxis() -> SetLabelOffset(1.2);
+  //n3pi_obs_f2 -> GetXaxis() -> SetLabelSize(0.04);
+  //n3pi_obs_f2 -> GetXaxis() -> SetRangeUser(760, 800);
   
   n3pi_obs_f2 -> GetYaxis() -> SetTitle(TString::Format("Events/[%0.2f MeV/c^{2}]", Delta_m3pi));
   n3pi_obs_f2 -> GetYaxis() -> SetTitleSize(0.06);
@@ -220,6 +220,7 @@ int plot_models_compr() {
   //n3pi_obs_f1 -> GetYaxis() -> SetTitle(TString::Format("Events/[%0.2f MeV/c^{2}]", Delta_m3pi));
   //n3pi_obs_f1 -> GetYaxis() -> SetTitleSize(0.06);
 
+  /*
   TPad *p2 = new TPad("p2", "p2", 0., 0., 1., 0.25);
   p2 -> Draw();
   p2 -> SetBottomMargin(0.4);
@@ -231,6 +232,7 @@ int plot_models_compr() {
   p1 -> SetBottomMargin(0.02);//0.007
   p1 -> SetLeftMargin(0.1);
   p1 -> cd();
+  */
   
   n3pi_fit_f1 -> SetLineStyle(7);
   
@@ -256,7 +258,8 @@ int plot_models_compr() {
   legd_cv -> Draw("Same");
 
   legtextsize(legd_cv, 0.04);
-  
+
+  /*
   p2 -> cd();
 
   gf_Z -> SetLineColor(0);
@@ -268,7 +271,7 @@ int plot_models_compr() {
   gf_Z -> GetYaxis() -> SetLabelSize(25);
   gf_Z -> GetYaxis() -> CenterTitle();
   gf_Z -> GetYaxis() -> SetTitle("Z [#sigma]");
-  gf_Z -> GetYaxis() -> SetRangeUser(-1., 5.);
+  gf_Z -> GetYaxis() -> SetRangeUser(-1., 2.);
   //gf_Z -> GetYaxis() -> SetTitle("(N_{d} - N_{mc})/#sqrt{N_{d}}");
 
   //gf_Z -> GetXaxis() -> SetLabelFont(43); // Absolute font size in pixel (precision 3)
@@ -276,6 +279,7 @@ int plot_models_compr() {
   //gf_Z -> GetXaxis() -> SetTitleSize(45);
   gf_Z -> GetXaxis() -> SetLabelSize(0.15);
   //gf_Z -> GetXaxis() -> SetLabelOffset(0.2);
+  //gf_Z -> GetXaxis() -> SetRangeUser(745, 810);
   gf_Z -> GetXaxis() -> SetTitleSize(0.2);
   gf_Z -> GetXaxis() -> SetTitle("M_{3#pi} [MeV/c^{2}]");
   gf_Z -> GetXaxis() -> CenterTitle();
@@ -300,9 +304,12 @@ int plot_models_compr() {
 
   //gPad -> SetLogy();
 
+  cout << "Graph1 X-range: " << n3pi_obs_f2->GetHistogram()->GetXaxis()->GetXmin() << " to " << n3pi_obs_f2->GetHistogram()->GetXaxis()->GetXmax() << endl;
+  cout << "Graph1 X-range: " << gf_Z->GetHistogram()->GetXaxis()->GetXmin() << " to " << gf_Z->GetHistogram()->GetXaxis()->GetXmax() << endl;
+  */
+  
   // save
   cv_n3pi_fit -> SaveAs(outputFolder + "crx3pi_compr.pdf");
-  
   return 0;
   
 }

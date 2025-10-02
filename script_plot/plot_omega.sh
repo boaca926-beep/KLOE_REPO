@@ -6,7 +6,10 @@
 #FILE_TYPE=("chain")
 #FILE_TYPE=("norm")
 #FILE_TYPE=("mini")
-FILE_TYPE=("vertex" "efficy_norm" "norm")
+FILE_TYPE=("vertex" "efficy_norm" "norm" "vmd_norm")
+#FILE_TYPE=("vertex")
+#FILE_TYPE=("efficy_norm")
+#FILE_TYPE=("norm")
 #FILE_TYPE=("isrlumi_norm" "norm")
 #FILE_TYPE=("vmd_norm" "norm" "efficy_norm" "isrlumi_norm")
 
@@ -38,7 +41,8 @@ for ((i=0; i<${#FILE_TYPE[@]}; ++i)); do
     #input_file="/home/bo/Desktop/analysis_root_v6/analysis_${file_type}_TDATA/omega_fit/omega_fit.root"
     input_file="../../input_${file_type}_TDATA/omega_fit/omega_fit.root"
     #input_file="../../analysis_${file_type}_TDATA/omega_fit/omega_fit.root"
-
+    #input_file="../../input_${file_type}_TDATA_bkgrej/omega_fit/omega_fit.root"
+    
     sed -i 's|\(const TString input_file =\)\(.*\)|\1 "'"${input_file}"'";|' "$header"
     sed -i 's|\(const TString file_type =\)\(.*\)|\1 "'"${file_type}"'";|' "$header"
     sed -i 's|\(const TString outputPlot =\)\(.*\)|\1 "'"${plot_folder}"'";|' "$header"

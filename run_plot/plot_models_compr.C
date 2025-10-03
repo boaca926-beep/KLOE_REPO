@@ -109,7 +109,7 @@ int plot_models_compr() {
 
   }
   //// Pull; difference between BW & VMD result
-  const int nbins = n3pi_fit_f1 -> GetN();
+  const int nbins = 15; //n3pi_fit_f1 -> GetN();
   //cout << "nbins = " << nbins << endl;
 
   double ZVALUE[nbins], ZVALUE_ERR[nbins];

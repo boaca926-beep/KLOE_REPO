@@ -29,8 +29,8 @@ int branch_compr(){
   }
 
   // KLOE ISR (this work)
-  const double branch1 = 5.47389;
-  const double branch1_err = 0.06;
+  const double branch1 = 5.85579;
+  const double branch1_err = 0.0631726;
   const double branch1_syst_err_plus = 0.11;
   const double branch1_syst_err_minus = 0.08;
 

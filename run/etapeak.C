@@ -167,17 +167,19 @@ int etapeak() {
   const double etamass_thesis = fit_fun -> GetParameter(1);
   const double etamass_thesis_err = fit_fun -> GetParError(1);
   double etamass_diff_thesis = TMath::Abs(etamass_thesis - etamass_pdg) * 1e3;
-  
+  double etamass_diff_thesis_err = TMath::Sqrt(etamass_thesis_err * etamass_thesis_err + etamass_pdg_err * etamass_pdg_err) * 1e3;
+    
   const double etamass_kloe2007 = 547.873;
   const double etamass_kloe2007_err = TMath::Sqrt(0.007 * 0.007 + 0.031 *0.031);
   double etamass_diff_kloe2007 = TMath::Abs(etamass_kloe2007 - etamass_pdg) * 1e3;
   double etamass_emc_syst = TMath::Sqrt(4 * 4 + 4 * 4 + 8 * 8);
+  double etamass_diff_kloe2007_err = TMath::Sqrt(etamass_kloe2007_err * etamass_kloe2007_err + etamass_pdg_err * etamass_pdg_err) * 1e3;
   
   // https://arxiv.org/pdf/0707.4616
   
   cout << "eta mass pdg: " << etamass_pdg << "+/-" << etamass_pdg_err << "\n"
-       << "thesis: " << etamass_thesis << "+/-" << etamass_thesis_err << ", mass - pdg: " << etamass_diff_thesis << " keV/c^2\n"
-       << "kloe2007: " << etamass_kloe2007 << "+/-" << etamass_kloe2007_err << ", mass - pdg: " << etamass_diff_kloe2007 << " keV/c^2, " << etamass_emc_syst << " keV/c^2\n";
+       << "thesis: " << etamass_thesis << "+/-" << etamass_thesis_err << ", mass - pdg: " << etamass_diff_thesis << "+/-" << etamass_diff_thesis_err << " keV/c^2\n"
+       << "kloe2007: " << etamass_kloe2007 << "+/-" << etamass_kloe2007_err << ", mass - pdg: " << etamass_diff_kloe2007 << "+/-" << etamass_diff_kloe2007_err << " keV/c^2, " << etamass_emc_syst << " keV/c^2\n";
   
   // Draw
   TCanvas *cv = new TCanvas("cv", " ", 800, 700);

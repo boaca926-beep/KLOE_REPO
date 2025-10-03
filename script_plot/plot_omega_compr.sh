@@ -1,8 +1,9 @@
 #FILE_TYPE=("efficy_norm" "norm" "models" "Efficiency corrected" "Nominal")
 #FILE_TYPE=("vertex" "norm" "omega" "" "")
 #FILE_TYPE=("vmd_mini" "mini" "models")
-#FILE_TYPE=("vmd_norm" "norm" "models" "VMD" "BW")
-FILE_TYPE=("isrlumi_norm" "norm" "models" "Exact" "Approx")
+FILE_TYPE=("vmd_norm" "norm" "models" "VMD" "BW")
+#FILE_TYPE=("isrlumi_norm" "norm" "models" "Exact" "Approx")
+#FILE_TYPE=("efficy_norm" "norm" "models" "Efficiency corrected" "Nominal")
 
 #sample_size="mini"
 file_type1=${FILE_TYPE[0]}

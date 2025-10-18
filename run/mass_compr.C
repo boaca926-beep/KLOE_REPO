@@ -169,7 +169,7 @@ int mass_compr(){
   const double LABEL_INDX[nb_point] = {XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0], XLIST_EXP5[0], XLIST_EXP6[0], XLIST_EXP7[0], XLIST_EXP8[0], XLIST_EXP9[0], XLIST_EXP10[0], XLIST_EXP11[0], XLIST_EXP12[0], XLIST_EXP13[0]};
   const double LABEL_GF[nb_point] = {0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.};
   const TString EXP1_STR[nb_point] = {"", "", "", "", "", "", "", "", "", "", "", ""};
-  const TString EXP_STR[nb_point] = {"KLOE-2", "BABR04", "BABR20", "BESIII", "CMD-2a", "CMD-2b", "RVUE", "CBARa", "CBARb", "CBARc", "ASTE", "CNTR"};
+  const TString EXP_STR[nb_point] = {"This Work", "BABR04", "BABR20", "BESIII", "CMD-2a", "CMD-2b", "RVUE", "CBARa", "CBARb", "CBARc", "ASTE", "CNTR"};
 
   const double LABEL_INDX1[nb_point] = {XLIST_EXP1[0]};
   const double LABEL_GF1[1] = {0.};
@@ -340,7 +340,7 @@ int mass_compr(){
   TCanvas *cv = new TCanvas("cv_mass_compr", "cv_mass_compr", 0, 0, 1000, 700);
   //cv -> SetGrid();
   //cv -> SetLeftMargin(0.2);
-  cv -> SetBottomMargin(0.18);
+  cv -> SetBottomMargin(0.19);
 
   /*
   TPad *p2 = new TPad("p2", "p2", 0., 0., 1., 0.35);

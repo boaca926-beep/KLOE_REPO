@@ -116,7 +116,7 @@ int branch_compr(){
   // label
   const double LABEL_INDX[nb_point] = {XLIST_EXP1[0], XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0], XLIST_EXP5[0], XLIST_EXP6[0], XLIST_EXP7[0]};
   const double LABEL_GF[nb_point] = {0., 0., 0., 0., 0., 0., 0.};
-  const TString EXP_STR[nb_point] = {"KLOE-2", "BABR04", "BABR20", "BESIII", "CMD-2", "RVUE", "ND"};
+  const TString EXP_STR[nb_point] = {"This work", "BABR04", "BABR20", "BESIII", "CMD-2", "RVUE", "ND"};
 
   // graphs
   TGraphAsymmErrors *gf_exp1 = new TGraphAsymmErrors(1, XLIST_EXP1, BRANCH_EXP1, BRANCH1_EXL, BRANCH1_EXH, BRANCH1_EYL, BRANCH1_EYH);
@@ -191,7 +191,7 @@ int branch_compr(){
   TCanvas *cv = new TCanvas("cv_branch_compr", "cv_branch_compr", 0, 0, 1000, 700);
   //cv -> SetGrid();
   //cv -> SetLeftMargin(0.2);
-  cv -> SetBottomMargin(0.17);
+  cv -> SetBottomMargin(0.18);
 
   TPaveText *pt1 = new TPaveText(0.11, 0.8, 0.65, 0.82, "NDC");
   PteAttr(pt1);

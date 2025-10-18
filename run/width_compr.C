@@ -81,7 +81,7 @@ int width_compr(){
   // label
   const double LABEL_INDX[nb_point] = {XLIST_EXP1[0], XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0]};
   const double LABEL_GF[nb_point] = {0., 0., 0., 0.};
-  const TString EXP_STR[nb_point] = {"KLOE-2", "BABR", "RVUE", "CMD-2"};
+  const TString EXP_STR[nb_point] = {"This work", "BABR", "RVUE", "CMD-2"};
 
   // graphs
   TGraphAsymmErrors *gf_exp1 = new TGraphAsymmErrors(1, XLIST_EXP1, WIDTH_EXP1, WIDTH1_EXL, WIDTH1_EXH, WIDTH1_EYL, WIDTH1_EYH);
@@ -138,7 +138,7 @@ int width_compr(){
   TCanvas *cv = new TCanvas("cv_width_compr", "cv_width_compr", 0, 0, 1000, 700);
   //cv -> SetGrid();
   //cv -> SetLeftMargin(0.2);
-  cv -> SetBottomMargin(0.17);
+  cv -> SetBottomMargin(0.18);
 
   TPaveText *pt1 = new TPaveText(0.11, 0.8, 0.65, 0.82, "NDC");
   PteAttr(pt1);

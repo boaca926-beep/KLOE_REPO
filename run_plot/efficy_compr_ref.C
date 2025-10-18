@@ -1,0 +1,248 @@
+#include "../hist.h"
+#include "efficy.h"
+
+void legtextsize(TLegend* l, Double_t size) {
+  for(int i = 0 ; i < l -> GetListOfPrimitives() -> GetSize() ; i++) {
+    TLegendEntry *header = (TLegendEntry*)l->GetListOfPrimitives()->At(i);
+    header->SetTextSize(size);
+  }
+}
+
+TCanvas *plot_efficy(TH1D *h1d, TH1D* h1d_1, TString cv_nm, TString cv_title) {
+
+  TCanvas *cv = new TCanvas(cv_nm, cv_title, 1100, 600);
+
+  cv -> SetBottomMargin(0.15);
+  cv -> SetLeftMargin(0.15);
+  cv -> SetRightMargin(0.15);
+
+  h1d -> GetYaxis() -> SetTitle(TString::Format("Efficiency/[%0.2f MeV/c^{2}]", getbinwidth(h1d)));
+  h1d -> GetYaxis() -> CenterTitle();
+  h1d -> GetYaxis() -> SetLabelSize(0.05);
+  h1d -> GetYaxis() -> SetTitleSize(0.08);
+  h1d -> GetYaxis() -> SetTitleFont(132);
+  h1d -> GetYaxis() -> SetTitleOffset(.9);
+  h1d -> GetYaxis() -> SetRangeUser(0.01, 0.05 * 1.2); 
+      
+  h1d -> GetXaxis() -> SetTitle("M_{3#pi} [MeV/c^{2}]");
+  h1d -> GetXaxis() -> CenterTitle();
+  h1d -> GetXaxis() -> SetLabelSize(0.05);
+  h1d -> GetXaxis() -> SetTitleSize(0.08);
+  h1d -> GetXaxis() -> SetTitleFont(132);
+  h1d -> GetXaxis() -> SetRangeUser(740., 820.);
+  h1d -> GetXaxis() -> SetTitleOffset(.8);
+
+  h1d -> Draw();
+  h1d_1 -> Draw("Same");
+  
+
+  TLegend *legd_cv = new TLegend(0.4, 0.75, 0.8, 0.9);
+  
+  legd_cv -> SetTextFont(132);
+  legd_cv -> SetFillStyle(0);
+  legd_cv -> SetBorderSize(0);
+  legd_cv -> SetNColumns(2);
+
+  legd_cv -> AddEntry(h1d, "#varepsilon^{signal}_{3#pi}", "lep"); //ratio_tit
+  legd_cv -> AddEntry(h1d_1, "#varepsilon^{#rho#pi}_{3#pi}", "lep"); //ratio_tit
+  legd_cv -> Draw("Same");
+  
+  legtextsize(legd_cv, 0.1);
+
+  return cv;
+  
+}
+
+int efficy() {
+
+  //gROOT->SetBatch(kTRUE);
+  gErrorIgnoreLevel = kError;
+  TGaxis::SetMaxDigits(4);
+  gStyle->SetOptStat(0);
+
+  // get efficiency histos
+  cout << "Get efficiency histos." << endl;
+  TFile *intree_histo = new TFile("./efficy_compr_output.root");
+
+  TH1D* hefficy_sig_apprx = (TH1D*)intree_histo -> Get("hefficy_sig_apprx");
+  format_h(hefficy_sig_apprx, 4, 2);// color 45
+  hefficy_sig_apprx -> SetMarkerStyle(21);
+  hefficy_sig_apprx -> SetMarkerSize(0.5);
+  hefficy_sig_apprx -> SetMarkerColor(4);
+
+  // plot efficiencies
+  cout << "Plot efficiencies from " << infile << endl;
+
+  TFile *intree = new TFile(infile);
+  
+  TIter next_tree(intree -> GetListOfKeys());
+
+  TString objnm_tree, classnm_tree;
+  
+  int i = 0;
+  TKey *key;
+  
+  while ( (key = (TKey *) next_tree() ) ) {// start tree while lop
+    
+    i ++;
+    
+    objnm_tree   =  key -> GetName();
+    classnm_tree = key -> GetClassName();
+    key -> GetSeekKey();
+    
+    //cout << "tree" << i << ": classnm = " << classnm_tree << ", objnm = " << objnm_tree << endl;
+    
+  }
+
+  //cout << hgen_type << endl;
+  //cout << htrue_type << endl;
+  
+  TH1D* htrue = (TH1D*)intree -> Get("h1d_IM3pi_" + htrue_type);
+  
+  format_h(htrue, color_indx, 2);
+  htrue -> SetLineStyle(2);
+
+  TH1D* hgen = (TH1D*)intree -> Get("h1d_IM3pi_" + hgen_type);
+  format_h(hgen, color_indx, 2);
+
+  TH1D* hefficy = (TH1D*)intree -> Get(hefficy_type);
+  format_h(hefficy, color_indx, 2);
+
+  //// Plot
+  cout << "Plot efficy ... " << endl;
+
+  //
+  double binwidth = getbinwidth(htrue);
+  const double xrange0 = 600., xrange1 = 900.;
+  
+  TCanvas *cv_ratio = new TCanvas("cv_ratio", cv_tit, 0, 0, 1000, 700);
+
+  TPad *p2 = new TPad("p2", "p2", 0., 0., 1., 0.49);
+  p2 -> Draw();
+  p2 -> SetBottomMargin(0.2);
+  p2 -> SetLeftMargin(0.1);
+  //p2 -> SetGrid();
+  
+  TPad *p1 = new TPad("p1", "p1", 0., 0.47, 1., 1.);
+  p1 -> Draw();
+  p1 -> SetLeftMargin(0.1);
+  p1 -> SetBottomMargin(0.03);//0.007
+  p1 -> cd();
+
+  //
+  hgen -> SetMarkerStyle(mstyle_indx);
+  hgen -> SetMarkerSize(0.7);
+  hgen -> GetYaxis() -> SetTitle(TString::Format("Events/[%0.2f", binwidth) + " MeV/c^{2}]");
+  hgen -> GetYaxis() -> CenterTitle();
+  hgen -> GetYaxis() -> SetRangeUser(0.1, hgen -> GetMaximum() * 1.5);
+  //hgen -> GetYaxis() -> SetRangeUser(0.1, 1200.);
+  hgen -> GetYaxis() -> SetNdivisions(505);
+  hgen -> GetYaxis() -> SetTitleSize(0.1);
+  hgen -> GetYaxis() -> SetLabelSize(25);
+  //hgen -> GetYaxis() -> SetTitleFont(43);
+  hgen -> GetYaxis() -> SetTitleOffset(0.5);
+  hgen -> GetYaxis() -> SetLabelFont(43); // Absolute font size in pixel (precision 3)
+
+  //hgen -> GetXaxis() -> SetTitle();
+  //hgen -> GetXaxis() -> SetRangeUser(xrange0, xrange1);
+  hgen -> GetXaxis() -> SetTitleOffset(1.2);
+  hgen -> GetXaxis() -> SetLabelSize(20);
+  hgen -> GetXaxis() -> CenterTitle();
+
+  hgen -> SetStats(0);
+
+  hgen -> Draw();
+  htrue -> Draw("Same");
+  
+  gPad -> SetLogy();
+
+  TLegend *legd_cv = new TLegend(0.15, 0.7, 0.5, 0.9);
+  
+  legd_cv -> SetTextFont(132);
+  legd_cv -> SetFillStyle(0);
+  legd_cv -> SetBorderSize(0);
+  legd_cv -> SetNColumns(2);
+
+  legd_cv -> AddEntry(hgen, hgen_tit, "l");
+  legd_cv -> AddEntry(htrue, htrue_tit, "l");  
+  legd_cv -> Draw("Same");
+  
+  legtextsize(legd_cv, 0.1);
+
+  //
+  hefficy -> SetMarkerStyle(mstyle_indx);
+  hefficy -> SetMarkerSize(0.7);
+  hefficy -> SetMarkerColor(1);
+  hefficy -> SetLineColor(1);
+  
+  //hefficy -> GetYaxis() -> SetRangeUser(0.1, hefficy -> GetMaximum() * 1.5);
+  hefficy -> GetYaxis() -> SetRangeUser(0., 0.15);
+  hefficy -> GetYaxis() -> SetNdivisions(505);
+  hefficy -> GetYaxis() -> SetTitleSize(0.1);
+  //hefficy -> GetYaxis() -> SetTitleFont(43);
+  hefficy -> GetYaxis() -> SetTitleOffset(0.5);
+  //hefficy -> GetYaxis() -> SetLabelFont(43); // Absolute font size in pixel (precision 3)
+  hefficy -> GetYaxis() -> SetLabelSize(0.07);
+  hefficy -> GetYaxis() -> CenterTitle();
+  hefficy -> GetYaxis() -> SetTitle("Efficiency"); // y_tit
+  //hefficy -> GetXaxis() -> SetLabelFont(43); // Absolute font size in pixel (precision 3)
+  hefficy -> GetXaxis() -> SetTitleOffset(.8);
+  hefficy -> GetXaxis() -> SetLabelSize(0.08);
+  //hefficy -> GetXaxis() -> SetLabelOffset(0.03);
+  hefficy -> GetXaxis() -> SetTitleSize(0.1);
+  hefficy -> GetXaxis() -> CenterTitle();
+  hefficy -> GetXaxis() -> SetTitle("M_{3#pi} [MeV/c^{2}]");
+  
+  //hefficy -> GetXaxis() -> SetRangeUser(xrange0, xrange1);
+
+  hefficy -> SetStats(0);      // No statistics on lower plot
+  
+  //format_h(hefficy, color_indx, 2);
+
+  p2 -> cd();
+
+  hefficy -> Draw();
+  hefficy_sig_apprx -> Draw("Same");
+    
+  TLegend *legd_cv1 = new TLegend(0.6, 0.7, 0.8, 0.9);
+  
+  legd_cv1 -> SetTextFont(132);
+  legd_cv1 -> SetFillStyle(0);
+  legd_cv1 -> SetBorderSize(0);
+  legd_cv1 -> SetNColumns(2);
+
+  legd_cv1 -> AddEntry(hefficy, "#varepsilon_{3#pi}", "lep"); //ratio_tit
+  legd_cv1 -> AddEntry(hefficy_sig_apprx, "#varepsilon^{#rho#pi}_{3#pi}", "lep"); //ratio_tit
+  //legd_cv1 -> AddEntry(hefficy, "#varepsilon_{3#pi}", "lep"); //ratio_tit
+  //legd_cv1 -> AddEntry(hefficy_sig_apprx, "#varepsilon^{apprx}_{3#pi}", "lep"); //ratio_tit
+  legd_cv1 -> Draw("Same");
+  
+  legtextsize(legd_cv1, 0.1);
+
+  //
+  TH1D* hefficy_clone = (TH1D*) hefficy -> Clone();
+  hefficy_clone -> SetName("hefficy_clone");
+
+  TH1D* hefficy_sig_apprx_clone = (TH1D*) hefficy_sig_apprx -> Clone();
+  hefficy_sig_apprx_clone -> SetName("hefficy_sig_apprx_clone");
+  
+  TCanvas *cv_efficy = plot_efficy(hefficy_clone, hefficy_sig_apprx_clone, "cv_efficy", "eficiencies");
+
+  
+  
+  // save
+  //cout << cv_tit << endl;
+  //TFile *fout = new TFile("./plots/" + cv_tit + ".root", "recreate");
+
+  cv_ratio -> SaveAs("./plots/" + cv_tit + ".pdf");
+  cv_efficy -> SaveAs("./plots/cv_efficy.pdf");
+  
+
+  //fout -> Close();
+
+
+  
+  return 0;
+  
+}
+

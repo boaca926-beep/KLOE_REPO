@@ -1,0 +1,10 @@
+// Compare efficiencies between the standard analysis and ECL correction with additional two background suppression critera: KSL and etagamm suppresion
+int efficy_compr(){
+
+  //
+
+
+  return 0;
+}
+
+  

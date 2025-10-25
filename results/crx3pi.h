@@ -1,6 +1,6 @@
 const TString inpath = "../../analysis/chains_qa";
-const double sample_size = 8373;
-const double Lumi_int = 1724470 * (sample_size / 8373);
+//const double sample_size = 8373;
+//const double Lumi_int = 1724470 * (sample_size / 8373);
 const double sample_frac = Lumi_int / 1724470 * 100.;
 const double Delta_FWHM = 1.76707;
 const double Delta_BB = 0.0000101533;
@@ -44,11 +44,11 @@ const double fit_max = 800;
 //Double guassian smearing
 const double wideSigma_sigma_nb = 1;
 const double smallSigma_sigma_nb = 1;
-const double frac = 0.20;
-const double wideBias = 0.5;
-const double wideSigma = 13;
-const double smallBias = 0.34;
-const double smallSigma = 3.2;
+//const double frac = 0.20;
+//const double wideBias = 0.5;
+//const double wideSigma = 13;
+//const double smallBias = 0.34;
+//const double smallSigma = 3.2;
 //mass bins
 const double mass_size = 5.30;
 const int mass_steps = TMath::Nint((fit_max - fit_min) / mass_size);
@@ -632,6 +632,22 @@ double Func_bw(double *x, double *par) {
   return bw;//nb
   
 }
+
+//
+double binomial_err(double nb_true, double nb_gen) {
+  double error = 0.;
+  double ratio = 0.; 
+
+  if (nb_gen != 0.) {
+    ratio = nb_true / nb_gen;
+    error = TMath::Sqrt(ratio * (1. - ratio) / nb_gen);
+  }
+   
+  //cout << "true = " << nb_true << ", gen = " << nb_gen << ", ratio = " << ratio << ", error = " << error << endl;
+
+  return error;
+}
+
 
 
 double GetBkgErr(double NData, double nMC, double NMC, double f, double f_err) {

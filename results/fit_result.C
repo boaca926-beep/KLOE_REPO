@@ -1,9 +1,9 @@
-#include "../hist.h"
-#include "../plot.h"
+#include "../header/sm_para.h"
+//#include "../header/hist.h"
+#include "../header/plot.h"
 //#include "../crx3pi/crx3pi_dg.C"
-#include "../crx3pi/crx3pi.h"
+#include "crx3pi.h"
 #include "compr.h"
-
 
 int fit_result() {
   
@@ -29,6 +29,7 @@ int fit_result() {
   TString objnm_tree, classnm_tree;
   
   int i = 0;
+  TKey *key;
   
   while ( (key = (TKey *) next_tree() ) ) {// start tree while lop
     
@@ -44,11 +45,16 @@ int fit_result() {
 
   // corrected signal sfw, get from ../crx3pi_sfw1d
   cout << "isr3pi_sfw1d = " << isr3pi_sfw1d << endl;
-  TH1D * h1d_IM3pi_TISR3PI_SIG_Scaled_corr = (TH1D*) h1d_IM3pi_TISR3PI_SIG_CORRED -> Clone();
-  format_h(h1d_IM3pi_TISR3PI_SIG_Scaled_corr, 4, 2);
+  //TH1D * h1d_IM3pi_TISR3PI_SIG_Scaled_corr = (TH1D*) h1d_IM3pi_TISR3PI_SIG_CORRED -> Clone();
+  //TH1D * h1d_IM3pi_TISR3PI_SIG_Scaled_corr = (TH1D *) intree -> FindObject("h1d_IM3pi_TISR3PI_SIG_Scaled_corr") -> Clone();
+  
+  //format_h(h1d_IM3pi_TISR3PI_SIG_Scaled_corr, 4, 2);
       
-  h1d_IM3pi_TISR3PI_SIG_Scaled_corr -> Scale(isr3pi_sfw1d);
+  //h1d_IM3pi_TISR3PI_SIG_Scaled_corr -> Scale(isr3pi_sfw1d);
   //h1d_IM3pi_TISR3PI_SIG_Scaled_corr -> Draw();
+
+  TH1D * h1d_IM3pi_TISR3PI_SIG = (TH1D *) intree -> Get("h1d_IM3pi_TISR3PI_SIG");
+  
   
   // fill lists
   const int list_size = 1000;
@@ -69,6 +75,8 @@ int fit_result() {
   
   int fit_indx = 0;
 
+  TTree *TCRX3PI = (TTree*)intree -> Get("TCRX3PI");
+    
   for (Int_t irow = 0; irow < TCRX3PI -> GetEntries(); irow++) {// start fill
     
     TCRX3PI -> GetEntry(irow); //cout << irow << endl;
@@ -111,20 +119,9 @@ int fit_result() {
     
     fit_indx ++;
 
-    cout << irow + 1 << "n3pi obs. = " << N3PI_OBS_FIT[irow] << "+/-" << N3PI_OBS_FIT_ERR[irow] << ", n3pi diff. = " << N3PI_DIFF[irow] << "+/-" << N3PI_DIFF_ERR[irow] << endl;
+    cout << irow + 1 << ": n3pi obs. = " << N3PI_OBS_FIT[irow] << "+/-" << N3PI_OBS_FIT_ERR[irow] << ", n3pi diff. = " << N3PI_DIFF[irow] << "+/-" << N3PI_DIFF_ERR[irow] << endl;
 
-    /*
-    cout << "list indx = " << irow + 1 << "\n"
-	 << "\tbin_indx = " << bin_indx << "\n"
-	 << "\tm3pi = " << M3PI_FIT[irow] << " +/- " << M3PI_FIT_ERR[irow] << "\n"
-	 << "\tn3pi_obs = " << N3PI_OBS_FIT[irow] << " +/- " << N3PI_OBS_FIT_ERR[irow] << "\n"
-	 << "\tn3pi_fit = " << N3PI_FIT[irow] << " +/- " << N3PI_FIT_ERR[irow] << "\n"
-	 << "\tn3pi_diff = " << N3PI_DIFF[irow] << " +/- " << N3PI_DIFF_ERR[irow] << "\n"
-	 << "\tisr_lumi = " << ISRLUMI[irow] << "\n"
-	 << "\tcrx3pi_bw = " << CRX3PI_BW[irow] << "\n"
-	 << "\tefficy = " << EFFICY[irow] * 100. << " +/- " << EFFICY_ERR[irow] * 100. << " [%]\n"
-	 << "\chi2_sum = " << chi2_sum << "\n\n";
-    */
+    
     
   }
 
@@ -136,7 +133,8 @@ int fit_result() {
        << "prob = " << prob << "\n";
 
   // check chi2-sum
-  double chi2_tmp = 0., chi2_sum = 0;
+  chi2_sum = 0.;
+  double chi2_tmp = 0.;
   double diff_max = 0., diff_max_indx = 0;
   
   for (int i = 0; i < fit_indx; i ++) {
@@ -149,12 +147,6 @@ int fit_result() {
     chi2_tmp = ((N3PI_OBS_FIT[i] - N3PI_FIT[i]) / N3PI_OBS_FIT_ERR[i]) * ((N3PI_OBS_FIT[i] - N3PI_FIT[i]) / N3PI_OBS_FIT_ERR[i]);
     chi2_sum += chi2_tmp;
 
-    /*
-    cout << "n3pi obs = " << N3PI_OBS_FIT[i] << " +/- " << N3PI_OBS_FIT_ERR[i] <<  "\n"
-	 << "n3pi_fit = " << N3PI_FIT[i] << " +/- " << N3PI_FIT_ERR[i] << "\n"
-	 << "chi2 = " << chi2_tmp << ", sum = " << chi2_sum << "\n\n";
-    */
-    
   }
 
   //chi2_sum = chi2_sum - diff_max;
@@ -176,28 +168,11 @@ int fit_result() {
 
   cout << isr3pi_sfw << endl;
 
-  
   // graphs
   const double Delta_m3pi = M3PI_FIT[1] - M3PI_FIT[0];
   //TGraph *gf_n3pi_diff = new TGraph (fit_indx, M3PI_FIT, N3PI_DIFF);
   TGraphErrors * gf_n3pi_diff = new TGraphErrors(fit_indx, M3PI_FIT, N3PI_DIFF, M3PI_FIT_ERR, N3PI_DIFF_ERR);
   SetGFAttr(gf_n3pi_diff, "M_{3#pi} [MeV/c^{2}]", "Residual");
-  
-  /*
-  TH1D * hdiff = new TH1D("hresidul", "", 38, 720, 820);
-  auto int nPoints = gf_n3pi_diff -> GetN();
-  cout << "nPoints = " << nPoints << endl;
-
-  for (int i = 0; i < nPoints; i++) {
-
-    double x, y;
-    gf_n3pi_diff -> GetPoint(i, x, y);
-    cout << "i = " << i << ", x = " << x << ", y = " << y << endl;
-
-    hdiff -> Fill(i+1, y);
-
-  }
-  */
   
   //
   //cout << N3PI_OBS_FIT_ERR[5] << endl;
@@ -351,15 +326,15 @@ int fit_result() {
   double Gamma_V[2] = {Gam_omega_fit, Gam_omega_err_fit};
   double BB[2] = {BB_fit, BB_err_fit};
   
-  TRESULT -> Branch("Br_Mass", &Mass_V, "Br_Mass[2]/D");
-  TRESULT -> Branch("Br_Gamma", &Gamma_V, "Br_Gamma[2]/D");
-  TRESULT -> Branch("Br_BB", &BB, "Br_BB[2]/D");
-  TRESULT -> Branch("Br_chi2_sum", &chi2_sum, "Br_chi2_sum/D");
-  TRESULT -> Branch("Br_ndf", &ndf, "Br_ndf/I");
-  TRESULT -> Branch("Br_Delta_m3pi", &Delta_m3pi, "Br_Delta_m3pi/D");
+  //TRESULT -> Branch("Br_Mass", &Mass_V, "Br_Mass[2]/D");
+  //TRESULT -> Branch("Br_Gamma", &Gamma_V, "Br_Gamma[2]/D");
+  //TRESULT -> Branch("Br_BB", &BB, "Br_BB[2]/D");
+  //TRESULT -> Branch("Br_chi2_sum", &chi2_sum, "Br_chi2_sum/D");
+  //TRESULT -> Branch("Br_ndf", &ndf, "Br_ndf/I");
+  //TRESULT -> Branch("Br_Delta_m3pi", &Delta_m3pi, "Br_Delta_m3pi/D");
   
-  TRESULT -> Fill();
-  TRESULT -> Write();
+  //TRESULT -> Fill();
+  //TRESULT -> Write();
   
   gf_n3pi_obs -> SetName("n3pi_obs");
   gf_n3pi_obs -> Write();
@@ -374,7 +349,6 @@ int fit_result() {
   
   // save
   cv_n3pi_fit -> SaveAs("./plots/n3pi_fit_" + file_type + ".pdf");
-  
   
   return 0;
 

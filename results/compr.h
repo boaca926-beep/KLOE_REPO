@@ -1,6 +1,6 @@
 const TString file_type = "vmd";
 //const TString infile_tmp = "../crx3pi/output_" + file_type + "/crx3pi0.root";
-const TString infile_tmp = "/media/bo/8E97-E8DD/KLOE_OUTPUT/output_" + file_type + "/crx3pi0.root";
+const TString infile_tmp = "/media/bo/Backup/KLOE_OUTPUT/output_" + file_type + "/crx3pi0.root";
 
 const TString model_type = "VMD";
 

@@ -121,6 +121,16 @@ int fit_result() {
 
     cout << irow + 1 << ": n3pi obs. = " << N3PI_OBS_FIT[irow] << "+/-" << N3PI_OBS_FIT_ERR[irow] << ", n3pi diff. = " << N3PI_DIFF[irow] << "+/-" << N3PI_DIFF_ERR[irow] << endl;
 
+    cout << "list indx = " << irow + 1 << "\n"
+	 << "\tbin_indx = " << bin_indx << "\n"
+	 << "\tm3pi = " << M3PI_FIT[irow] << " +/- " << M3PI_FIT_ERR[irow] << "\n"
+	 << "\tn3pi_obs = " << N3PI_OBS_FIT[irow] << " +/- " << N3PI_OBS_FIT_ERR[irow] << "\n"
+	 << "\tn3pi_fit = " << N3PI_FIT[irow] << " +/- " << N3PI_FIT_ERR[irow] << "\n"
+	 << "\tn3pi_diff = " << N3PI_DIFF[irow] << " +/- " << N3PI_DIFF_ERR[irow] << "\n"
+	 << "\tisr_lumi = " << ISRLUMI[irow] << "\n"
+	 << "\tcrx3pi_bw = " << CRX3PI_BW[irow] << "\n"
+	 << "\tefficy = " << EFFICY[irow] * 100. << " +/- " << EFFICY_ERR[irow] * 100. << " [%]\n"
+	 << "\chi2_sum = " << chi2_sum << "\n\n";
     
     
   }

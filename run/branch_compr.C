@@ -48,6 +48,17 @@ int branch_compr(){
   const double BRANCH1_EXH[1] = {branch1_exh};
   const double BRANCH1_EYL[1] = {branch1_eyl};
   const double BRANCH1_EYH[1] = {branch1_eyh};
+
+  // Z value
+  double bb_syst_symm = (branch1_syst_err_plus + branch1_syst_err_minus) / 2;
+  double bb_kloe_err_tot = TMath::Sqrt(branch1_err * branch1_err + bb_syst_symm * bb_syst_symm);
+  double bb_diff = TMath::Abs(branch1 - branch_pdg); // difference between this work and PDG
+  double Z_denomi = TMath::Sqrt(bb_kloe_err_tot * bb_kloe_err_tot + branch_pdg_err * branch_pdg_err);
+  double Z_bb = bb_diff / Z_denomi;
+  cout << "bb_kloe = " << branch1 << "+/-" << bb_kloe_err_tot << ", bb_syst_symm = " << bb_syst_symm << "\n"
+       << "bb_pdg = " << branch_pdg << "+/-" << branch_pdg_err << "\n"
+       << "bb_diff = " << bb_diff << ", Z_denomi = " << Z_denomi << "\n"
+       << "significance: Z = " << Z_bb << endl;
   
 
   // BABR 2004
@@ -116,7 +127,7 @@ int branch_compr(){
   // label
   const double LABEL_INDX[nb_point] = {XLIST_EXP1[0], XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0], XLIST_EXP5[0], XLIST_EXP6[0], XLIST_EXP7[0]};
   const double LABEL_GF[nb_point] = {0., 0., 0., 0., 0., 0., 0.};
-  const TString EXP_STR[nb_point] = {"This work", "BABR04", "BABR20", "BESIII", "CMD-2", "RVUE", "ND"};
+  const TString EXP_STR[nb_point] = {"This work", "BABR04", "BABR20", "BESIII", "CMD-2b", "RVUE", "ND"};
 
   // graphs
   TGraphAsymmErrors *gf_exp1 = new TGraphAsymmErrors(1, XLIST_EXP1, BRANCH_EXP1, BRANCH1_EXL, BRANCH1_EXH, BRANCH1_EYL, BRANCH1_EYH);

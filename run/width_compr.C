@@ -50,15 +50,20 @@ int width_compr(){
   const double WIDTH1_EYH[1] = {width1_eyh};
 
   // BaBar 2pi  arXiv:1205.2228
-  const double width2 = 8.68;
+  const double width2 = 8.13;
   const double width2_err = TMath::Sqrt(0.36 * 0.36 + 0.27 * 0.27);
-
   const double WIDTH_EXP2[1] = {width2};
   const double WIDTH_EXP2_ERR[1] = {width2_err};
   const double XLIST_EXP2[1] = {0.2};
   const double XLIST_EXP2_ERR[1] = {0};
 
   cout << "width BaBar = " << width2 << "+/-" << width2_err << endl;
+
+  /*
+  // BABR 2004 https://arxiv.org/abs/hep-ex/0408078
+  // BABR 2020 https://arxiv.org/pdf/2110.00520
+  
+  */
   
   // RVUE
   const double width3 = 8.68;
@@ -81,7 +86,7 @@ int width_compr(){
   // label
   const double LABEL_INDX[nb_point] = {XLIST_EXP1[0], XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0]};
   const double LABEL_GF[nb_point] = {0., 0., 0., 0.};
-  const TString EXP_STR[nb_point] = {"This work", "BABR", "RVUE", "CMD-2"};
+  const TString EXP_STR[nb_point] = {"This work", "BABAR12", "RVUE", "CMD-2b"};
 
   // graphs
   TGraphAsymmErrors *gf_exp1 = new TGraphAsymmErrors(1, XLIST_EXP1, WIDTH_EXP1, WIDTH1_EXL, WIDTH1_EXH, WIDTH1_EYL, WIDTH1_EYH);
@@ -138,7 +143,7 @@ int width_compr(){
   TCanvas *cv = new TCanvas("cv_width_compr", "cv_width_compr", 0, 0, 1000, 700);
   //cv -> SetGrid();
   //cv -> SetLeftMargin(0.2);
-  cv -> SetBottomMargin(0.18);
+  cv -> SetBottomMargin(0.19);
 
   TPaveText *pt1 = new TPaveText(0.11, 0.8, 0.65, 0.82, "NDC");
   PteAttr(pt1);
@@ -155,7 +160,7 @@ int width_compr(){
   gf_label -> GetXaxis() -> SetLabelSize(0.06);
   gf_label -> GetXaxis() -> SetLabelOffset(0.01);
   gf_label -> GetYaxis() -> SetNdivisions(512);
-  gf_label -> GetYaxis() -> SetRangeUser(WIDTH_BAND[0] - 5. * band_limit, WIDTH_BAND[0] + 5. * band_limit);
+  gf_label -> GetYaxis() -> SetRangeUser(WIDTH_BAND[0] - 12. * band_limit, WIDTH_BAND[0] + 5. * band_limit);
   gf_label -> GetYaxis() -> SetTitleOffset(0.9);
   gf_label -> GetYaxis() -> SetTitle("#Gamma_{#omega} [MeV]");
   gf_label -> GetYaxis() -> CenterTitle();

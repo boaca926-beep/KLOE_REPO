@@ -15,11 +15,11 @@ int fit_result() {
   
   //output8373_finebinned
   
-  const double sample_frac = Lumi_int / 1724470 * 100.;
+  //const double sample_frac = Lumi_int / 1724470 * 100.;
   
   
   cout << "Getting input file from " << infile_tmp << "\n"
-       << "Lumi. int [%] = " << sample_frac << "\n"
+    //<< "Lumi. int [%] = " << sample_frac << "\n"
        << "input file = " << infile_tmp << "\n";
   
   TFile *intree = new TFile(infile_tmp);
@@ -130,7 +130,7 @@ int fit_result() {
 	 << "\tisr_lumi = " << ISRLUMI[irow] << "\n"
 	 << "\tcrx3pi_bw = " << CRX3PI_BW[irow] << "\n"
 	 << "\tefficy = " << EFFICY[irow] * 100. << " +/- " << EFFICY_ERR[irow] * 100. << " [%]\n"
-	 << "\chi2_sum = " << chi2_sum << "\n\n";
+	 << "\tchi2_sum = " << chi2_sum << "\n\n";
     
     
   }

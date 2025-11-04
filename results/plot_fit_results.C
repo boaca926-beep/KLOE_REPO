@@ -1,5 +1,5 @@
 #include "compr.h"
-#include "../plot.h"
+#include "../header/plot.h"
 
 int plot_fit_results() {
 
@@ -18,6 +18,8 @@ int plot_fit_results() {
   TString objnm_tree, classnm_tree;
   
   int i = 0;
+
+  TKey *key;
   
   while ( (key = (TKey *) next_tree() ) ) {// start tree while lop
     
@@ -31,6 +33,7 @@ int plot_fit_results() {
     
   }
 
+  /*
   TGraphErrors * gf_data_KLOE2 = (TGraphErrors *) n3pi_obs -> Clone();
   TGraphErrors * gf_fit_bw = (TGraphErrors *) n3pi_fit -> Clone();
   TGraphErrors * gf_n3pi_diff = (TGraphErrors *) n3pi_diff -> Clone();
@@ -251,7 +254,7 @@ int plot_fit_results() {
   // save
   cv_n3pi_fit -> SaveAs("./plots/crx3pi_bw_vmd.pdf");
   
-  
+  */  
   return 0;
   
 }

@@ -1,8 +1,8 @@
-const TString file_type = "vmd";
+const TString file_type = "norm";
 //const TString infile_tmp = "../crx3pi/output_" + file_type + "/crx3pi0.root";
 const TString infile_tmp = "/media/bo/Backup/KLOE_OUTPUT/output_" + file_type + "/crx3pi0.root";
 
-const TString model_type = "VMD";
+const TString model_type = "BW";
 
 void SetGFAttr(TGraph *gf, const TString x_title = "", const TString y_title = "Lumi_{ISR} [nb^{-1}]") {
 

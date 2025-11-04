@@ -3,8 +3,10 @@
 
 input=compr.h
 
-FILE_TYPE=("vmd" "norm")
-MODEL_TYPE=("VMD" "BW")
+#FILE_TYPE=("vmd" "norm")
+#MODEL_TYPE=("VMD" "BW")
+FILE_TYPE=("norm")
+MODEL_TYPE=("BW")
 
 outtxt=fit_result.txt
 echo "Fit results" > $outtxt

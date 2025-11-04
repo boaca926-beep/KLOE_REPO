@@ -6,7 +6,7 @@
 #FILE_TYPE=("chain")
 #FILE_TYPE=("norm")
 #FILE_TYPE=("mini")
-FILE_TYPE=("vertex" "efficy_norm" "norm" "vmd_norm")
+FILE_TYPE=("vertex" "efficy_norm" "norm" "vmd_norm" "vmd_efficy_corr_norm")
 #FILE_TYPE=("efficy_norm")
 #FILE_TYPE=("efficy_norm")
 #FILE_TYPE=("norm")

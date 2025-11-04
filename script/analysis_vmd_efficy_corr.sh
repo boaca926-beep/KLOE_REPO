@@ -6,7 +6,7 @@ exp_type=TDATA
 gsf=1 
 
 input_path=../../input_${sample_size}_${exp_type}
-result_path=../../input_vmd_${sample_size}_${exp_type}_efficy_corr
+result_path=../../input_vmd_efficy_corr_${sample_size}_${exp_type}
 
 if [[ -d "$result_path" ]]; then
     #echo "Remove ${result_path} ..."
@@ -28,10 +28,12 @@ path_header=../header/path.h
 
 outputCut=${input_path}/cut/
 outputHist=${input_path}/hist/
+outputEfficy=../../efficy_evtcls/
 
 sed -i 's|\(const TString outputCut =\)\(.*\)|\1 "'"${outputCut}"'";|' "$path_header"
 sed -i 's|\(const TString outputHist =\)\(.*\)|\1 "'"${outputHist}"'";|' "$path_header"
 sed -i 's|\(const TString outputOmega =\)\(.*\)|\1 "'"${omega_path}"'";|' "$path_header"
+sed -i 's|\(const TString inputEfficyRatio =\)\(.*\)|\1 "'"${outputEfficy}"'";|' "$path_header"
 sed -i 's|\(const TString exp_type =\)\(.*\)|\1 "'"${exp_type}"'";|' "$path_header"
 sed -i 's|\(double gsf =\)\(.*\)|\1 '$gsf';|' "$path_header"
 

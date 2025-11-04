@@ -64,10 +64,10 @@ int plot_models_syst() {
 
 	  }
 	  
-	  YLIST[file_indx] = TCRX3PI -> GetLeaf("Br_" + para_name + "_fit") -> GetValue(0);
-	  YLIST_Err[file_indx] = TCRX3PI -> GetLeaf("Br_" + para_name + "_err_fit") -> GetValue(0);
+	  YLIST[file_indx] = TCRX3PI -> GetLeaf("Br_OMEGA_PARA") -> GetValue(para_index);
+	  YLIST_Err[file_indx] = TCRX3PI -> GetLeaf("Br_OMEGA_PARA_ERR") -> GetValue(para_index);
 
-	  //cout << file_indx + 1 << ": " << YLIST[file_indx] << " +/- " << YLIST_Err[file_indx] << endl;
+	  cout << file_indx + 1 << ": " << para_name << " = " << YLIST[file_indx] << " +/- " << YLIST_Err[file_indx] << endl;
 	    
 
 

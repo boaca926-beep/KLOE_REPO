@@ -89,7 +89,8 @@ int plot_prompt() {
   gf_prompt -> GetXaxis() -> SetTitleSize(0.06);
   gf_prompt -> GetXaxis() -> SetLabelSize(0.05);  
   gf_prompt -> GetXaxis() -> SetNdivisions(20);
-  gf_prompt -> GetXaxis() -> SetTitle("Number of prompt photons n_{#gamma}");
+  //gf_prompt -> GetXaxis() -> SetTitle("Number of prompt photons n_{#gamma}");
+  gf_prompt -> GetXaxis() -> SetTitle("Number of prompt photons");
   
   gf_prompt -> GetYaxis() -> SetTitleOffset(.8);
   gf_prompt -> GetYaxis() -> SetTitleSize(0.08);

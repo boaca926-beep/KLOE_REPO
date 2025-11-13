@@ -1,10 +1,10 @@
-#include "plot.h"
-#include "hist.h"
+#include "../header/plot.h"
+//#include "../header/hist.h"
 //#include "efficy.h"
 
-const TString infile = "/media/bo/8E97-E8DD/KLOE_OUTPUT/output_norm/crx3pi0.root";
+const TString infile = "/media/bo/Backup/KLOE_OUTPUT/output_norm/crx3pi0.root";
 
-const int color_indx = 1;
+const int color_indx = 4;
 const int mstyle_indx = 22;
 const TString htrue_type = "TISR3PI_SIG_TRUE";
 const TString hgen_type = "TISR3PI_SIG_GEN";
@@ -57,9 +57,9 @@ TCanvas *plot_efficy(TH1D *h1d, TH1D* h1d_1, TString cv_nm, TString cv_title) {
   legd_cv -> SetBorderSize(0);
   legd_cv -> SetNColumns(2);
 
-  legd_cv -> AddEntry(h1d, "#varepsilon^{signal}_{3#pi}", "lep"); //ratio_tit
+  //legd_cv -> AddEntry(h1d, "#varepsilon^{signal}_{3#pi}", "lep"); //ratio_tit
   //legd_cv -> AddEntry(h1d_1, "#varepsilon^{#rho#pi}_{3#pi}", "lep"); //ratio_tit
-  legd_cv -> Draw("Same");
+  //legd_cv -> Draw("Same");
   
   legtextsize(legd_cv, 0.1);
 
@@ -79,13 +79,13 @@ int efficy_plot() {
 
   // get efficiency histos
   cout << "Get efficiency histos." << endl;
-  TFile *intree_histo = new TFile("./efficy_compr_output.root");
+  //TFile *intree_histo = new TFile("./efficy_compr_output.root");
 
-  TH1D* hefficy_sig_apprx = (TH1D*)intree_histo -> Get("hefficy_sig_apprx");
-  format_h(hefficy_sig_apprx, 4, 2);// color 45
-  hefficy_sig_apprx -> SetMarkerStyle(21);
-  hefficy_sig_apprx -> SetMarkerSize(0.5);
-  hefficy_sig_apprx -> SetMarkerColor(4);
+  //TH1D* hefficy_sig_apprx = (TH1D*)intree_histo -> Get("hefficy_sig_apprx");
+  //format_h(hefficy_sig_apprx, 4, 2);// color 45
+  //hefficy_sig_apprx -> SetMarkerStyle(21);
+  //hefficy_sig_apprx -> SetMarkerSize(0.5);
+  //hefficy_sig_apprx -> SetMarkerColor(4);
 
   // plot efficiencies
   cout << "Plot efficiencies from " << infile << endl;
@@ -181,7 +181,7 @@ int efficy_plot() {
 
   legd_cv -> AddEntry(hgen, hgen_tit, "l");
   legd_cv -> AddEntry(htrue, htrue_tit, "l");  
-  legd_cv -> Draw("Same");
+  //legd_cv -> Draw("Same");
   
   legtextsize(legd_cv, 0.1);
 
@@ -218,7 +218,7 @@ int efficy_plot() {
   p2 -> cd();
 
   hefficy -> Draw();
-  hefficy_sig_apprx -> Draw("Same");
+  //hefficy_sig_apprx -> Draw("Same");
     
   TLegend *legd_cv1 = new TLegend(0.6, 0.7, 0.8, 0.9);
   
@@ -227,11 +227,8 @@ int efficy_plot() {
   legd_cv1 -> SetBorderSize(0);
   legd_cv1 -> SetNColumns(2);
 
-  legd_cv1 -> AddEntry(hefficy, "#varepsilon_{3#pi}", "lep"); //ratio_tit
-  legd_cv1 -> AddEntry(hefficy_sig_apprx, "#varepsilon^{#rho#pi}_{3#pi}", "lep"); //ratio_tit
   //legd_cv1 -> AddEntry(hefficy, "#varepsilon_{3#pi}", "lep"); //ratio_tit
-  //legd_cv1 -> AddEntry(hefficy_sig_apprx, "#varepsilon^{apprx}_{3#pi}", "lep"); //ratio_tit
-  legd_cv1 -> Draw("Same");
+  //legd_cv1 -> Draw("Same");
   
   legtextsize(legd_cv1, 0.1);
 
@@ -250,7 +247,7 @@ int efficy_plot() {
   //cout << cv_tit << endl;
   //TFile *fout = new TFile("./plots/" + cv_tit + ".root", "recreate");
 
-  cv_ratio -> SaveAs("./plots_efficy/" + cv_tit + ".pdf");
+  cv_ratio -> SaveAs(cv_tit + ".pdf");
   //cv_efficy -> SaveAs("./plots_efficy/cv_efficy.pdf");
   
 

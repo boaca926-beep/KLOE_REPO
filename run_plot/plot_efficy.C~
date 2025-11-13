@@ -1,7 +1,0 @@
-int plot_efficy() {
-
-  cout << "Plot efficiency ..." << endl;
-
-  return 0;
-  
-}

@@ -1,4 +1,4 @@
-#include "syst_plot.h"
+#include "../header/syst_plot.h"
 
 //int syst_plot(const TString para_name = "Mass_omega") {
 int syst_plot() {
@@ -17,7 +17,7 @@ int syst_plot() {
   const TString syst_path = "./path_list";
 
   cout << "\nROOT input file list: " << syst_path << "\n"
-       << para_name << "\n";
+       << "para_indx: " << para_indx << ", para_name: " << para_name << "\n";
   
   string line;
   int file_indx = 0;
@@ -36,14 +36,12 @@ int syst_plot() {
 	  cout << file_indx + 1 << ": " << f_name << endl;
 
 	  // Tree
-	  /*
-	  TTree* TCRX3PI = (TTree*)f_input -> Get("TCRX3PI");
-  
 	  TIter next_tree(f_input -> GetListOfKeys());
 	  TString objnm_tree, classnm_tree;
 
 	  // Loop over entries
 	  int i = 0;
+	  TKey *key;
 	  
 	  while ( (key = (TKey *) next_tree() ) ) {
 	    
@@ -51,11 +49,10 @@ int syst_plot() {
 	    classnm_tree = key -> GetClassName();
 	    key -> GetSeekKey();
 
-	    cout << " tree" << i << ": classnm = " << classnm_tree << ", objnm = " << objnm_tree << endl;
+	    //cout << " tree" << i << ": classnm = " << classnm_tree << ", objnm = " << objnm_tree << endl;
 
 	  }
-	  */
-
+	  
 	  TTree *TCRX3PI = (TTree*)f_input -> Get("TCRX3PI");
 	  
 	  for (Int_t irow = 0; irow < TCRX3PI -> GetEntries(); irow++) {// begin for loop
@@ -64,8 +61,8 @@ int syst_plot() {
 
 	  }
 	  
-	  YLIST[file_indx] = TCRX3PI -> GetLeaf("Br_" + para_name + "_fit") -> GetValue(0);
-	  YLIST_Err[file_indx] = TCRX3PI -> GetLeaf("Br_" + para_name + "_err_fit") -> GetValue(0);
+	  YLIST[file_indx] = TCRX3PI -> GetLeaf("Br_OMEGA_PARA") -> GetValue(para_indx);
+	  YLIST_Err[file_indx] = TCRX3PI -> GetLeaf("Br_OMEGA_PARA_ERR") -> GetValue(para_indx);
 
 	  //cout << file_indx + 1 << ": " << YLIST[file_indx] << " +/- " << YLIST_Err[file_indx] << endl;
 	    
@@ -88,7 +85,7 @@ int syst_plot() {
   double y_diff = 0., y_diff_abs = 0.;
   double y_uncorr_err = 0.; // uncorrelated error
   double z = 0.; // significance
-  
+
   for (int i = 0; i < file_indx; i ++) {
 
     y_diff = YLIST[i] - y_tmp;

@@ -5,7 +5,7 @@
 # normalzation 5: sfw2d_sigma_nb
 # luminosity 7: lumi_nb
 
-cut_indx=3
+cut_indx=0
 cut_type=select_cut 
 
 ## Initialization

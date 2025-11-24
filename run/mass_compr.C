@@ -45,7 +45,7 @@ int mass_compr(){
   // KLOE ISR (this work)
   const double mass2 = 782.73;
   const double mass2_err = 0.0394615;
-  const double mass2_syst_err_plus = 0.05;
+  const double mass2_syst_err_plus = 0.06;
   const double mass2_syst_err_minus = 0.07;
 
   double mass2_exl = 0.; // lower error for x

@@ -32,7 +32,7 @@ int width_compr(){
   const double width1 = 8.67079;
   const double width1_err = 0.119702;
   const double width1_syst_err_plus = 0.13;
-  const double width1_syst_err_minus = 0.16;
+  const double width1_syst_err_minus = 0.17;
 
   double width1_exl = 0.; // lower error for x
   double width1_exh = 0.; // higher error for x

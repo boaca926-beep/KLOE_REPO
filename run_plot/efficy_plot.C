@@ -2,7 +2,8 @@
 //#include "../header/hist.h"
 //#include "efficy.h"
 
-const TString infile = "/media/bo/Backup/KLOE_OUTPUT/output_norm/crx3pi0.root";
+//const TString infile = "/media/bo/Backup/KLOE_OUTPUT/output_norm/crx3pi0.root";
+const TString infile = "/media/bo/8E97-E8DD/KLOE_OUTPUT/output_norm/crx3pi0.root";
 
 const int color_indx = 4;
 const int mstyle_indx = 22;
@@ -32,7 +33,7 @@ TCanvas *plot_efficy(TH1D *h1d, TH1D* h1d_1, TString cv_nm, TString cv_title) {
 
   h1d -> GetYaxis() -> SetTitle(TString::Format("Efficiency/[%0.2f MeV/c^{2}]", getbinwidth(h1d)));
   h1d -> GetYaxis() -> CenterTitle();
-  h1d -> GetYaxis() -> SetLabelSize(0.05);
+  //h1d -> GetYaxis() -> SetLabelSize(0.05);
   h1d -> GetYaxis() -> SetTitleSize(0.08);
   h1d -> GetYaxis() -> SetTitleFont(132);
   h1d -> GetYaxis() -> SetTitleOffset(.9);
@@ -40,7 +41,7 @@ TCanvas *plot_efficy(TH1D *h1d, TH1D* h1d_1, TString cv_nm, TString cv_title) {
       
   h1d -> GetXaxis() -> SetTitle("M_{3#pi} [MeV/c^{2}]");
   h1d -> GetXaxis() -> CenterTitle();
-  h1d -> GetXaxis() -> SetLabelSize(0.05);
+  //h1d -> GetXaxis() -> SetLabelSize(0.05);
   h1d -> GetXaxis() -> SetTitleSize(0.08); //cout << "here" << endl;
   h1d -> GetXaxis() -> SetTitleFont(132);
   h1d -> GetXaxis() -> SetRangeUser(740., 820.);
@@ -129,7 +130,7 @@ int efficy_plot() {
 
   //
   double binwidth = getbinwidth(htrue);
-  const double xrange0 = 600., xrange1 = 900.;
+  const double xrange0 = 760., xrange1 = 800.;
   
   TCanvas *cv_ratio = new TCanvas("cv_ratio", cv_tit, 0, 0, 1000, 700);
 
@@ -150,7 +151,7 @@ int efficy_plot() {
   hgen -> SetMarkerSize(0.7);
   hgen -> GetYaxis() -> SetTitle(TString::Format("Events/[%0.2f", binwidth) + " MeV/c^{2}]");
   hgen -> GetYaxis() -> CenterTitle();
-  hgen -> GetYaxis() -> SetRangeUser(0.1, hgen -> GetMaximum() * 1.5);
+  hgen -> GetYaxis() -> SetRangeUser(0.1, hgen -> GetMaximum() * 15);
   //hgen -> GetYaxis() -> SetRangeUser(0.1, 1200.);
   hgen -> GetYaxis() -> SetNdivisions(505);
   hgen -> GetYaxis() -> SetTitleSize(0.1);
@@ -160,9 +161,10 @@ int efficy_plot() {
   hgen -> GetYaxis() -> SetLabelFont(43); // Absolute font size in pixel (precision 3)
 
   //hgen -> GetXaxis() -> SetTitle();
-  //hgen -> GetXaxis() -> SetRangeUser(xrange0, xrange1);
+  hgen -> GetXaxis() -> SetRangeUser(xrange0, xrange1);
   hgen -> GetXaxis() -> SetTitleOffset(1.2);
-  hgen -> GetXaxis() -> SetLabelSize(20);
+  //hgen -> GetXaxis() -> SetLabelSize(20);
+  hgen -> GetXaxis() -> SetLabelOffset(15);
   hgen -> GetXaxis() -> CenterTitle();
 
   hgen -> SetStats(0);
@@ -192,7 +194,7 @@ int efficy_plot() {
   hefficy -> SetLineColor(1);
   
   //hefficy -> GetYaxis() -> SetRangeUser(0.1, hefficy -> GetMaximum() * 1.5);
-  hefficy -> GetYaxis() -> SetRangeUser(0., 0.15);
+  hefficy -> GetYaxis() -> SetRangeUser(0., 0.05);
   hefficy -> GetYaxis() -> SetNdivisions(505);
   hefficy -> GetYaxis() -> SetTitleSize(0.1);
   //hefficy -> GetYaxis() -> SetTitleFont(43);
@@ -201,16 +203,16 @@ int efficy_plot() {
   hefficy -> GetYaxis() -> SetLabelSize(0.07);
   hefficy -> GetYaxis() -> CenterTitle();
   hefficy -> GetYaxis() -> SetTitle("Efficiency"); // y_tit
+
   //hefficy -> GetXaxis() -> SetLabelFont(43); // Absolute font size in pixel (precision 3)
   hefficy -> GetXaxis() -> SetTitleOffset(.8);
   hefficy -> GetXaxis() -> SetLabelSize(0.08);
+  hefficy -> GetXaxis() -> SetRangeUser(xrange0, xrange1);
   //hefficy -> GetXaxis() -> SetLabelOffset(0.03);
   hefficy -> GetXaxis() -> SetTitleSize(0.1);
   hefficy -> GetXaxis() -> CenterTitle();
   hefficy -> GetXaxis() -> SetTitle("M_{3#pi} [MeV/c^{2}]");
   
-  //hefficy -> GetXaxis() -> SetRangeUser(xrange0, xrange1);
-
   hefficy -> SetStats(0);      // No statistics on lower plot
   
   //format_h(hefficy, color_indx, 2);

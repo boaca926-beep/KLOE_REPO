@@ -1,0 +1,480 @@
+// KLOE/KLOE-2
+// CMD-2 (Phys.Lett.B 476 (2000) 33-39, 2000); dataset from inspire HEP
+// Babar (arXiv:2110.00520);
+// BESIII (arXiv:1912.11208)
+// BELLII (arXiv:2404.04915)
+
+// SND (Phys.Rev.D 68 (2003) 052006, 2003); dataset from inspire HEP
+
+#include "../header/plot.h"
+//#include "method.h"
+
+//
+void getObj(TFile *f){
+
+  TIter next_tree(f -> GetListOfKeys());
+
+  TString objnm_tree, classnm_tree;
+  
+  int i = 0;
+
+  TKey *key;
+  
+  while ( (key = (TKey *) next_tree() ) ) {// start tree while lop
+
+    objnm_tree   =  key -> GetName();
+    classnm_tree = key -> GetClassName();
+    key -> GetSeekKey();
+
+    //cout << "classnm = " << classnm_tree << ", objnm = " << objnm_tree << ", " << key -> GetSeekKey() << endl;
+
+  }
+
+  //f -> Close();
+  
+}
+
+TVectorD GetDiffVect(TGraphErrors *gf_kloe2, double m3pi_target, double crx3pi_target, double crx3piErr_target) {
+
+  
+  TVectorD vect(2);
+
+  double vNout = gf_kloe2 -> GetN();
+  double m3piKloe2, crx3piKloe2, crx3piKloe2Err;
+  double m3piDiff_min = 999999., m3piDiff = 0.;
+  double crx3piDiff_min = 0., crx3piDiff = 0.;
+  double crx3piDiffErr_min = 0., crx3piDiffErr = 0.;
+  int kloe2BinIndx_min = 0;
+
+  for (Int_t k=0;k<vNout;k++) {
+    gf_kloe2 -> GetPoint(k, m3piKloe2, crx3piKloe2);
+    crx3piKloe2Err = gf_kloe2 -> GetErrorY(k);
+    m3piDiff = TMath::Abs(m3piKloe2 - m3pi_target);
+    crx3piDiff = crx3piKloe2 - crx3pi_target;
+    crx3piDiffErr = TMath::Sqrt(crx3piKloe2Err * crx3piKloe2Err + crx3piErr_target * crx3piErr_target);
+    //crx3piDiffErr = crx3piErr_target;
+    
+    if (m3piDiff < m3piDiff_min) {
+      m3piDiff_min = m3piDiff;
+      crx3piDiff_min = crx3piDiff;
+      crx3piDiffErr_min = crx3piDiffErr;
+      kloe2BinIndx_min = k + 1;
+    }
+
+    /*
+    cout << "kloe2 bin " << k + 1 << "  m3pi = " << m3piKloe2
+	 << " MeV/c^2  crx3pi = " << crx3piKloe2 << "+/-" << crx3piKloe2Err << ", target m3pi = " << m3pi_target << " MeV/c^2" << ", |m3piDiff| = " << m3piDiff << ", min |m3piDiff| = " << m3piDiff_min << ", kloe2 m3pi bin indx for m3piDiff_min = " << kloe2BinIndx_min << endl;
+    */
+    
+  }
+
+  //cout << "min m3piDiff at mass bin " << kloe2BinIndx_min << ", crx3piDiff_min = " << crx3piDiff_min << "+/-" << crx3piDiffErr_min << endl;
+
+  /*
+  vect(0) = crx3piDiff_min;
+  vect(1) = crx3piDiffErr_min;
+  */
+
+  vect(0) = crx3piDiff_min;
+  vect(1) = crx3piDiffErr_min;
+  
+  return vect;
+
+}
+
+
+TGraphErrors *gf_diff(TList *GFL, TGraphErrors *gf_target) {//crx3pi diff between KLOE and other experiments
+
+  TGraphErrors *gf_kloe = (TGraphErrors *) GFL -> At(0);
+  //gf_target -> Draw();
+  
+  int nbins = gf_target -> GetN();
+  double m3pi = 0., crx3pi = 0., crx3pi_err = 0.;
+
+  double CRX3PIDIFF[1000], CRX3PIDIFFERR[1000];
+  double M3PI[1000], M3PIERR[1000];
+  
+  //cout << "number of bins = " << nbins << endl;
+
+  for (Int_t k = 0; k < nbins; k++) {
+
+    //if (k > 3) break;
+
+    gf_target -> GetPoint(k, m3pi, crx3pi);
+    crx3pi_err = gf_target -> GetErrorY(k);
+   
+    TVectorD diffVect = GetDiffVect(gf_kloe, m3pi, crx3pi, crx3pi_err);
+    M3PI[k] = m3pi;
+    M3PIERR[k] = 0.;
+    
+    CRX3PIDIFF[k] = diffVect(0);
+    CRX3PIDIFFERR[k] = diffVect(1);
+
+    //cout << k + 1 << "  m3pi = " << m3pi << ", crx3pi = " << crx3pi << "+/-" << crx3pi_err << ", crx3pi diff. = " << CRX3PIDIFF[k] << "+/-" << CRX3PIDIFFERR[k] << endl;
+    
+  }
+
+  TGraphErrors * gf_diff = new TGraphErrors(nbins, M3PI, CRX3PIDIFF, M3PIERR, CRX3PIDIFFERR);
+  
+  return gf_diff;
+
+}
+
+void gf_attri(const int MarkerStyle, const int MarkerColor, const int LineColor, const double MarkerSize, TGraphErrors *gf, TString gf_nm) {
+
+  gf -> SetMarkerStyle(MarkerStyle);
+  gf -> SetMarkerColor(MarkerColor);
+  gf -> SetLineColor(LineColor);
+  gf -> SetMarkerSize(MarkerSize);
+  gf -> SetTitle(gf_nm);
+  gf -> SetName(gf_nm);
+  
+}
+
+void gf_band(const int color_indx, const int lstyle_indx, const int fillstyle_indx, TGraphErrors *gf) {
+
+  gf -> SetFillColor(color_indx);
+  gf -> SetLineStyle(lstyle_indx);
+  //gf -> SetFillStyle(fillstyle_indx);
+  
+}
+
+
+TCanvas *plot_crx3pi_compr(TString cv_nm, TString cv_title, TList *GFL, TList *GFL_DIFF) {
+
+  // crx3piobs data
+  TGraphErrors *gf_kloe = (TGraphErrors *) GFL -> At(0);
+  TGraphErrors *gf_cmd2 = (TGraphErrors *) GFL -> At(1);
+  TGraphErrors *gf_babar = (TGraphErrors *) GFL -> At(2);
+  TGraphErrors *gf_bes3 = (TGraphErrors *) GFL -> At(3);
+  TGraphErrors *gf_belle2 = (TGraphErrors *) GFL -> At(4);
+  TGraphErrors *gf_snd = (TGraphErrors *) GFL -> At(5);
+
+  // crx3piobs diff
+  TGraphErrors *gf_cmd2_diff = (TGraphErrors *) GFL_DIFF -> At(0);
+  TGraphErrors *gf_babar_diff = (TGraphErrors *) GFL_DIFF -> At(1);
+  TGraphErrors *gf_bes3_diff = (TGraphErrors *) GFL_DIFF -> At(2);
+  TGraphErrors *gf_belle2_diff = (TGraphErrors *) GFL_DIFF -> At(3);
+  TGraphErrors *gf_snd_diff = (TGraphErrors *) GFL_DIFF -> At(4);
+  
+  //gf_cmd2_diff -> Draw();
+  
+  //TCanvas *cv = new TCanvas(cv_nm, cv_title, 1000, 700);
+  TCanvas *cv = new TCanvas(cv_nm, cv_title, 900, 700);
+
+  //cv -> SetBottomMargin(0.2);//0.007
+  //cv -> SetLeftMargin(0.15);
+
+  TPad *p2 = new TPad("p2", "p2", 0., 0., 1., 0.25);
+  p2 -> Draw();
+  p2 -> SetBottomMargin(0.4);
+  p2 -> SetLeftMargin(0.1);
+  p2 -> SetGrid();
+  
+  TPad *p1 = new TPad("p1", "p1", 0., 0.25, 1., 1.);
+  p1 -> Draw();
+  p1 -> SetBottomMargin(0.02);//0.007
+  p1 -> SetLeftMargin(0.1);
+  p1 -> cd();
+
+  const double xmin = 760.;
+  const double xmax = 810.;
+  
+  gf_snd -> GetXaxis() -> CenterTitle();
+  gf_snd -> GetXaxis() -> SetTitle("#sqrt{s} [MeV]");
+  gf_snd -> GetXaxis() -> SetTitleOffset(2);
+  gf_snd -> GetXaxis() -> SetTitleSize(0.06);
+  gf_snd -> GetXaxis() -> SetLabelSize(0.045);
+  gf_snd -> GetXaxis() -> SetLabelOffset(2);
+  gf_snd -> GetXaxis() -> SetRangeUser(xmin, xmax); 
+  gf_snd -> GetXaxis() -> SetTitleFont(132);
+  
+  gf_snd -> GetYaxis() -> CenterTitle();
+  gf_snd -> GetYaxis() -> SetTitle("#sigma_{3#pi} [nb]");
+  gf_snd -> GetYaxis() -> SetTitleOffset(0.6);
+  gf_snd -> GetYaxis() -> SetTitleSize(0.08);
+  gf_snd -> GetYaxis() -> SetLabelSize(0.045);
+  gf_snd -> GetYaxis() -> SetTitleFont(132);
+  gf_snd -> GetYaxis() -> SetRangeUser(0., 2000.); 
+
+  //gf_snd -> Draw("ap");
+  //gf_cmd2 -> Draw("p");
+  //gf_kloe -> Draw("p");
+  gf_babar -> Draw("ap");
+  gf_bes3 -> Draw("p");
+  gf_belle2 -> Draw("p");
+  
+  //
+  TLegend * legd_cv = new TLegend(0.12, 0.3, 0.5, 0.9);
+  
+  SetLegend(legd_cv);
+  legd_cv -> SetNColumns(1);
+  
+  //legd_cv -> AddEntry(gf_kloe, "This work", "lep");
+  legd_cv -> AddEntry(gf_cmd2, "CMD-2", "lep");
+  legd_cv -> AddEntry(gf_babar, "BaBar", "lep");
+  legd_cv -> AddEntry(gf_bes3, "BesIII", "lep");
+  legd_cv -> AddEntry(gf_belle2, "Belle II", "lep");
+  legd_cv -> AddEntry(gf_snd, "SND", "lep");
+  
+  legd_cv -> Draw("Same");
+  
+  legtextsize(legd_cv, 0.06);
+  
+  p2 -> cd();
+  
+  gf_cmd2_diff -> SetLineColor(0);
+  gf_cmd2_diff -> GetYaxis() -> SetNdivisions(505);
+
+  gf_cmd2_diff -> GetYaxis() -> CenterTitle();
+  gf_cmd2_diff -> GetYaxis() -> SetTitle("Residual");
+  gf_cmd2_diff -> GetYaxis() -> SetTitleSize(0.2);
+  gf_cmd2_diff -> GetYaxis() -> SetTitleFont(43);
+  gf_cmd2_diff -> GetYaxis() -> SetTitleOffset(.24);
+  gf_cmd2_diff -> GetYaxis() -> SetLabelFont(43); // Absolute front size in pixel (precision 3)
+  gf_cmd2_diff -> GetYaxis() -> SetLabelSize(25);
+  gf_cmd2_diff -> GetYaxis() -> SetTitleFont(132);
+ 
+  gf_cmd2_diff -> GetYaxis() -> SetRangeUser(-400., 200.);
+  gf_cmd2_diff -> GetXaxis() -> SetTitleOffset(0.85);
+  gf_cmd2_diff -> GetXaxis() -> SetLabelSize(0.15);
+  gf_cmd2_diff -> GetXaxis() -> SetTitleSize(0.2);
+  gf_cmd2_diff -> GetXaxis() -> SetTitle("#sqrt{s} [MeV]");
+  gf_cmd2_diff -> GetXaxis() -> CenterTitle();
+  gf_cmd2_diff -> GetXaxis() -> SetTitleFont(132);
+  
+  gf_cmd2_diff -> SetMarkerStyle(21);
+  gf_cmd2_diff -> SetMarkerSize(0.7);
+  //gf_cmd2_diff -> Draw("E0");
+
+  //TMultiGraph *mg = new TMultiGraph();
+  //mg -> SetTitle("Exclusion graphs");
+
+  gf_band(3, 9, 3001, gf_cmd2_diff);
+  gf_band(46, 9, 3001, gf_babar_diff);
+  gf_band(28, 9, 3001, gf_bes3_diff);
+  gf_band(7, 9, 3001, gf_belle2_diff);
+  gf_band(2, 9, 3001, gf_snd_diff);
+ 
+  //mg -> Add(gf_cmd2);
+  gf_cmd2_diff -> Draw("a3");
+  gf_babar_diff -> Draw("3");
+  gf_bes3_diff -> Draw("3");
+  gf_belle2_diff -> Draw("3");
+  gf_snd_diff -> Draw("3");
+    
+  //mg -> Draw("PC3");
+
+  TLine *line = new TLine(740., 0., 845., 0.);
+  line -> SetLineColor(kRed);
+  line -> SetLineWidth(2);
+
+  //line -> Draw("Same");
+  
+  return cv;
+  
+}
+
+TCanvas *plot_crx3pi_compr_new(TString cv_nm, TString cv_title, TList *GFL, TList *GFL_DIFF) {
+
+  // crx3piobs data
+  TGraphErrors *gf_babar = (TGraphErrors *) GFL -> At(2);
+  TGraphErrors *gf_bes3 = (TGraphErrors *) GFL -> At(3);
+  TGraphErrors *gf_belle2 = (TGraphErrors *) GFL -> At(4);
+  
+  // crx3piobs diff
+  TGraphErrors *gf_babar_diff = (TGraphErrors *) GFL_DIFF -> At(1);
+  TGraphErrors *gf_bes3_diff = (TGraphErrors *) GFL_DIFF -> At(2);
+  TGraphErrors *gf_belle2_diff = (TGraphErrors *) GFL_DIFF -> At(3);
+  
+  
+  //TCanvas *cv = new TCanvas(cv_nm, cv_title, 1000, 700);
+  TCanvas *cv = new TCanvas(cv_nm, cv_title, 1200, 700);
+
+  cv -> SetBottomMargin(0.15);//0.007
+  //cv -> SetLeftMargin(0.15);
+
+  const double xmin = 760.;
+  const double xmax = 810.;
+  
+  gf_babar -> GetXaxis() -> CenterTitle();
+  gf_babar -> GetXaxis() -> SetTitle("#sqrt{s} [MeV]");
+  gf_babar -> GetXaxis() -> SetTitleOffset(0.7);
+  gf_babar -> GetXaxis() -> SetTitleSize(0.08);
+  gf_babar -> GetXaxis() -> SetLabelSize(0.045);
+  //gf_babar -> GetXaxis() -> SetLabelOffset(2);
+  gf_babar -> GetXaxis() -> SetRangeUser(xmin, xmax); 
+  gf_babar -> GetXaxis() -> SetTitleFont(132);
+  
+  gf_babar -> GetYaxis() -> CenterTitle();
+  gf_babar -> GetYaxis() -> SetTitle("#sigma_{3#pi} [nb]");
+  gf_babar -> GetYaxis() -> SetTitleOffset(0.6);
+  gf_babar -> GetYaxis() -> SetTitleSize(0.08);
+  gf_babar -> GetYaxis() -> SetLabelSize(0.045);
+  gf_babar -> GetYaxis() -> SetTitleFont(132);
+  gf_babar -> GetYaxis() -> SetRangeUser(0., 2000.); 
+
+  //gf_snd -> Draw("ap");
+  //gf_cmd2 -> Draw("p");
+  //gf_kloe -> Draw("p");
+  gf_babar -> Draw("ap");
+  gf_bes3 -> Draw("p");
+  gf_belle2 -> Draw("p");
+  
+  //
+  TLegend * legd_cv = new TLegend(0.12, 0.4, 0.5, 0.9);
+  
+  SetLegend(legd_cv);
+  legd_cv -> SetNColumns(1);
+  
+  //legd_cv -> AddEntry(gf_kloe, "This work", "lep");
+  //legd_cv -> AddEntry(gf_cmd2, "CMD-2", "lep");
+  //legd_cv -> AddEntry(gf_snd, "SND", "lep");
+  legd_cv -> AddEntry(gf_babar, "BaBar", "lep");
+  legd_cv -> AddEntry(gf_bes3, "BesIII", "lep");
+  legd_cv -> AddEntry(gf_belle2, "Belle II", "lep");
+  
+  legd_cv -> Draw("Same");
+  
+  legtextsize(legd_cv, 0.06);
+  
+  return cv;
+  
+}
+
+int crx3piCompr_new(){
+
+  //gROOT->SetBatch(kTRUE);  
+  gErrorIgnoreLevel = kError;
+  TGaxis::SetMaxDigits(4);
+  gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  gStyle->SetStatBorderSize(0);
+  gStyle->SetFitFormat("6.2g");
+ 
+  // /home/bo/Desktop/analysis/assignment/unfolding/crx3piOpt/plotOutput
+
+  //// Data set
+  TList *GFL = new TList();
+  TList *GFL_DIFF = new TList();
+  
+  // KLOE-2
+  TGraphErrors *gf_kloe = new TGraphErrors("../dataset/crx3piObs_kloe.dat","%lg%lg%lg");
+  gf_attri(20, 4, 4, 0.7, gf_kloe, "gf_kloe");
+  GFL -> Add(gf_kloe);
+    
+  // CMD-2
+  TFile* fr_cmd2 = new TFile("../dataset/cmd2.root", "READ");
+  //getObj(fr_cmd2);
+  TGraphErrors *gf_cmd2 = (TGraphErrors*) fr_cmd2 -> Get("Table 1/Graph1D_y1");
+  gf_attri(27, 3, 3, 0.7, gf_cmd2, "gf_cmd2");
+  GFL -> Add(gf_cmd2);
+
+  // Babar
+  TFile* fr_babar = new TFile("../dataset/Babar.root", "READ");
+  TGraphErrors *gf_babar = (TGraphErrors*) fr_babar -> Get("Graph");
+  gf_attri(30, 46, 46, 0.7, gf_babar, "gf_babar");
+  GFL -> Add(gf_babar);
+
+  // BesIII
+  TFile* fr_bes3 = new TFile("../dataset/bes.root", "READ");
+  TGraphErrors *gf_bes3 = (TGraphErrors*) fr_bes3 -> Get("Graph");
+  gf_attri(32, 28, 28, 0.7, gf_bes3, "gf_bes3");
+  GFL -> Add(gf_bes3);
+
+  // BelleII
+  TFile* fr_bell2 = new TFile("../dataset/bell2.root", "READ");
+  getObj(fr_bell2);
+  TGraphErrors *gf_belle2_tmp = (TGraphErrors*) fr_bell2 -> Get("Graph1D_y3;1");
+  // Change GeV/c² to MeV/c²
+
+  const int binsize = gf_belle2_tmp -> GetN();
+  double m3pi = 0, crx3pi = 0., crx3pi_err = 0.;
+  double CRX3PI[1000], CRX3PI_ERR[1000];
+  double M3PI[1000], M3PI_ERR[1000];
+  
+  for (Int_t k = 0; k < binsize; k++) {
+
+    gf_belle2_tmp -> GetPoint(k, m3pi, crx3pi);
+
+    m3pi = m3pi * 1e3;
+    M3PI[k] = m3pi;
+    M3PI_ERR[k] = 0.;
+
+    crx3pi_err = gf_belle2_tmp -> GetErrorY(k);
+    CRX3PI[k] = crx3pi;
+    CRX3PI_ERR[k] = crx3pi_err;
+
+    //M3PI_BABAR[k] = m3pi;
+    //M3PIERR_BABAR[k] = 0.;
+    
+    
+    //cout << k + 1 << "  m3pi = " << m3pi << " MeV/c^2  crx3pi = " << crx3pi << "+/-" << crx3pi_err << endl;
+     
+  }
+
+  TGraphErrors * gf_belle2 = new TGraphErrors(binsize, M3PI, CRX3PI, M3PI_ERR, CRX3PI_ERR);
+  gf_attri(4, 7, 7, 0.7, gf_belle2, "gf_belle2");
+  
+  // Add graph to the list
+  GFL -> Add(gf_belle2);
+  //gf_belle2 -> Draw();
+
+  // SND
+  TFile* fr_snd = new TFile("../dataset/snd.root", "READ");
+  getObj(fr_snd);
+  TGraphErrors *gf_snd = (TGraphErrors*) fr_snd -> Get("Table 1/Graph1D_y1");
+  gf_attri(25, 2, 2, 0.7, gf_snd, "gf_snd");
+  GFL -> Add(gf_snd);
+  //gf_snd -> Draw();
+ 
+  //// Residual
+  // CMD-2
+  TGraphErrors *gf_cmd2_diff = gf_diff(GFL, gf_cmd2);
+  gf_cmd2_diff -> SetMarkerStyle(30);
+  gf_attri(27, 3, 3, 0.7, gf_cmd2_diff, "gf_cmd2_diff");
+  //gf_cmd2_diff -> Draw();
+  GFL_DIFF -> Add(gf_cmd2_diff);
+
+  // Babar
+  TGraphErrors *gf_babar_diff = gf_diff(GFL, gf_babar);
+  gf_babar_diff -> SetMarkerStyle(30);
+  gf_attri(30, 46, 46, 0.7, gf_babar_diff, "gf_babar_diff");
+  //gf_babar_diff -> Draw();
+  GFL_DIFF -> Add(gf_babar_diff);
+
+  // BesIII
+  TGraphErrors *gf_bes3_diff = gf_diff(GFL, gf_bes3);
+  gf_bes3_diff -> SetMarkerStyle(30);
+  gf_attri(32, 28, 28, 0.7, gf_bes3_diff, "gf_bes3_diff");
+  //gf_bes3_diff -> Draw();
+  GFL_DIFF -> Add(gf_bes3_diff);
+
+  // BelleII
+  TGraphErrors *gf_belle2_diff = gf_diff(GFL, gf_belle2);
+  gf_belle2_diff -> SetMarkerStyle(30);
+  gf_attri(4, 7, 7, 0.7, gf_belle2_diff, "gf_belle2_diff");
+  //gf_belle2_diff -> Draw();
+  GFL_DIFF -> Add(gf_belle2_diff);
+
+  // SND
+  TGraphErrors *gf_snd_diff = gf_diff(GFL, gf_snd);
+  gf_snd_diff -> SetMarkerStyle(30);
+  gf_attri(25, 2, 2, 0.7, gf_snd_diff, "gf_snd_diff");
+  //gf_snd_diff -> Draw();
+  GFL_DIFF -> Add(gf_snd_diff);
+
+  
+  
+  //// Plot
+  //TCanvas *cv_compr = plot_crx3pi_compr("cv_compr", "crx3pi comparison", GFL, GFL_DIFF);
+  TCanvas *cv_compr = plot_crx3pi_compr_new("cv_compr", "crx3pi comparison", GFL, GFL_DIFF);
+
+
+  //// Save
+  cv_compr -> SaveAs("crx3pi_compr.pdf");
+  
+  return 0;
+  
+}
+

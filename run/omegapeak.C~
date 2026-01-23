@@ -1,0 +1,7 @@
+int omegapeak() {
+
+  // get root input files from: ~/Desktop/analysis_root_v6/sf_2g/plot_hist.C (smeared signal 3pi invariant mass distribution)
+  // 
+
+  return 0;
+}

@@ -1,5 +1,5 @@
 #include "../header/plot.h"
-#include "../header/compr.h"
+//#include "../header/compr.h"
 
 int width_compr(){
 
@@ -9,7 +9,7 @@ int width_compr(){
   gStyle->SetOptTitle(0);
 
   // fill list
-  const int nb_point = 4;
+  const int nb_point = 5;
   double WIDTH_BAND[nb_point];
   double WIDTH_ERR_BAND[nb_point];
   double XLIST[nb_point], XLIST_ERR[nb_point];
@@ -54,7 +54,7 @@ int width_compr(){
   const double width2_err = TMath::Sqrt(0.36 * 0.36 + 0.27 * 0.27);
   const double WIDTH_EXP2[1] = {width2};
   const double WIDTH_EXP2_ERR[1] = {width2_err};
-  const double XLIST_EXP2[1] = {0.2};
+  const double XLIST_EXP2[1] = {0.3};
   const double XLIST_EXP2_ERR[1] = {0};
 
   cout << "width BaBar = " << width2 << "+/-" << width2_err << endl;
@@ -71,7 +71,7 @@ int width_compr(){
 
   const double WIDTH_EXP3[1] = {width3};
   const double WIDTH_EXP3_ERR[1] = {width3_err};
-  const double XLIST_EXP3[1] = {0.3};
+  const double XLIST_EXP3[1] = {0.4};
   const double XLIST_EXP3_ERR[1] = {0};
 
   // CMD2
@@ -80,13 +80,23 @@ int width_compr(){
 
   const double WIDTH_EXP4[1] = {width4};
   const double WIDTH_EXP4_ERR[1] = {width3_err};
-  const double XLIST_EXP4[1] = {0.4}; 
+  const double XLIST_EXP4[1] = {0.5}; 
   const double XLIST_EXP4_ERR[1] = {0};
 
+  // CMD-3 arxiv.org/pdf/2302.08834
+  const double width5 = 8.57;
+  const double width5_err = TMath::Sqrt(0.06 * 0.06 + 0.01 * 0.01);
+
+  const double WIDTH_EXP5[1] = {width5};
+  const double WIDTH_EXP5_ERR[1] = {width5_err};
+  const double XLIST_EXP5[1] = {0.2}; 
+  const double XLIST_EXP5_ERR[1] = {0};
+
+  
   // label
-  const double LABEL_INDX[nb_point] = {XLIST_EXP1[0], XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0]};
-  const double LABEL_GF[nb_point] = {0., 0., 0., 0.};
-  const TString EXP_STR[nb_point] = {"This work", "BABAR12", "RVUE", "CMD-2b"};
+  const double LABEL_INDX[nb_point] = {XLIST_EXP1[0], XLIST_EXP5[0], XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0]};
+  const double LABEL_GF[nb_point] = {0., 0., 0., 0., 0};
+  const TString EXP_STR[nb_point] = {"This work", "CMD-3", "BABAR12", "RVUE", "CMD-2b"};
 
   // graphs
   TGraphAsymmErrors *gf_exp1 = new TGraphAsymmErrors(1, XLIST_EXP1, WIDTH_EXP1, WIDTH1_EXL, WIDTH1_EXH, WIDTH1_EYL, WIDTH1_EYH);
@@ -113,6 +123,12 @@ int width_compr(){
   gf_exp4 -> SetMarkerStyle(22);
   gf_exp4 -> SetMarkerSize(1.3);
   gf_exp4 -> SetMarkerColor(kBlack);
+
+  TGraphErrors *gf_exp5 = new TGraphErrors(1, XLIST_EXP5, WIDTH_EXP5, XLIST_EXP5_ERR, WIDTH_EXP5_ERR);
+  gf_exp5 -> SetName("gf_exp4");
+  gf_exp5 -> SetMarkerStyle(23);
+  gf_exp5 -> SetMarkerSize(1.3);
+  gf_exp5 -> SetMarkerColor(46);
 
   TGraphErrors *gf_band = new TGraphErrors(nb_point, XLIST, WIDTH_BAND, XLIST_ERR, WIDTH_ERR_BAND);
   gf_band -> SetName("gf_band");
@@ -175,6 +191,8 @@ int width_compr(){
   gf_exp2 -> Draw("P");
   gf_exp3 -> Draw("P");
   gf_exp4 -> Draw("P");
+  gf_exp5 -> Draw("P");
+  
 
   //pt1 -> Draw("Same");
   //pt2 -> Draw("Same");
@@ -183,8 +201,10 @@ int width_compr(){
 
   SetLegend(legd_gf);
   legd_gf -> SetNColumns(1);
+
+  legd_gf -> SetTextColor(kGreen);
   
-  legd_gf -> AddEntry(gf_band, "PDG", "lf");
+  legd_gf -> AddEntry(gf_band, "PDG24", "lf");
 
   legd_gf -> Draw("Same");
 
@@ -193,7 +213,8 @@ int width_compr(){
   gPad -> Update();
   
   // save
-  cv -> SaveAs(outputFile + "/width_compr.pdf");
+  //cv -> SaveAs(outputFile + "/width_compr.pdf");
+  cv -> SaveAs("width_compr.pdf");
   
 
   return 0;

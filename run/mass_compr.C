@@ -1,5 +1,5 @@
 #include "../header/plot.h"
-#include "../header/compr.h"
+//#include "../header/compr.h"
 
 int mass_compr(){
 
@@ -9,7 +9,7 @@ int mass_compr(){
   gStyle->SetOptTitle(0);
 
   // fill list
-  const int nb_point = 12;
+  const int nb_point = 13;
   double MASS_BAND[nb_point];
   double MASS_ERR_BAND[nb_point];
   double XLIST[nb_point], XLIST_ERR[nb_point];
@@ -72,7 +72,7 @@ int mass_compr(){
 
   const double MASS_EXP3[1] = {mass3};
   const double MASS_EXP3_ERR[1] = {mass3_err};
-  const double XLIST_EXP3[1] = {0.2};
+  const double XLIST_EXP3[1] = {0.3};
   const double XLIST_EXP3_ERR[1] = {0};
 
   // BABAR ISR (primary)
@@ -81,7 +81,7 @@ int mass_compr(){
 
   const double MASS_EXP4[1] = {mass4};
   const double MASS_EXP4_ERR[1] = {mass4_err};
-  const double XLIST_EXP4[1] = {0.3};
+  const double XLIST_EXP4[1] = {0.4};
   const double XLIST_EXP4_ERR[1] = {0};
 
   // BESIII ISR (primary)
@@ -90,7 +90,7 @@ int mass_compr(){
 
   const double MASS_EXP5[1] = {mass5};
   const double MASS_EXP5_ERR[1] = {mass5_err};
-  const double XLIST_EXP5[1] = {0.4};
+  const double XLIST_EXP5[1] = {0.5};
   const double XLIST_EXP5_ERR[1] = {0};
 
   // CMD-2 2004
@@ -99,7 +99,7 @@ int mass_compr(){
 
   const double MASS_EXP6[1] = {mass6};
   const double MASS_EXP6_ERR[1] = {mass6_err};
-  const double XLIST_EXP6[1] = {0.5};
+  const double XLIST_EXP6[1] = {0.6};
   const double XLIST_EXP6_ERR[1] = {0};
 
   // CMD-2 2003
@@ -108,7 +108,7 @@ int mass_compr(){
 
   const double MASS_EXP7[1] = {mass7};
   const double MASS_EXP7_ERR[1] = {mass7_err};
-  const double XLIST_EXP7[1] = {0.6};
+  const double XLIST_EXP7[1] = {0.7};
   const double XLIST_EXP7_ERR[1] = {0};
 
   // RVUE
@@ -117,7 +117,7 @@ int mass_compr(){
 
   const double MASS_EXP8[1] = {mass8};
   const double MASS_EXP8_ERR[1] = {mass8_err};
-  const double XLIST_EXP8[1] = {0.7};
+  const double XLIST_EXP8[1] = {0.8};
   const double XLIST_EXP8_ERR[1] = {0};
 
   // CBAR 11k 
@@ -126,7 +126,7 @@ int mass_compr(){
 
   const double MASS_EXP9[1] = {mass9};
   const double MASS_EXP9_ERR[1] = {mass9_err};
-  const double XLIST_EXP9[1] = {0.8};
+  const double XLIST_EXP9[1] = {0.9};
   const double XLIST_EXP9_ERR[1] = {0};
 
   // CBAR
@@ -135,7 +135,7 @@ int mass_compr(){
 
   const double MASS_EXP10[1] = {mass10};
   const double MASS_EXP10_ERR[1] = {mass10_err};
-  const double XLIST_EXP10[1] = {0.9};
+  const double XLIST_EXP10[1] = {1.0};
   const double XLIST_EXP10_ERR[1] = {0};
 
   // CBAR  
@@ -144,7 +144,7 @@ int mass_compr(){
 
   const double MASS_EXP11[1] = {mass11};
   const double MASS_EXP11_ERR[1] = {mass11_err};
-  const double XLIST_EXP11[1] = {1.0};
+  const double XLIST_EXP11[1] = {1.1};
   const double XLIST_EXP11_ERR[1] = {0};
 
   // ASTE 
@@ -153,7 +153,7 @@ int mass_compr(){
   
   const double MASS_EXP12[1] = {mass12};
   const double MASS_EXP12_ERR[1] = {mass12_err};
-  const double XLIST_EXP12[1] = {1.1};
+  const double XLIST_EXP12[1] = {1.2};
   const double XLIST_EXP12_ERR[1] = {0};
 
   // KEYNE 
@@ -162,14 +162,23 @@ int mass_compr(){
   
   const double MASS_EXP13[1] = {mass13};
   const double MASS_EXP13_ERR[1] = {mass13_err};
-  const double XLIST_EXP13[1] = {1.2};
+  const double XLIST_EXP13[1] = {1.3};
   const double XLIST_EXP13_ERR[1] = {0};
+
+  // CMD-3 arxiv.org/pdf/2302.08834
+  const double mass14 = 782.43; //   
+  const double mass14_err = TMath::Sqrt(0.03 * 0.03 + 0.01 * 0.01);
   
+  const double MASS_EXP14[1] = {mass14};
+  const double MASS_EXP14_ERR[1] = {mass13_err};
+  const double XLIST_EXP14[1] = {0.2};
+  const double XLIST_EXP14_ERR[1] = {0};
+
   // label
-  const double LABEL_INDX[nb_point] = {XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0], XLIST_EXP5[0], XLIST_EXP6[0], XLIST_EXP7[0], XLIST_EXP8[0], XLIST_EXP9[0], XLIST_EXP10[0], XLIST_EXP11[0], XLIST_EXP12[0], XLIST_EXP13[0]};
-  const double LABEL_GF[nb_point] = {0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.};
-  const TString EXP1_STR[nb_point] = {"", "", "", "", "", "", "", "", "", "", "", ""};
-  const TString EXP_STR[nb_point] = {"This Work", "BABR04", "BABR20", "BESIII", "CMD-2a", "CMD-2b", "RVUE", "CBARa", "CBARb", "CBARc", "ASTE", "CNTR"};
+  const double LABEL_INDX[nb_point] = {XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0], XLIST_EXP5[0], XLIST_EXP6[0], XLIST_EXP7[0], XLIST_EXP8[0], XLIST_EXP9[0], XLIST_EXP10[0], XLIST_EXP11[0], XLIST_EXP12[0], XLIST_EXP13[0], XLIST_EXP14[0]};
+  const double LABEL_GF[nb_point] = {0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.};
+  const TString EXP1_STR[nb_point] = {"", "", "", "", "", "", "", "", "", "", "", "", ""};
+  const TString EXP_STR[nb_point] = {"This Work", "BABR04", "BABR20", "BESIII", "CMD-2a", "CMD-2b", "RVUE", "CBARa", "CBARb", "CBARc", "ASTE", "CNTR", "CMD-3"};
 
   const double LABEL_INDX1[nb_point] = {XLIST_EXP1[0]};
   const double LABEL_GF1[1] = {0.};
@@ -263,6 +272,12 @@ int mass_compr(){
   gf_exp13 -> SetMarkerStyle(33);
   gf_exp13 -> SetMarkerSize(1.3);
   gf_exp13 -> SetMarkerColor(46);
+
+  TGraphErrors *gf_exp14 = new TGraphErrors(1, XLIST_EXP14, MASS_EXP14, XLIST_EXP14_ERR, MASS_EXP14_ERR);
+  gf_exp14 -> SetName("gf_exp14");
+  gf_exp14 -> SetMarkerStyle(34);
+  gf_exp14 -> SetMarkerSize(1.3);
+  gf_exp14 -> SetMarkerColor(47);
 
   TGraphErrors *gf_band = new TGraphErrors(nb_point, XLIST, MASS_BAND, XLIST_ERR, MASS_ERR_BAND);
   gf_band -> SetName("gf_band");
@@ -393,6 +408,8 @@ int mass_compr(){
   gf_exp11 -> Draw("P");
   gf_exp12 -> Draw("P");
   gf_exp13 -> Draw("P");
+  gf_exp14 -> Draw("P");
+  
   
   //pt1 -> Draw("Same");
   //pt2 -> Draw("Same");
@@ -409,7 +426,9 @@ int mass_compr(){
   //legd_gf -> AddEntry(gf_exp4,  "SPEC", "lep");
   //legd_gf -> AddEntry(gf_exp5,  "CMD", "lep");
 
-  legd_gf -> AddEntry(gf_band, "PDG", "lf");
+
+  legd_gf -> SetTextColor(kGreen);
+  legd_gf -> AddEntry(gf_band, "PDG24", "lf");
 
   legd_gf -> Draw("Same");
 
@@ -441,7 +460,8 @@ int mass_compr(){
   */
   
   // save
-  cv -> SaveAs(outputFile + "/mass_compr.pdf");
+  cv -> SaveAs("mass_compr.pdf");
+  //cv -> SaveAs(outputFile + "/mass_compr.pdf");
   //cv_h1 -> SaveAs(outputFile + "/mass_h1.pdf");
   
   return 0;

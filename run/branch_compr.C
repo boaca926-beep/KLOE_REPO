@@ -9,7 +9,7 @@ int branch_compr(){
   gStyle->SetOptTitle(0);
 
   // fill list
-  const int nb_point = 7;
+  const int nb_point = 8;
   double BRANCH_BAND[nb_point];
   double BRANCH_ERR_BAND[nb_point];
   double XLIST[nb_point], XLIST_ERR[nb_point];
@@ -67,7 +67,7 @@ int branch_compr(){
 
   const double BRANCH_EXP2[1] = {branch2};
   const double BRANCH_EXP2_ERR[1] = {branch2_err};
-  const double XLIST_EXP2[1] = {0.2};
+  const double XLIST_EXP2[1] = {0.3};
   const double XLIST_EXP2_ERR[1] = {0};
 
   // BABR 2021 (primary)
@@ -85,7 +85,7 @@ int branch_compr(){
   
   const double BRANCH_EXP3[1] = {branch3};
   const double BRANCH_EXP3_ERR[1] = {branch3_err};
-  const double XLIST_EXP3[1] = {0.3}; 
+  const double XLIST_EXP3[1] = {0.4}; 
   const double XLIST_EXP3_ERR[1] = {0};
 
   // BESIII (primary)
@@ -94,7 +94,7 @@ int branch_compr(){
 
   const double BRANCH_EXP4[1] = {branch4};
   const double BRANCH_EXP4_ERR[1] = {branch4_err};
-  const double XLIST_EXP4[1] = {0.4};
+  const double XLIST_EXP4[1] = {0.5};
   const double XLIST_EXP4_ERR[1] = {0};
 
   // CMD-2 
@@ -103,7 +103,7 @@ int branch_compr(){
 
   const double BRANCH_EXP5[1] = {branch5};
   const double BRANCH_EXP5_ERR[1] = {branch5_err};
-  const double XLIST_EXP5[1] = {0.5};
+  const double XLIST_EXP5[1] = {0.6};
   const double XLIST_EXP5_ERR[1] = {0};
 
   // RVUE 
@@ -112,7 +112,7 @@ int branch_compr(){
 
   const double BRANCH_EXP6[1] = {branch6};
   const double BRANCH_EXP6_ERR[1] = {branch6_err};
-  const double XLIST_EXP6[1] = {0.6};
+  const double XLIST_EXP6[1] = {0.7};
   const double XLIST_EXP6_ERR[1] = {0};
 
   // ND  e+ e- -> pi+ pi- pi0 
@@ -121,13 +121,22 @@ int branch_compr(){
   
   const double BRANCH_EXP7[1] = {branch7};
   const double BRANCH_EXP7_ERR[1] = {branch7_err};
-  const double XLIST_EXP7[1] = {0.7};
+  const double XLIST_EXP7[1] = {0.8};
   const double XLIST_EXP7_ERR[1] = {0};
 
+  // CMD-3 arxiv.org/pdf/2302.08834
+  const double branch8 = 6.82;
+  const double branch8_err = TMath::Sqrt(0.04 * 0.04 + 0.23 * 0.23);
+  
+  const double BRANCH_EXP8[1] = {branch8};
+  const double BRANCH_EXP8_ERR[1] = {branch8_err};
+  const double XLIST_EXP8[1] = {0.2};
+  const double XLIST_EXP8_ERR[1] = {0};
+
   // label
-  const double LABEL_INDX[nb_point] = {XLIST_EXP1[0], XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0], XLIST_EXP5[0], XLIST_EXP6[0], XLIST_EXP7[0]};
-  const double LABEL_GF[nb_point] = {0., 0., 0., 0., 0., 0., 0.};
-  const TString EXP_STR[nb_point] = {"This work", "BABR04", "BABR20", "BESIII", "CMD-2b", "RVUE", "ND"};
+  const double LABEL_INDX[nb_point] = {XLIST_EXP1[0], XLIST_EXP2[0], XLIST_EXP3[0], XLIST_EXP4[0], XLIST_EXP5[0], XLIST_EXP6[0], XLIST_EXP7[0], XLIST_EXP8[0]};
+  const double LABEL_GF[nb_point] = {0., 0., 0., 0., 0., 0., 0., 0.};
+  const TString EXP_STR[nb_point] = {"This work", "BABR04", "BABR20", "BESIII", "CMD-2b", "RVUE", "ND", "CMD-3"};
 
   // graphs
   TGraphAsymmErrors *gf_exp1 = new TGraphAsymmErrors(1, XLIST_EXP1, BRANCH_EXP1, BRANCH1_EXL, BRANCH1_EXH, BRANCH1_EYL, BRANCH1_EYH);
@@ -172,6 +181,12 @@ int branch_compr(){
   gf_exp7 -> SetMarkerStyle(33);
   gf_exp7 -> SetMarkerSize(1.3);
   gf_exp7 -> SetMarkerColor(46);
+
+  TGraphErrors *gf_exp8 = new TGraphErrors(1, XLIST_EXP8, BRANCH_EXP8, XLIST_EXP8_ERR, BRANCH_EXP8_ERR);
+  gf_exp8 -> SetName("gf_exp8");
+  gf_exp8 -> SetMarkerStyle(34);
+  gf_exp8 -> SetMarkerSize(1.3);
+  gf_exp8 -> SetMarkerColor(47);
 
   TGraphErrors *gf_band = new TGraphErrors(nb_point, XLIST, BRANCH_BAND, XLIST_ERR, BRANCH_ERR_BAND);
   gf_band -> SetName("gf_band");
@@ -237,6 +252,8 @@ int branch_compr(){
   gf_exp5 -> Draw("P");
   gf_exp6 -> Draw("P");
   gf_exp7 -> Draw("P");
+  gf_exp8 -> Draw("P");
+  
 
   //pt1 -> Draw("Same");
   //pt2 -> Draw("Same");
@@ -245,8 +262,9 @@ int branch_compr(){
 
   SetLegend(legd_gf);
   legd_gf -> SetNColumns(1);
+  legd_gf -> SetTextColor(kGreen);
   
-  legd_gf -> AddEntry(gf_band, "PDG", "lf");
+  legd_gf -> AddEntry(gf_band, "PDG24", "lf");
 
   legd_gf -> Draw("Same");
 
@@ -255,7 +273,8 @@ int branch_compr(){
   gPad -> Update();
   
   // save
-  cv -> SaveAs(outputFile + "/branch_compr.pdf");
+  //cv -> SaveAs(outputFile + "/branch_compr.pdf");
+  cv -> SaveAs("branch_compr.pdf");
   
 
   return 0;

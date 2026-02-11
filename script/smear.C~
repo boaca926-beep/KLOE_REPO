@@ -1,0 +1,10 @@
+// using pi0 invariant mass to smear photon 4-momentum resolution
+// input sample: const TString infile_nm="../crx3pi_norm/output/tree_cut0.root";
+
+//
+int smear() {
+
+
+  return 0;
+  
+}

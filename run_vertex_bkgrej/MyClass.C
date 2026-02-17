@@ -1231,7 +1231,68 @@ void MyClass::Main()
     }
 
     //cout << "\nCheck pi0 photons" << endl;
+
+    //=========================================================================================================
+    // Match photon indices
+    //=========================================================================================================
+    // Selected photon indices (isr, pi0_pho1, pi0_pho2) using pesudo chi-square test
+    cout << "\n\tSelected photon indices (isr, pi0_pho1, pi0_pho2) = (" << isrgam_indx << ", " << pi0gam1_indx << ", " << pi0gam2_indx << ")\n"
+	 << "ISR pho 4-mom: (" << TLVector_isrpho_kinfit7C.E() << ", " << TLVector_isrpho_kinfit7C.X() << ", " << TLVector_isrpho_kinfit7C.Y() << ", " << TLVector_isrpho_kinfit7C.Z() << ")\n"
+	 << "pi0_pho1 4-mom: (" << TLVector_pi0pho1_kinfit7C.E() << ", " << TLVector_pi0pho1_kinfit7C.X() << ", " << TLVector_pi0pho1_kinfit7C.Y() << ", " << TLVector_pi0pho1_kinfit7C.Z() << ")\n"
+	 << "pi0_pho2 4-mom: (" << TLVector_pi0pho2_kinfit7C.E() << ", " << TLVector_pi0pho2_kinfit7C.X() << ", " << TLVector_pi0pho2_kinfit7C.Y() << ", " << TLVector_pi0pho2_kinfit7C.Z() << ")" << endl;
+
+    // Check with MC true information
+    int photon_index[3] = {-1, -1, -1}; // first two are pi0 photons, and the last is the unparied photon
+
+
+    if (TMath::IsNaN(TLVector_isrpho_kinfit7C.E()) || TMath::IsNaN(TLVector_pi0pho1_kinfit7C.E()) || TMath::IsNaN(TLVector_pi0pho2_kinfit7C.E())){// invalid photon energies
+      //cout << "Invalid photon energies: E_isrpho = " << TLVector_isrpho_kinfit7C.E() << ", E_pi0pho1 = " << TLVector_pi0pho1_kinfit7C.E() << ", E_pi0pho2 = " << TLVector_pi0pho2_kinfit7C.E() << endl;
+    }
+    else{
+
+      for (int i = 0; i < 2; i ++) {// find the first match
+
+	if (pho_indx[pi0gam1_indx] == EPI0NTMC[i] && photon_index[0] == -1 && photon_index[1] == -1 && photon_index[2] == -1) {// check first position
+	  photon_index[0] = pi0gam1_indx;
+
+	  cout << "first pi0 photon found at index pho_indx[" << pi0gam1_indx << "] = " << pho_indx[pi0gam1_indx] << ", EPI0NTMC[" << i << "] = " << EPI0NTMC[i] << endl;
+	 
+
+	}
+	else if (pho_indx[pi0gam2_indx] == EPI0NTMC[i] && photon_index[0] == pi0gam1_indx && photon_index[1] == -1 && photon_index[2] == -1) {
+
+	  photon_index[1] = pi0gam2_indx;
+
+	  cout << "second pi0 photon found at index pho_indx[" << pi0gam2_indx << "] = " << pho_indx[pi0gam2_indx] << ", EPI0NTMC[" << i << "] = " << EPI0NTMC[i] << endl;
+	 
+	}
+	else {
+	  //cout << "here! " << endl;
+	}
+	
+
+      }
+
+      
+      if (photon_index[0] == pi0gam1_indx && photon_index[1] == pi0gam2_indx && photon_index[2] == -1){ // unpaired
+
+	  photon_index[2] = isrgam_indx;
+	  
+	  cout << "upaire photon index at pho_indx[" << isrgam_indx << "]" << endl; 
+      }
+
+      /*
+      cout << "Valid photon energies: E_isrpho = " << TLVector_isrpho_kinfit7C.E() << ", E_pi0pho1 = " << TLVector_pi0pho1_kinfit7C.E() << ", E_pi0pho2 = " << TLVector_pi0pho2_kinfit7C.E() << "\n"
+	   << "pi0_pho1 index: " << photon_index[0] << ", pi0_pho2 index: " << photon_index[1] << ", isrpho index: " << photon_index[0] << endl; 
+      */
+    }
+    
+    cout << "\t MC photon index (pi0_pho1, pi0_pho2, isr) = (" << photon_index[0] << ", " << photon_index[1] << ", " << photon_index[2] << ")" << endl; 
+	
+      
+    //=========================================================================================================
     int recon_indx_tmp = 0;
+
     
     PI0PHORESD[0] = TLVector_pi0pho1_true.E() - TLVector_pi0pho1.E();
     PI0PHORESD[1] = TLVector_pi0pho2_true.E() - TLVector_pi0pho2.E();
@@ -1239,11 +1300,6 @@ void MyClass::Main()
     PI0PHORESD[3] = TLVector_pi0pho2_true.E() - TLVector_pi0pho2_kinfit7C.E();
    
     Bool_t checked[2] = {kFALSE, kFALSE};
-
-    cout << "\nSelected photon indices (isr, pi0_pho1, pi0_pho2) = (" << isrgam_indx << ", " << pi0gam1_indx << ", " << pi0gam2_indx << ")\n"
-	 << "ISR pho 4-mom: (" << TLVector_isrpho_kinfit7C.E() << ", " << TLVector_isrpho_kinfit7C.X() << ", " << TLVector_isrpho_kinfit7C.Y() << ", " << TLVector_isrpho_kinfit7C.Z() << ")\n"
-	 << "pi0_pho1 4-mom: (" << TLVector_pi0pho1_kinfit7C.E() << ", " << TLVector_pi0pho1_kinfit7C.X() << ", " << TLVector_pi0pho1_kinfit7C.Y() << ", " << TLVector_pi0pho1_kinfit7C.Z() << ")\n"
-	 << "pi0_pho2 4-mom: (" << TLVector_pi0pho2_kinfit7C.E() << ", " << TLVector_pi0pho2_kinfit7C.X() << ", " << TLVector_pi0pho2_kinfit7C.Y() << ", " << TLVector_pi0pho2_kinfit7C.Z() << ")" << endl;
 
     TLorentzVector TLVector_isrpho_labled, TLVector_pi0gam1, TLVector_pi0gam2;
     
@@ -1258,7 +1314,7 @@ void MyClass::Main()
 
 	TLVector_pi0gam1 = Getphoton4vector(inputvect_fitted_ordered(pi0gam1_indx * 5), inputvect_fitted_ordered(pi0gam1_indx * 5 + 1), inputvect_fitted_ordered(pi0gam1_indx * 5 + 2), inputvect_fitted_ordered(pi0gam1_indx * 5 + 3));
 	
-	cout << "Found the first pi0 photon at indx: " << pi0gam1_indx << ", 4-mom indices: " << pi0gam1_indx * 5 << ", " << pi0gam1_indx * 5 + 1 << ", " << pi0gam1_indx * 5 + 2 << ", " << pi0gam1_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam1.E() << ", " << TLVector_pi0gam1.X() << ", " << TLVector_pi0gam1.Y() << ", " << TLVector_pi0gam1.Z() << ")" << endl;
+	//cout << "Found the first pi0 photon at indx: " << pi0gam1_indx << ", 4-mom indices: " << pi0gam1_indx * 5 << ", " << pi0gam1_indx * 5 + 1 << ", " << pi0gam1_indx * 5 + 2 << ", " << pi0gam1_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam1.E() << ", " << TLVector_pi0gam1.X() << ", " << TLVector_pi0gam1.Y() << ", " << TLVector_pi0gam1.Z() << ")" << endl;
 
 	//cout << E_true_list[pi0gam1_indx] << ", pi0gam1_indx = " << pi0gam1_indx << ", recon1_indx = " << recon_indx_tmp << ", first mathched at EPI0NTMC=" << EPI0NTMC[i] << ", pho_indx[pi0gam1_indx]=" << pho_indx[pi0gam1_indx] << "\n";
       }
@@ -1284,7 +1340,7 @@ void MyClass::Main()
 
 	TLVector_pi0gam2 = Getphoton4vector(inputvect_fitted_ordered(pi0gam2_indx * 5), inputvect_fitted_ordered(pi0gam2_indx * 5 + 1), inputvect_fitted_ordered(pi0gam2_indx * 5 + 2), inputvect_fitted_ordered(pi0gam2_indx * 5 + 3));
 	
-	cout << "Found the second pi0 photon at indx: " << pi0gam2_indx << ", 4-mom indices: " << pi0gam2_indx * 5 << ", " << pi0gam2_indx * 5 + 1 << ", " << pi0gam2_indx * 5 + 2 << ", " << pi0gam2_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam2.E() << ", " << TLVector_pi0gam2.X() << ", " << TLVector_pi0gam2.Y() << ", " << TLVector_pi0gam2.Z() << ")" << endl;
+	//cout << "Found the second pi0 photon at indx: " << pi0gam2_indx << ", 4-mom indices: " << pi0gam2_indx * 5 << ", " << pi0gam2_indx * 5 + 1 << ", " << pi0gam2_indx * 5 + 2 << ", " << pi0gam2_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam2.E() << ", " << TLVector_pi0gam2.X() << ", " << TLVector_pi0gam2.Y() << ", " << TLVector_pi0gam2.Z() << ")" << endl;
 
 	//cout << E_true_list[pi0gam2_indx] << ", pi0gam2_indx = " << pi0gam2_indx << ", recon2_indx = " << recon_indx_tmp << ", first mathched at EPI0NTMC=" << EPI0NTMC[i] << ", pho_indx[pi0gam2_indx]=" << pho_indx[pi0gam2_indx] << "\n";
       }

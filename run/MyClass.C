@@ -1298,7 +1298,7 @@ void MyClass::Main()
 
     }
 
-    for (int i = 0; i < 2; i ++) {// find the first match
+    for (int i = 0; i < 2; i ++) {// find the second match
 
       //cout << checked[i] << endl;
 	
@@ -1324,6 +1324,10 @@ void MyClass::Main()
           
     }
 
+    if (recon_indx == 2 && bkg_indx == 1) {
+      //cout << recon_indx << ", " << bkg_indx << endl;
+      hmpi0_iden -> Fill((TLVector_pi0pho2 + TLVector_pi0pho1).M()); 
+    }
     //if (recon_indx == 1 || recon_indx == 0) continue; 
 
     

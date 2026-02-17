@@ -40,6 +40,8 @@ void MyClass::Main()
   int trknb_prompt = 0, trkindx1 = 0, trkindx2 = 0;
   
   int promptnb = 0;
+  int evt_indx = -1;
+  
   // vertex
   double Zv = 0;
   double Rhov = 0;
@@ -197,11 +199,39 @@ void MyClass::Main()
   //ALLCHAIN_CUT.Branch("Br_MOM4TRKPLUS", &MOM4TRKPLUS, "MOM4TRKPLUS[4]/D");
 
   //
-  TTree ALLCHAIN_TEST ("ALLCHAIN_TEST", "recreate"); ALLCHAIN_TEST.SetAutoSave(0);
+  TTree ALLCHAIN_TEST ("ALLCHAIN_TEST", "recreate");
+  ALLCHAIN_TEST.SetAutoSave(0);
   ALLCHAIN_TEST.Branch("Br_bkg_indx", &bkg_indx, "Br_bkg_indx/I");
   ALLCHAIN_TEST.Branch("Br_IM3pi_7C", &IM3pi_7C, "Br_IM3pi_7C/D");
   ALLCHAIN_TEST.Branch("Br_IMisrpho_miss", &IMisrpho_miss, "Br_IMisrpho_miss/D");
   ALLCHAIN_TEST.Branch("Br_angle_ppl_3piboost", &angle_ppl_3piboost, "Br_angle_ppl_3piboost/D");
+
+  // chain store identified photons: pho1 (pi0 photon 1), pho2 (pi0 photon 2), pho3 (upaired)
+  double pho_E1 = 0., pho_px1 = 0., pho_py1 = 0., pho_pz1 = 0.;
+  double pho_E2 = 0., pho_px2 = 0., pho_py2 = 0., pho_pz2 = 0.;
+  double pho_E3 = 0., pho_px3 = 0., pho_py3 = 0., pho_pz3 = 0.;
+  
+  TTree PHOTONS ("PHOTONS", "recreate");
+  PHOTONS.SetAutoSave(0);
+  PHOTONS.Branch("Br_evt_indx", &evt_indx, "Br_evt_indx/I");
+
+  PHOTONS.Branch("Br_E1", &pho_E1, "Br_E1/D");
+  PHOTONS.Branch("Br_px1", &pho_px1, "Br_px1/D");
+  PHOTONS.Branch("Br_py1", &pho_py1, "Br_py1/D");
+  PHOTONS.Branch("Br_pz1", &pho_pz1, "Br_pz1/D");
+
+  PHOTONS.Branch("Br_E2", &pho_E2, "Br_E2/D");
+  PHOTONS.Branch("Br_px2", &pho_px2, "Br_px2/D");
+  PHOTONS.Branch("Br_py2", &pho_py2, "Br_py2/D");
+  PHOTONS.Branch("Br_pz2", &pho_pz2, "Br_pz2/D");
+
+  PHOTONS.Branch("Br_E3", &pho_E3, "Br_E3/D");
+  PHOTONS.Branch("Br_px3", &pho_px3, "Br_px3/D");
+  PHOTONS.Branch("Br_py3", &pho_py3, "Br_py3/D");
+  PHOTONS.Branch("Br_pz3", &pho_pz3, "Br_pz3/D");
+  PHOTONS.Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
+  PHOTONS.Branch("Br_phid", &phid, "Br_phid/I");
+  
   
   ///
   if (fChain == 0) return;
@@ -216,7 +246,7 @@ void MyClass::Main()
     // if (Cut(ientry) < 0) continue;
     //if (jentry != 228610) continue;
     //if (jentry > 1) continue; 
-    
+
     //cout << "jentry = " << jentry << endl;
 
     evnt_sum ++;
@@ -1241,10 +1271,16 @@ void MyClass::Main()
 	 << "pi0_pho1 4-mom: (" << TLVector_pi0pho1_kinfit7C.E() << ", " << TLVector_pi0pho1_kinfit7C.X() << ", " << TLVector_pi0pho1_kinfit7C.Y() << ", " << TLVector_pi0pho1_kinfit7C.Z() << ")\n"
 	 << "pi0_pho2 4-mom: (" << TLVector_pi0pho2_kinfit7C.E() << ", " << TLVector_pi0pho2_kinfit7C.X() << ", " << TLVector_pi0pho2_kinfit7C.Y() << ", " << TLVector_pi0pho2_kinfit7C.Z() << ")" << endl;
 
+    cout << "pho_indx[pi0gam1_indx] = " << pho_indx[pi0gam1_indx] << ", pho_indx[pi0gam2_indx = "<< pho_indx[pi0gam2_indx] << ", pho_indx[pi0gam2_indx] = "<< pho_indx[isrgam_indx] << "\n"
+	 << "EPI0NTMC[0] = " << EPI0NTMC[0] << ", EPI0NTMC[1] = " << EPI0NTMC[1] << endl;
+    
+    /*  
     // Check with MC true information
     int photon_index[3] = {-1, -1, -1}; // first two are pi0 photons, and the last is the unparied photon
+    int nb_pi0_pho = 0;
 
-
+    TLorentzVector TLVector_photon1, TLVector_photon2, TLVector_photon3;
+    
     if (TMath::IsNaN(TLVector_isrpho_kinfit7C.E()) || TMath::IsNaN(TLVector_pi0pho1_kinfit7C.E()) || TMath::IsNaN(TLVector_pi0pho2_kinfit7C.E())){// invalid photon energies
       //cout << "Invalid photon energies: E_isrpho = " << TLVector_isrpho_kinfit7C.E() << ", E_pi0pho1 = " << TLVector_pi0pho1_kinfit7C.E() << ", E_pi0pho2 = " << TLVector_pi0pho2_kinfit7C.E() << endl;
     }
@@ -1254,17 +1290,24 @@ void MyClass::Main()
 
 	if (pho_indx[pi0gam1_indx] == EPI0NTMC[i] && photon_index[0] == -1 && photon_index[1] == -1 && photon_index[2] == -1) {// check first position
 	  photon_index[0] = pi0gam1_indx;
+	  // photon 1 4-mom: true pi0 photon
 
-	  cout << "first pi0 photon found at index pho_indx[" << pi0gam1_indx << "] = " << pho_indx[pi0gam1_indx] << ", EPI0NTMC[" << i << "] = " << EPI0NTMC[i] << endl;
-	 
+	  TLVector_photon1 = Getphoton4vector(inputvect_fitted_ordered(photon_index[0] * 5), inputvect_fitted_ordered(photon_index[0] * 5 + 1), inputvect_fitted_ordered(photon_index[0] * 5 + 2), inputvect_fitted_ordered(photon_index[0] * 5 + 3));
+      
+	  nb_pi0_pho += 1;
+
+	  cout << "first pi0 photon found at index pho_indx[" << pi0gam1_indx << "] = " << pho_indx[pi0gam1_indx] << ", EPI0NTMC[" << i << "] = " << EPI0NTMC[i] << ", # pi0 photons = " << nb_pi0_pho << ", photon1 4-mom: (" << TLVector_photon1.E() << ", " << TLVector_photon1.X() << ", " << TLVector_photon1.Y() << ", " << TLVector_photon1.Z() << ")\n";
 
 	}
 	else if (pho_indx[pi0gam2_indx] == EPI0NTMC[i] && photon_index[0] == pi0gam1_indx && photon_index[1] == -1 && photon_index[2] == -1) {
-
 	  photon_index[1] = pi0gam2_indx;
 
-	  cout << "second pi0 photon found at index pho_indx[" << pi0gam2_indx << "] = " << pho_indx[pi0gam2_indx] << ", EPI0NTMC[" << i << "] = " << EPI0NTMC[i] << endl;
-	 
+	  TLVector_photon2 = Getphoton4vector(inputvect_fitted_ordered(photon_index[1] * 5), inputvect_fitted_ordered(photon_index[1] * 5 + 1), inputvect_fitted_ordered(photon_index[1] * 5 + 2), inputvect_fitted_ordered(photon_index[1] * 5 + 3));
+
+      	  nb_pi0_pho += 1;
+
+	  cout << "second pi0 photon found at index pho_indx[" << pi0gam2_indx << "] = " << pho_indx[pi0gam2_indx] << ", EPI0NTMC[" << i << "] = " << EPI0NTMC[i] << ", # pi0 photons = " << nb_pi0_pho << ", photon2 4-mom: (" << TLVector_photon2.E() << ", " << TLVector_photon2.X() << ", " << TLVector_photon2.Y() << ", " << TLVector_photon2.Z() << ")\n";
+
 	}
 	else {
 	  //cout << "here! " << endl;
@@ -1277,18 +1320,55 @@ void MyClass::Main()
       if (photon_index[0] == pi0gam1_indx && photon_index[1] == pi0gam2_indx && photon_index[2] == -1){ // unpaired
 
 	  photon_index[2] = isrgam_indx;
-	  
-	  cout << "upaire photon index at pho_indx[" << isrgam_indx << "]" << endl; 
+
+	  TLVector_photon3 = Getphoton4vector(inputvect_fitted_ordered(photon_index[2] * 5), inputvect_fitted_ordered(photon_index[2] * 5 + 1), inputvect_fitted_ordered(photon_index[2] * 5 + 2), inputvect_fitted_ordered(photon_index[2] * 5 + 3));
+
+      	  cout << "upaire photon index at pho_indx[" << isrgam_indx << "]" << endl; 
       }
 
-      /*
-      cout << "Valid photon energies: E_isrpho = " << TLVector_isrpho_kinfit7C.E() << ", E_pi0pho1 = " << TLVector_pi0pho1_kinfit7C.E() << ", E_pi0pho2 = " << TLVector_pi0pho2_kinfit7C.E() << "\n"
-	   << "pi0_pho1 index: " << photon_index[0] << ", pi0_pho2 index: " << photon_index[1] << ", isrpho index: " << photon_index[0] << endl; 
-      */
+      
+      //cout << "Valid photon energies: E_isrpho = " << TLVector_isrpho_kinfit7C.E() << ", E_pi0pho1 = " << TLVector_pi0pho1_kinfit7C.E() << ", E_pi0pho2 = " << TLVector_pi0pho2_kinfit7C.E() << "\n"
+      //     << "pi0_pho1 index: " << photon_index[0] << ", pi0_pho2 index: " << photon_index[1] << ", isrpho index: " << photon_index[0] << endl; 
+      
     }
+
+    // save 3 photons with identified true pi0 photon and isr photon candidate
     
-    cout << "\t MC photon index (pi0_pho1, pi0_pho2, isr) = (" << photon_index[0] << ", " << photon_index[1] << ", " << photon_index[2] << ")" << endl; 
-	
+    if (nb_pi0_pho == 2) {
+
+      evt_indx = jentry;
+
+      pho_E1 = TLVector_photon1.E();
+      pho_px1 = TLVector_photon1.X();
+      pho_py1 = TLVector_photon1.Y();
+      pho_pz1 = TLVector_photon1.Z();
+      
+      // photon 2 4-mom: true pi0 photon
+      pho_E2 = TLVector_photon2.E();
+      pho_px2 = TLVector_photon2.X();
+      pho_py2 = TLVector_photon2.Y();
+      pho_pz2 = TLVector_photon2.Z();
+
+      hist1d -> Fill((TLVector_photon1 + TLVector_photon2).M());
+    
+      // photon 3 4-mom: unpaired photon
+      pho_E3 = TLVector_photon3.E();
+      pho_px3 = TLVector_photon3.X();
+      pho_py3 = TLVector_photon3.Y();
+      pho_pz3 = TLVector_photon3.Z();
+      
+      cout << "All photons are identifed at evt_indx = " << evt_indx << "\n"
+	   << "\t MC photon index (isr, pi0_pho1, pi0_pho2) = (" << photon_index[2] << ", " << photon_index[1] << ", " << photon_index[0] << ")\n"
+	   << "photon1 4-mom: (" << pho_E1 << ", " << pho_px1 << ", " << pho_py1 << ", " << pho_pz1 << ")\n"
+	   << "photon2 4-mom: (" << pho_E2 << ", " << pho_px2 << ", " << pho_py2 << ", " << pho_pz2 << ")\n"
+	   << "photon3 4-mom: (" << pho_E3 << ", " << pho_px3 << ", " << pho_py3 << ", " << pho_pz3 << ")\n"
+	   << "phid = " << phid << ", sig_type = " << sig_type << "\n"
+	   << "pi0 mass compared: " << (TLVector_photon1 + TLVector_photon2).M() << ", " << (TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C).M() << endl;
+
+      PHOTONS.Fill();
+      
+    }
+    */
       
     //=========================================================================================================
     int recon_indx_tmp = 0;
@@ -1301,7 +1381,7 @@ void MyClass::Main()
    
     Bool_t checked[2] = {kFALSE, kFALSE};
 
-    TLorentzVector TLVector_isrpho_labled, TLVector_pi0gam1, TLVector_pi0gam2;
+    TLorentzVector TLVector_isrgam, TLVector_pi0gam1, TLVector_pi0gam2;
     
     for (int i = 0; i < 2; i ++) {// find the first match
 
@@ -1314,7 +1394,7 @@ void MyClass::Main()
 
 	TLVector_pi0gam1 = Getphoton4vector(inputvect_fitted_ordered(pi0gam1_indx * 5), inputvect_fitted_ordered(pi0gam1_indx * 5 + 1), inputvect_fitted_ordered(pi0gam1_indx * 5 + 2), inputvect_fitted_ordered(pi0gam1_indx * 5 + 3));
 	
-	//cout << "Found the first pi0 photon at indx: " << pi0gam1_indx << ", 4-mom indices: " << pi0gam1_indx * 5 << ", " << pi0gam1_indx * 5 + 1 << ", " << pi0gam1_indx * 5 + 2 << ", " << pi0gam1_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam1.E() << ", " << TLVector_pi0gam1.X() << ", " << TLVector_pi0gam1.Y() << ", " << TLVector_pi0gam1.Z() << ")" << endl;
+	cout << "Found the first pi0 photon at indx: " << pi0gam1_indx << ", 4-mom indices: " << pi0gam1_indx * 5 << ", " << pi0gam1_indx * 5 + 1 << ", " << pi0gam1_indx * 5 + 2 << ", " << pi0gam1_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam1.E() << ", " << TLVector_pi0gam1.X() << ", " << TLVector_pi0gam1.Y() << ", " << TLVector_pi0gam1.Z() << ")" << endl;
 
 	//cout << E_true_list[pi0gam1_indx] << ", pi0gam1_indx = " << pi0gam1_indx << ", recon1_indx = " << recon_indx_tmp << ", first mathched at EPI0NTMC=" << EPI0NTMC[i] << ", pho_indx[pi0gam1_indx]=" << pho_indx[pi0gam1_indx] << "\n";
       }
@@ -1330,7 +1410,7 @@ void MyClass::Main()
 
     }
 
-    for (int i = 0; i < 2; i ++) {// find the first match
+    for (int i = 0; i < 2; i ++) {// find the second match
 
       //cout << checked[i] << endl;
 	
@@ -1340,16 +1420,69 @@ void MyClass::Main()
 
 	TLVector_pi0gam2 = Getphoton4vector(inputvect_fitted_ordered(pi0gam2_indx * 5), inputvect_fitted_ordered(pi0gam2_indx * 5 + 1), inputvect_fitted_ordered(pi0gam2_indx * 5 + 2), inputvect_fitted_ordered(pi0gam2_indx * 5 + 3));
 	
-	//cout << "Found the second pi0 photon at indx: " << pi0gam2_indx << ", 4-mom indices: " << pi0gam2_indx * 5 << ", " << pi0gam2_indx * 5 + 1 << ", " << pi0gam2_indx * 5 + 2 << ", " << pi0gam2_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam2.E() << ", " << TLVector_pi0gam2.X() << ", " << TLVector_pi0gam2.Y() << ", " << TLVector_pi0gam2.Z() << ")" << endl;
+	cout << "Found the second pi0 photon at indx: " << pi0gam2_indx << ", 4-mom indices: " << pi0gam2_indx * 5 << ", " << pi0gam2_indx * 5 + 1 << ", " << pi0gam2_indx * 5 + 2 << ", " << pi0gam2_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam2.E() << ", " << TLVector_pi0gam2.X() << ", " << TLVector_pi0gam2.Y() << ", " << TLVector_pi0gam2.Z() << ")" << endl;
 
 	//cout << E_true_list[pi0gam2_indx] << ", pi0gam2_indx = " << pi0gam2_indx << ", recon2_indx = " << recon_indx_tmp << ", first mathched at EPI0NTMC=" << EPI0NTMC[i] << ", pho_indx[pi0gam2_indx]=" << pho_indx[pi0gam2_indx] << "\n";
       }
       
     }
-    
+
     recon_indx = recon_indx_tmp;
     //cout << "Matched recon pi0 photons = " << recon_indx << endl;
 
+    /*
+    if (recon_indx == 2 && bkg_indx == 1) {
+
+      //TLVector_isrgam = Getphoton4vector(inputvect_fitted_ordered(isrgam_indx * 5), inputvect_fitted_ordered(isrgam_indx * 5 + 1), inputvect_fitted_ordered(isrgam_indx * 5 + 2), inputvect_fitted_ordered(isrgam_indx * 5 + 3));
+      //cout << "Found the unpaired photon at indx: " << isrgam_indx << ", 4-mom indices: " << isrgam_indx * 5 << ", " << isrgam_indx * 5 + 1 << ", " << isrgam_indx * 5 + 2 << ", " << isrgam_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_isrgam.E() << ", " << TLVector_isrgam.X() << ", " << TLVector_isrgam.Y() << ", " << TLVector_isrgam.Z() << ")" << endl;
+
+      // photon 1 4-mom: true pi0 photon
+      pho_E1 = TLVector_pi0pho1_kinfit7C.E();
+      pho_px1 = TLVector_pi0pho1_kinfit7C.X();
+      pho_py1 = TLVector_pi0pho1_kinfit7C.Y();
+      pho_pz1 = TLVector_pi0pho1_kinfit7C.Z();
+      
+      // photon 2 4-mom: true pi0 photon
+      pho_E2 = TLVector_pi0pho2_kinfit7C.E();
+      pho_px2 = TLVector_pi0pho2_kinfit7C.X();
+      pho_py2 = TLVector_pi0pho2_kinfit7C.Y();
+      pho_pz2 = TLVector_pi0pho2_kinfit7C.Z();
+      
+      // photon 3 4-mom: unpaired photon
+      //pho_E3 = TLVector_photon3.E();
+      //pho_px3 = TLVector_photon3.X();
+      //pho_py3 = TLVector_photon3.Y();
+      //pho_pz3 = TLVector_photon3.Z();
+
+      PHOTONS.Fill();
+
+      hmpi0_iden -> Fill((TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C).M());
+      
+    
+    }
+    */
+
+    // photon 1 4-mom: true pi0 photon
+    pho_E1 = TLVector_pi0pho1_kinfit7C.E();
+    pho_px1 = TLVector_pi0pho1_kinfit7C.X();
+    pho_py1 = TLVector_pi0pho1_kinfit7C.Y();
+    pho_pz1 = TLVector_pi0pho1_kinfit7C.Z();
+    
+    // photon 2 4-mom: true pi0 photon
+    pho_E2 = TLVector_pi0pho2_kinfit7C.E();
+    pho_px2 = TLVector_pi0pho2_kinfit7C.X();
+    pho_py2 = TLVector_pi0pho2_kinfit7C.Y();
+    pho_pz2 = TLVector_pi0pho2_kinfit7C.Z();
+    
+    // photon 3 4-mom: unpaired photon
+    //pho_E3 = TLVector_photon3.E();
+    //pho_px3 = TLVector_photon3.X();
+    //pho_py3 = TLVector_photon3.Y();
+    //pho_pz3 = TLVector_photon3.Z();
+    
+    PHOTONS.Fill();
+    
+    
     if (recon_indx == 0) {
       evnt_recon_type0 ++;
     }
@@ -1375,7 +1508,8 @@ void MyClass::Main()
   ALLCHAIN_GEN.Write();
   ALLCHAIN_STR2.Write();
   ALLCHAIN_CUT.Write();
-
+  PHOTONS.Write();
+  
   // summary
   ofstream myfile;
   TString myfile_nm = "summary.txt";

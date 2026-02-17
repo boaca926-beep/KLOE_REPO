@@ -356,7 +356,7 @@ public :
    double Zvmax;
    double Rhovmax;   
    double nb_sigma_T_clust;
-   
+
    //for smearing the MC tracks to be more like data
    TRandom *generator;
    
@@ -410,7 +410,7 @@ public :
    TMatrixD Mtrans(TMatrixD ma);
    TMatrixD MInvert(TMatrixD ma);
 
-   TH1D *hist1d, *hrecon_typeI, *hIM3pi, *hIM3pi_bkg_indx_rest, *hIM3pi_bkg_indx0, *hprompt_distr, *hstr_distr, *hTof_clust, *hRhov, *hZv;
+   TH1D *hmpi0_iden, *hmpi0_sel, *hrecon_typeI, *hIM3pi, *hIM3pi_bkg_indx_rest, *hIM3pi_bkg_indx0, *hprompt_distr, *hstr_distr, *hTof_clust, *hRhov, *hZv;
    TH1D *h_iv_ip, *h_iv_indx;
    TH1D *h_iv_ip_1, *h_iv_indx_1;
   
@@ -447,7 +447,8 @@ MyClass::MyClass(TTree *tree) : fChain(0)
    Rhovmax = 4;
    Zvmax = 10;
    nb_sigma_T_clust = 3;
-    
+
+   
    for (int i = 0; i < 100; i ++) {
      E_true_list[i] = 0.;
      E_list[i] = 0.;
@@ -474,7 +475,9 @@ MyClass::MyClass(TTree *tree) : fChain(0)
 
    hprompt_distr = new TH1D("prompt_distr", "number of prompt photon distribution", 10, 0, 10);
    hstr_distr = new TH1D("str_distr", "stream distribution", 10, 0, 10);
-   hist1d = new TH1D("hist1d", "hist1d", 200, 0., 1000.);
+   hmpi0_sel = new TH1D("hmpi0_sel", "hmpi0_sel", 200, 0., 1000.);
+   hmpi0_iden = new TH1D("hmpi0_iden", "hmpi0_iden", 200, 0., 1000.);
+   
    hTof_clust = new TH1D("hTof_clust", "hTof_clust", 100, -1., 1.);
    hRhov = new TH1D("hRhov", "hRhov", 200, 0., 250.);
    hZv = new TH1D("hZv", "hZv", 200, 0., 250.);

@@ -119,6 +119,12 @@ void MyClass::Main()
   TrSample.Branch("Br_bpx", &bpx, "Br_bpx/F");
   TrSample.Branch("Br_Esum", &Esum, "Br_Esum/D");
 
+  double pho_E1 = 0., pho_px1 = 0., pho_py1 = 0., pho_pz1 = 0.;
+  double pho_E2 = 0., pho_px2 = 0., pho_py2 = 0., pho_pz2 = 0.;
+  double pho_E3 = 0., pho_px3 = 0., pho_py3 = 0., pho_pz3 = 0.;
+  double ppl_E = 0., ppl_px = 0., ppl_py = 0., ppl_pz = 0.;
+  double pmi_E = 0., pmi_px = 0., pmi_py = 0., pmi_pz = 0.;
+  
   //
   TTree ALLCHAIN_CUT ("ALLCHAIN_CUT", "recreate");
   ALLCHAIN_CUT.SetAutoSave(0);
@@ -198,6 +204,32 @@ void MyClass::Main()
 
   //ALLCHAIN_CUT.Branch("Br_MOM4TRKPLUS", &MOM4TRKPLUS, "MOM4TRKPLUS[4]/D");
 
+  ALLCHAIN_CUT.Branch("Br_evt_indx", &evt_indx, "Br_evt_indx/I");
+  ALLCHAIN_CUT.Branch("Br_E1", &pho_E1, "Br_E1/D");
+  ALLCHAIN_CUT.Branch("Br_px1", &pho_px1, "Br_px1/D");
+  ALLCHAIN_CUT.Branch("Br_py1", &pho_py1, "Br_py1/D");
+  ALLCHAIN_CUT.Branch("Br_pz1", &pho_pz1, "Br_pz1/D");
+
+  ALLCHAIN_CUT.Branch("Br_E2", &pho_E2, "Br_E2/D");
+  ALLCHAIN_CUT.Branch("Br_px2", &pho_px2, "Br_px2/D");
+  ALLCHAIN_CUT.Branch("Br_py2", &pho_py2, "Br_py2/D");
+  ALLCHAIN_CUT.Branch("Br_pz2", &pho_pz2, "Br_pz2/D");
+
+  ALLCHAIN_CUT.Branch("Br_E3", &pho_E3, "Br_E3/D");
+  ALLCHAIN_CUT.Branch("Br_px3", &pho_px3, "Br_px3/D");
+  ALLCHAIN_CUT.Branch("Br_py3", &pho_py3, "Br_py3/D");
+  ALLCHAIN_CUT.Branch("Br_pz3", &pho_pz3, "Br_pz3/D");
+
+  ALLCHAIN_CUT.Branch("Br_ppl_E", &ppl_E, "Br_ppl_E/D");
+  ALLCHAIN_CUT.Branch("Br_ppl_px", &ppl_px, "Br_ppl_px/D");
+  ALLCHAIN_CUT.Branch("Br_ppl_py", &ppl_py, "Br_ppl_py/D");
+  ALLCHAIN_CUT.Branch("Br_ppl_pz", &ppl_pz, "Br_ppl_pz/D");
+
+  ALLCHAIN_CUT.Branch("Br_pmi_E", &pmi_E, "Br_pmi_E/D");
+  ALLCHAIN_CUT.Branch("Br_pmi_px", &pmi_px, "Br_pmi_px/D");
+  ALLCHAIN_CUT.Branch("Br_pmi_py", &pmi_py, "Br_pmi_py/D");
+  ALLCHAIN_CUT.Branch("Br_pmi_pz", &pmi_pz, "Br_pmi_pz/D");
+
   //
   TTree ALLCHAIN_TEST ("ALLCHAIN_TEST", "recreate");
   ALLCHAIN_TEST.SetAutoSave(0);
@@ -207,31 +239,8 @@ void MyClass::Main()
   ALLCHAIN_TEST.Branch("Br_angle_ppl_3piboost", &angle_ppl_3piboost, "Br_angle_ppl_3piboost/D");
 
   // chain store identified photons: pho1 (pi0 photon 1), pho2 (pi0 photon 2), pho3 (upaired)
-  double pho_E1 = 0., pho_px1 = 0., pho_py1 = 0., pho_pz1 = 0.;
-  double pho_E2 = 0., pho_px2 = 0., pho_py2 = 0., pho_pz2 = 0.;
-  double pho_E3 = 0., pho_px3 = 0., pho_py3 = 0., pho_pz3 = 0.;
-  
-  TTree PHOTONS ("PHOTONS", "recreate");
-  PHOTONS.SetAutoSave(0);
-  PHOTONS.Branch("Br_evt_indx", &evt_indx, "Br_evt_indx/I");
-
-  PHOTONS.Branch("Br_E1", &pho_E1, "Br_E1/D");
-  PHOTONS.Branch("Br_px1", &pho_px1, "Br_px1/D");
-  PHOTONS.Branch("Br_py1", &pho_py1, "Br_py1/D");
-  PHOTONS.Branch("Br_pz1", &pho_pz1, "Br_pz1/D");
-
-  PHOTONS.Branch("Br_E2", &pho_E2, "Br_E2/D");
-  PHOTONS.Branch("Br_px2", &pho_px2, "Br_px2/D");
-  PHOTONS.Branch("Br_py2", &pho_py2, "Br_py2/D");
-  PHOTONS.Branch("Br_pz2", &pho_pz2, "Br_pz2/D");
-
-  PHOTONS.Branch("Br_E3", &pho_E3, "Br_E3/D");
-  PHOTONS.Branch("Br_px3", &pho_px3, "Br_px3/D");
-  PHOTONS.Branch("Br_py3", &pho_py3, "Br_py3/D");
-  PHOTONS.Branch("Br_pz3", &pho_pz3, "Br_pz3/D");
-  PHOTONS.Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
-  PHOTONS.Branch("Br_phid", &phid, "Br_phid/I");
-  
+  TTree FINALSTATES ("FINALSTATES", "recreate");
+  FINALSTATES.SetAutoSave(0);
   
   ///
   if (fChain == 0) return;
@@ -1186,7 +1195,7 @@ void MyClass::Main()
     //if (lagvalue_min_7C > 100.) continue; // cut 6
     evnt_final ++;
 
-    //cout << "SELECTED PHOTONS\n";
+    //cout << "SELECTED FINALSTATES\n";
     double clu_Emin = 1e13;
     int clu_indx_Emin = 0;
     int bkg_counter = 1;
@@ -1365,7 +1374,7 @@ void MyClass::Main()
 	   << "phid = " << phid << ", sig_type = " << sig_type << "\n"
 	   << "pi0 mass compared: " << (TLVector_photon1 + TLVector_photon2).M() << ", " << (TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C).M() << endl;
 
-      PHOTONS.Fill();
+      FINALSTATES.Fill();
       
     }
     */
@@ -1454,7 +1463,7 @@ void MyClass::Main()
       //pho_py3 = TLVector_photon3.Y();
       //pho_pz3 = TLVector_photon3.Z();
 
-      PHOTONS.Fill();
+      FINALSTATES.Fill();
 
       hmpi0_iden -> Fill((TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C).M());
       
@@ -1473,14 +1482,26 @@ void MyClass::Main()
     pho_px2 = TLVector_pi0pho2_kinfit7C.X();
     pho_py2 = TLVector_pi0pho2_kinfit7C.Y();
     pho_pz2 = TLVector_pi0pho2_kinfit7C.Z();
-    
+
     // photon 3 4-mom: unpaired photon
-    //pho_E3 = TLVector_photon3.E();
-    //pho_px3 = TLVector_photon3.X();
-    //pho_py3 = TLVector_photon3.Y();
-    //pho_pz3 = TLVector_photon3.Z();
-    
-    PHOTONS.Fill();
+    pho_E3 = TLVector_isrpho_kinfit7C.E();
+    pho_px3 = TLVector_isrpho_kinfit7C.X();
+    pho_py3 = TLVector_isrpho_kinfit7C.Y();
+    pho_pz3 = TLVector_isrpho_kinfit7C.Z();
+
+    // positive track
+    ppl_E = TLVector_ppl.E();
+    ppl_px = TLVector_ppl.X();
+    ppl_py = TLVector_ppl.Y();
+    ppl_pz = TLVector_ppl.Z();
+
+    // negative track
+    pmi_E = TLVector_pmi.E();
+    pmi_px = TLVector_pmi.X();
+    pmi_py = TLVector_pmi.Y();
+    pmi_pz = TLVector_pmi.Z();
+
+    FINALSTATES.Fill();
     
     
     if (recon_indx == 0) {
@@ -1508,7 +1529,7 @@ void MyClass::Main()
   ALLCHAIN_GEN.Write();
   ALLCHAIN_STR2.Write();
   ALLCHAIN_CUT.Write();
-  PHOTONS.Write();
+  FINALSTATES.Write();
   
   // summary
   ofstream myfile;

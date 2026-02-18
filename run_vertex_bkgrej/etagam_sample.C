@@ -1,3 +1,5 @@
+#include "../header/cut_para.h"
+
 TLorentzVector Get4vector(double E, double px, double py, double pz) {
 
   //given a cluster index returns the 4-mom of a photon
@@ -20,7 +22,7 @@ int etagam_sample() {
   
   TFile *f_input = new TFile(sampleFile);
 
-  TTree *PHOTONS = (TTree*)f_input -> Get("PHOTONS");
+  TTree *ALLCHAIN_CUT = (TTree*)f_input -> Get("ALLCHAIN_CUT");
 
   TFile *f_output = new TFile("../../etagam.root", "recreate");
 
@@ -44,9 +46,15 @@ int etagam_sample() {
   double pho_E1 = 0., pho_px1 = 0., pho_py1 = 0., pho_pz1 = 0.;
   double pho_E2 = 0., pho_px2 = 0., pho_py2 = 0., pho_pz2 = 0.;
   double pho_E3 = 0., pho_px3 = 0., pho_py3 = 0., pho_pz3 = 0.;
+  double ppl_E = 0., ppl_px = 0., ppl_py = 0., ppl_pz = 0.;
+  double pmi_E = 0., pmi_px = 0., pmi_py = 0., pmi_pz = 0.;
   double mpi0 = 0., mpi0_good = 0., mpi0_bad = 0.;
+  double m3pi = 0., m3pi_good = 0., m3pi_bad = 0.;
+  
+  double lagvalue_min_7C = 0.;
   
   int phid = -1, sig_type = -1;
+  int recon_indx = -1, bkg_indx = -1;
   
   // define branches
   TObject* treeout=0;
@@ -67,61 +75,145 @@ int etagam_sample() {
     tree_tmp -> Branch("Br_py2", &pho_py2, "Br_py2/D");
     tree_tmp -> Branch("Br_pz2", &pho_pz2, "Br_pz2/D");
 
+    tree_tmp -> Branch("Br_E3", &pho_E3, "Br_E3/D");
+    tree_tmp -> Branch("Br_px3", &pho_px3, "Br_px3/D");
+    tree_tmp -> Branch("Br_py3", &pho_py3, "Br_py3/D");
+    tree_tmp -> Branch("Br_pz3", &pho_pz3, "Br_pz3/D");
+
+    tree_tmp -> Branch("Br_ppl_E", &ppl_E, "Br_ppl_E/D");
+    tree_tmp -> Branch("Br_ppl_px", &ppl_px, "Br_ppl_px/D");
+    tree_tmp -> Branch("Br_ppl_py", &ppl_py, "Br_ppl_py/D");
+    tree_tmp -> Branch("Br_ppl_pz", &ppl_pz, "Br_ppl_pz/D");
+
+    tree_tmp -> Branch("Br_pmi_E", &pmi_E, "Br_pmi_E/D");
+    tree_tmp -> Branch("Br_pmi_px", &pmi_px, "Br_pmi_px/D");
+    tree_tmp -> Branch("Br_pmi_py", &pmi_py, "Br_pmi_py/D");
+    tree_tmp -> Branch("Br_pmi_pz", &pmi_pz, "Br_pmi_pz/D");
+    
     tree_tmp -> Branch("Br_mpi0", &mpi0, "Br_mpi0/D");
     tree_tmp -> Branch("Br_mpi0_good", &mpi0_good, "Br_mpi0_good/D");
     tree_tmp -> Branch("Br_mpi0_bad", &mpi0_bad, "Br_mpi0_bad/D");
 
+    tree_tmp -> Branch("Br_m3pi", &m3pi, "Br_m3pi/D");
+    tree_tmp -> Branch("Br_m3pi_good", &m3pi_good, "Br_m3pi_good/D");
+    tree_tmp -> Branch("Br_m3pi_bad", &m3pi_bad, "Br_m3pi_bad/D");
+
     tree_tmp -> Branch("Br_phid", &phid, "Br_phid/I");
     tree_tmp -> Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
-    	  
+    tree_tmp -> Branch("Br_recon_indx", &recon_indx, "Br_recon_indx/I");
+    tree_tmp -> Branch("Br_bkg_indx", &bkg_indx, "Br_bkg_indx/I");
+    
+    tree_tmp -> Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
+    
   }
 
   TLorentzVector pi0gam1, pi0gam2, isrgam, trkplus, trkmin;
+
+  TH1D *hmpi0 = new TH1D("hmpi0", "hmpi0", 200, 0., 1000.);
+  TH1D *hmpi0_good = new TH1D("hmpi0_good", "hmpi0_good", 200, 0., 1000.);
+  TH1D *hmpi0_bad = new TH1D("hmpi0_bad", "hmpi0_bad", 200, 0., 1000.);
+
+  TH1D *hm3pi = new TH1D("hm3pi", "hm3pi", 200, 0., 1000.);
+  TH1D *hm3pi_good = new TH1D("hm3pi_good", "hm3pi_good", 200, 0., 1000.);
+  TH1D *hm3pi_bad = new TH1D("hm3pi_bad", "hm3pi_bad", 200, 0., 1000.);
   
-  for (Int_t irow = 0; irow < PHOTONS -> GetEntries(); irow ++) {// loop trees
+  for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow ++) {// loop trees
 	  
-    PHOTONS -> GetEntry(irow);
+    ALLCHAIN_CUT -> GetEntry(irow);
 
-    phid = PHOTONS -> GetLeaf("Br_phid") -> GetValue(0);
-    sig_type = PHOTONS -> GetLeaf("Br_sig_type") -> GetValue(0);
+    phid = ALLCHAIN_CUT -> GetLeaf("Br_phid") -> GetValue(0);
+    sig_type = ALLCHAIN_CUT -> GetLeaf("Br_sig_type") -> GetValue(0);
+    recon_indx = ALLCHAIN_CUT -> GetLeaf("Br_recon_indx") -> GetValue(0);
+    bkg_indx = ALLCHAIN_CUT -> GetLeaf("Br_bkg_indx") -> GetValue(0);
 
-    pho_E1 = PHOTONS -> GetLeaf("Br_E1") -> GetValue(0);
-    pho_px1 = PHOTONS -> GetLeaf("Br_px1") -> GetValue(0);
-    pho_py1 = PHOTONS -> GetLeaf("Br_py1") -> GetValue(0);
-    pho_pz1 = PHOTONS -> GetLeaf("Br_pz1") -> GetValue(0);
+    lagvalue_min_7C = ALLCHAIN_CUT -> GetLeaf("Br_lagvalue_min_7C") -> GetValue(0);
+    
+    pho_E1 = ALLCHAIN_CUT -> GetLeaf("Br_E1") -> GetValue(0);
+    pho_px1 = ALLCHAIN_CUT -> GetLeaf("Br_px1") -> GetValue(0);
+    pho_py1 = ALLCHAIN_CUT -> GetLeaf("Br_py1") -> GetValue(0);
+    pho_pz1 = ALLCHAIN_CUT -> GetLeaf("Br_pz1") -> GetValue(0);
 
-    pho_E2 = PHOTONS -> GetLeaf("Br_E2") -> GetValue(0);
-    pho_px2 = PHOTONS -> GetLeaf("Br_px2") -> GetValue(0);
-    pho_py2 = PHOTONS -> GetLeaf("Br_py2") -> GetValue(0);
-    pho_pz2 = PHOTONS -> GetLeaf("Br_pz2") -> GetValue(0);
+    pho_E2 = ALLCHAIN_CUT -> GetLeaf("Br_E2") -> GetValue(0);
+    pho_px2 = ALLCHAIN_CUT -> GetLeaf("Br_px2") -> GetValue(0);
+    pho_py2 = ALLCHAIN_CUT -> GetLeaf("Br_py2") -> GetValue(0);
+    pho_pz2 = ALLCHAIN_CUT -> GetLeaf("Br_pz2") -> GetValue(0);
+
+    pho_E3 = ALLCHAIN_CUT -> GetLeaf("Br_E3") -> GetValue(0);
+    pho_px3 = ALLCHAIN_CUT -> GetLeaf("Br_px3") -> GetValue(0);
+    pho_py3 = ALLCHAIN_CUT -> GetLeaf("Br_py3") -> GetValue(0);
+    pho_pz3 = ALLCHAIN_CUT -> GetLeaf("Br_pz3") -> GetValue(0);
+
+    ppl_E = ALLCHAIN_CUT -> GetLeaf("Br_ppl_E") -> GetValue(0);
+    ppl_px = ALLCHAIN_CUT -> GetLeaf("Br_ppl_px") -> GetValue(0);
+    ppl_py = ALLCHAIN_CUT -> GetLeaf("Br_ppl_py") -> GetValue(0);
+    ppl_pz = ALLCHAIN_CUT -> GetLeaf("Br_ppl_pz") -> GetValue(0);
+
+    pmi_E = ALLCHAIN_CUT -> GetLeaf("Br_pmi_E") -> GetValue(0);
+    pmi_px = ALLCHAIN_CUT -> GetLeaf("Br_pmi_px") -> GetValue(0);
+    pmi_py = ALLCHAIN_CUT -> GetLeaf("Br_pmi_py") -> GetValue(0);
+    pmi_pz = ALLCHAIN_CUT -> GetLeaf("Br_pmi_pz") -> GetValue(0);
 
     pi0gam1 = Get4vector(pho_E1, pho_px1, pho_py1, pho_pz1);
     pi0gam2 = Get4vector(pho_E2, pho_px2, pho_py2, pho_pz2);
-
-    //cout << pi0gam1.E() << ", " << endl;
-    
+    isrgam = Get4vector(pho_E3, pho_px3, pho_py3, pho_pz3);
+    trkplus = Get4vector(ppl_E, ppl_px, ppl_py, ppl_pz);
+    trkmin = Get4vector(pmi_E, pmi_px, pmi_py, pmi_pz);
+  
+    //cout << pho_E3 << ", " << pho_px3 << ", " << pho_py3 << ", " << pho_pz3 << endl;
+    //cout << ppl_E << ", " << ppl_px << ", " << ppl_py << ", " << ppl_pz << endl;
+    //cout << pmi_E << ", " << pmi_px << ", " << pmi_py << ", " << pmi_pz << endl;
+    //cout << lagvalue_min_7C << endl;
+    //cout << bkg_indx << ", " << recon_indx << endl;
+      
     // pi0 invariant mass, identified pi0 photons
     mpi0 = (pi0gam1 + pi0gam2).M();
+    m3pi = (pi0gam1 + pi0gam2 + trkplus + trkmin).M();
 
+    // cuts
+    //if (lagvalue_min_7C > chi2_cut) continue;
+    
+    hmpi0 -> Fill(mpi0);
+    
     //cout << "pho_E1 = " << pho_E1 << endl;
       
     // fill trees for eta gamma
-    if (!TMath::IsNaN(mpi0)) {
+    if (!TMath::IsNaN(mpi0) && !TMath::IsNaN(m3pi) && phid == 5 && sig_type == 1) {
 
-      if (phid == 5 && sig_type == 1 ) {// good events
+      hm3pi -> Fill(m3pi);
+    
+      TTList[0]-> Fill();
+
+      if (recon_indx == 2 && bkg_indx == 1) {// good events
 	mpi0_good = mpi0;
+	m3pi_good = m3pi;
+
+	hmpi0_good -> Fill(mpi0);
+	hm3pi_good -> Fill(m3pi);
+    
 	//cout << mpi0_good << endl;
       }
       else {// bad
-	mpi0_bad = mpi0
+	mpi0_bad = mpi0;
+	m3pi_bad = m3pi;
+
+	hmpi0_bad -> Fill(mpi0);
+	hm3pi_bad -> Fill(m3pi);
+    
       }
     
     }
 
-    TTList[0]-> Fill();
-
+    
   }
 
+  //hmpi0 -> Draw();
+  //hmpi0_good -> Draw("HistSame");
+  //hmpi0_bad -> Draw("HistSame");
+
+  hm3pi -> Draw();
+  hm3pi_good -> Draw("HistSame");
+  hm3pi_bad -> Draw("HistSame");
+  
   // save
   TTList[0]-> Write();
       

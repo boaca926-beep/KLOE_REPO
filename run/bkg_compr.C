@@ -36,8 +36,10 @@ int bkg_compr(){
   // get generated signal
   //const TString input_folder = "/home/bo/Desktop/input_chain_TDATA";
   //const TString input_folder = "/home/bo/Desktop/input_etagam_TDATA";
-  const TString input_folder = "/home/bo/Desktop/input_vertex_TDATA";
+  //const TString input_folder = "/home/bo/Desktop/input_vertex_TDATA";
   //const TString input_folder = "/home/bo/Desktop/input_vertex_TDATA_bkgrej_more";
+  const TString input_folder = "/home/bo/Desktop/analysis_root_v6/input_norm_TDATA";
+  
   cout << input_folder << endl;
   
   TFile* intree_gen = new TFile(input_folder + "/gen/tree_gen.root");

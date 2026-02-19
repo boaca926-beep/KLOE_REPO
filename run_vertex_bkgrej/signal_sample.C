@@ -13,21 +13,21 @@ TLorentzVector Get4vector(double E, double px, double py, double pz) {
 
 }
 
-int etagam_sample() {
-  // from e+ e- -> eta gamma get 3 photon final state 4-momentum
+int signal_sample() {
+  // from e+ e- -> omega gamma get 3 photon final state 4-momentum
 
-  TString sampleFile = "/home/bo/Desktop/analysis_root_v6/ksl.root";
+  TString sampleFile = "/home/bo/Desktop/analysis_root_v6/sig.root";
   
   cout << "Input root file: " << sampleFile << endl;
-  
+
   TFile *f_input = new TFile(sampleFile);
 
   TTree *ALLCHAIN_CUT = (TTree*)f_input -> Get("ALLCHAIN_CUT");
 
-  TFile *f_output = new TFile("../../etagam_sample.root", "recreate");
+  TFile *f_output = new TFile("../../signal_sample.root", "recreate");
 
   const int list_size = 1;
-  const TString TNM[list_size] = {"TETAGAM"};
+  const TString TNM[list_size] = {"TISR3PI_SIG"};
 
   TTree *TTList[list_size];
   
@@ -109,13 +109,15 @@ int etagam_sample() {
 
   TLorentzVector pi0gam1, pi0gam2, isrgam, trkplus, trkmin;
 
-  TH1D *hmpi0 = new TH1D("hmpi0", "hmpi0", 200, 0., 1000.);
-  TH1D *hmpi0_good = new TH1D("hmpi0_good", "hmpi0_good", 200, 0., 1000.);
-  TH1D *hmpi0_bad = new TH1D("hmpi0_bad", "hmpi0_bad", 200, 0., 1000.);
+  const double m3pi_min = 600., m3pi_max = 1000.;
+  
+  TH1D *hmpi0 = new TH1D("hmpi0", "hmpi0", 200, m3pi_min, m3pi_max);
+  TH1D *hmpi0_good = new TH1D("hmpi0_good", "hmpi0_good", 200, m3pi_min, m3pi_max);
+  TH1D *hmpi0_bad = new TH1D("hmpi0_bad", "hmpi0_bad", 200, m3pi_min, m3pi_max);
 
-  TH1D *hm3pi = new TH1D("hm3pi", "hm3pi", 200, 0., 1000.);
-  TH1D *hm3pi_good = new TH1D("hm3pi_good", "hm3pi_good", 200, 0., 1000.);
-  TH1D *hm3pi_bad = new TH1D("hm3pi_bad", "hm3pi_bad", 200, 0., 1000.);
+  TH1D *hm3pi = new TH1D("hm3pi", "hm3pi", 200, m3pi_min, m3pi_max);
+  TH1D *hm3pi_good = new TH1D("hm3pi_good", "hm3pi_good", 200, m3pi_min, m3pi_max);
+  TH1D *hm3pi_bad = new TH1D("hm3pi_bad", "hm3pi_bad", 200, m3pi_min, m3pi_max);
   
   for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow ++) {// loop trees
 	  
@@ -177,7 +179,7 @@ int etagam_sample() {
     //cout << "pho_E1 = " << pho_E1 << endl;
       
     // fill trees for eta gamma
-    if (!TMath::IsNaN(mpi0) && !TMath::IsNaN(m3pi) && phid == 5 && sig_type == 1) {
+    if (!TMath::IsNaN(mpi0) && !TMath::IsNaN(m3pi)) {
 
       hm3pi -> Fill(m3pi);
     
@@ -206,17 +208,13 @@ int etagam_sample() {
     
   }
 
-  //hmpi0 -> Draw();
-  //hmpi0_good -> Draw("HistSame");
-  //hmpi0_bad -> Draw("HistSame");
-
   hm3pi -> Draw();
   hm3pi_good -> Draw("HistSame");
   hm3pi_bad -> Draw("HistSame");
   
   // save
   TTList[0]-> Write();
-      
-  return 0;
   
+  return 0;
+
 }

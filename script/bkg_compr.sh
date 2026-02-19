@@ -64,22 +64,14 @@ echo -e "\nPlotting histo comparison ..."
 #BINS=(150)
 
 ##########################################################
-#VAR_NM=("IM3pi_7C")
-#VAR_SYMB=("M_{3#pi}")
-#UNIT=("[MeV]")
+VAR_NM=("IM3pi_7C")
+VAR_SYMB=("M_{3#pi}")
+UNIT=("[MeV]")
 
-#XMIN=(520)
-#XMAX=(580)
-#BINS=(150)
+XMIN=(770)  #etagam: (520, 580), omegagam: (770, 800)
+XMAX=(800)
+BINS=(150)
 
-##########################################################
-VAR_NM=("IM_pi0_7C")
-VAR_SYMB=("M_{#gamma#gamma}")
-UNIT=("[MeV\/c^{2}]")                                                           
-
-XMIN=(120)
-XMAX=(150)
-BINS=(100)
 
 output_folder="../../bkg_compr_"${VAR_NM[0]}
 

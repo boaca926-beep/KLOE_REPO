@@ -1,0 +1,5 @@
+int omega_region() {
+
+  return 0;
+  
+}

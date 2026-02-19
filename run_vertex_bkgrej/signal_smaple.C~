@@ -1,0 +1,14 @@
+#include "../header/cut_para.h"
+
+TLorentzVector Get4vector(double E, double px, double py, double pz) {
+
+  //given a cluster index returns the 4-mom of a photon
+  TVector3 gamma(px, py, pz);
+  
+  Double_t scale1;
+  scale1=E/gamma.Mag();
+  TLorentzVector gamma4mom(scale1*gamma, E);
+  //cout << gamma4mom.M() << endl;
+  return gamma4mom;
+
+}

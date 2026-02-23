@@ -4,8 +4,8 @@ echo -e "\nPlotting histo comparison ..."
 VAR_NM=("pull_E1" "pull_x1")
 VAR_SYMB=("pull E1" "pull x1")
 UNIT=("[MeV]" "")                                                                      
-XMIN=(5 5) 
-XMAX=(-5 -5) 
+XMIN=(-5 -5) 
+XMAX=(5 5) 
 BINS=(200 200) 
 
 output_folder="../../bkg_compr_"${VAR_NM[0]}

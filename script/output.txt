@@ -994,3 +994,12 @@ data, Tree: TDATA
 eeg, Tree: TEEG
 omegapi, Tree: TOMEGAPI
 ksl, Tree: TKSL
+kpm, Tree: TKPM
+rhopi, Tree: TRHOPI
+etagam, Tree: TETAGAM
+bkgrest, Tree: TBKGREST
+isr3pi, Tree: TISR3PI_SIG
+sfw1d_isr3pi = 0.0460022
+
+Processing compr_script.C...
+/home/bo/Desktop/analysis_root_v6/input_norm_TDATA

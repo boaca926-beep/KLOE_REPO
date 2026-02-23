@@ -88,6 +88,7 @@ int plot_omega(){
   cv_n3pi_fit -> SaveAs(outputPlot + "crx3pi_" + file_type + ".pdf");
   cv_compr -> SaveAs(outputPlot + "n3pi_" + file_type + ".pdf");
 
+  hmcsum -> Write();
   f_out -> Close();
     
   /*

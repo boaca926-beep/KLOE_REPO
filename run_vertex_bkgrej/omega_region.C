@@ -1,6 +1,12 @@
+#include "../header/sm_para.h"
 #include "../header/plot.h"
+#include "../header/method.h"
+
+TRandom *generator = new TRandom();
+rnd=new TRandom3();
 
 TObjArray *Hlist = new TObjArray(100);
+TObjArray *Hlist_sc = new TObjArray(100);
 
 void checkArray(TObjArray *array){
 
@@ -57,7 +63,7 @@ void fill_hist(TString TrNm[], TTree *TrList[], int TLSize, int color_list[]) {/
   const int binsize = TMath::Nint((mass_max - mass_min) / mass_sigma_nb / IM3pi_sigma);
   const TString var_nm = "IM3pi_7C";
 
-  TH1D* h;
+  TH1D* h, *hsig;
 
   for (int i = 0; i < TLSize; i ++) {// start MC type loop
 
@@ -82,16 +88,43 @@ void fill_hist(TString TrNm[], TTree *TrList[], int TLSize, int color_list[]) {/
       else if (TrNm[i] == "isr3pi") evnb_isr3pi ++;
 
       h -> Fill(var_value);
-	
+
       //if (irow > 1000) break;
 
     }
 
     format_h(h, color_list[i], 2);
     Hlist -> Add(h);
+
+    // Smearing signal
+    double m3pi_true = 0., m3pi_corr = 0.;
     
+    if (std::string(TrList[i] -> GetName()) == "TISR3PI_SIG") {
+      
+      hsig = new TH1D("hsig", "", binsize, mass_min, mass_max);
+      
+      cout << "Starting smearing the signal ..." << endl;
+      
+      for (Int_t irow = 0; irow < TrList[i] -> GetEntries(); irow++) {// loop chain
+	TrList[i] -> GetEntry(irow);
+	
+	m3pi_true = TrList[i] -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
+	
+	m3pi_corr = DetectorEvent(TMath::Abs(m3pi_true));
+	
+	//cout << m3pi_true << endl;
+	
+	hsig -> Fill(m3pi_corr);
+      }
+      
+      format_h(hsig, color_list[i], 2);
+      Hlist -> Add(hsig);
+
+    }
+      
   }// end MC type loop
 
+  
   // Summary
   evnb_eeg = evnb_eeg * 2.;
   const double evnb_mcrest = evnb_kpm + evnb_rhopi + evnb_bkgrest;
@@ -156,7 +189,8 @@ int omega_region() {
   gStyle->SetOptTitle(0);
   TH1::SetDefaultSumw2(); // switch on histogram errors
 
-  const TString input_folder = "/home/bo/Desktop/analysis_root_v6/input_norm_TDATA";
+  //const TString input_folder = "/home/bo/Desktop/analysis_root_v6/input_norm_TDATA";
+  const TString input_folder = "/home/bo/Desktop/input_norm_TDATA";
   
   //gROOT->SetBatch(kTRUE);  
   gErrorIgnoreLevel = kError;
@@ -232,7 +266,6 @@ int omega_region() {
   TTree *TrList[TLSize] = {TDATA, TEEG, TOMEGAPI, TKSL, TKPM, TRHOPI, TETAGAM, TBKGREST, TISR3PI_SIG};
   int color_list[TLSize] = {1, 6, 7, 28, 46, 42, 3, 37, 4};
   
-  
   fill_hist(TrNm, TrList, TLSize, color_list);
   
   //// Check histo array
@@ -241,64 +274,72 @@ int omega_region() {
 
   /// Histo normalization
 
-  // Scaling
-  
+  // Background
   TH1D *hist_eeg_sc = (TH1D *) Hlist -> FindObject("hist_eeg") -> Clone();
   hist_eeg_sc -> Scale(eeg_sfw * 2);
   hist_eeg_sc -> SetName("hist_eeg_sc");
-  
-  Hlist -> Add(hist_eeg_sc);
-  
   //cout << "nb_eeg = " << hist_eeg -> Integral(1, hist_eeg -> GetNbinsX()) << endl;
+  Hlist_sc -> Add(hist_eeg_sc);
   
+  TH1D *hist_omegapi_sc = (TH1D *) Hlist -> FindObject("hist_omegapi") -> Clone();
+  hist_omegapi_sc -> Scale(omegapi_sfw);
+  hist_omegapi_sc -> SetName("hist_omegapi_sc");
+  Hlist_sc -> Add(hist_omegapi_sc);
   
+  TH1D *hist_ksl_sc = (TH1D *) Hlist -> FindObject("hist_ksl") -> Clone();
+  hist_ksl_sc -> Scale(ksl_sfw);
+  hist_ksl_sc -> SetName("hist_ksl_sc");
+  Hlist_sc -> Add(hist_ksl_sc);
   
-  /*
-  TH1D *hist_data = (TH1D *) Hlist -> FindObject("hist_data");
-
-  TH1D *hist_eeg = (TH1D *) Hlist -> FindObject("hist_eeg");
-  TH1D *hist_eeg_sc = (TH1D *) hist_eeg -> Clone();
-  
-  hist_eeg_sc -> Scale(eeg_sfw);
-  hist_eeg_sc -> SetName("hist_eeg_sc");
-  Hlist -> Add(hist_eeg_sc);
+  TH1D *hist_etagam_sc = (TH1D *) Hlist -> FindObject("hist_etagam") -> Clone();
+  hist_etagam_sc -> Scale(etagam_sfw);
+  hist_etagam_sc -> SetName("hist_etagam_sc");
+  Hlist_sc -> Add(hist_etagam_sc);
     
-  TH1D *hist_omegapi = (TH1D *) Hlist -> FindObject("hist_omegapi");
-  hist_omegapi -> Scale(omegapi_sfw);
-  
-  TH1D *hist_ksl = (TH1D *) Hlist -> FindObject("hist_ksl");
-  hist_ksl -> Scale(ksl_sfw);
-  
-  TH1D *hist_etagam = (TH1D *) Hlist -> FindObject("hist_etagam");
-  hist_etagam -> Scale(etagam_sfw);
-  
-  TH1D *hist_isr3pi = (TH1D *) Hlist -> FindObject("hist_isr3pi");
-  hist_isr3pi -> Scale(isr3pi_sfw);
-  
-  TH1D *hist_mcrest = (TH1D *) Hlist -> FindObject("hist_mcrest");
-  hist_mcrest -> Scale(mcrest_sfw);
-  */
+  TH1D *hist_mcrest_sc = (TH1D *) Hlist -> FindObject("hist_mcrest") -> Clone();
+  hist_mcrest_sc -> Scale(mcrest_sfw);
+  hist_mcrest_sc -> SetName("hist_mcrest_sc");
+  Hlist_sc -> Add(hist_mcrest_sc);
 
-  /*
-  // mcsum
-  TH1D* hist_mcsum = (TH1D*) hist_mcrest -> Clone();
-  hist_mcsum -> Add(hist_isr3pi, 1.);
-  hist_mcsum -> Add(hist_etagam, 1.);
-  hist_mcsum -> Add(hist_ksl, 1.);
-  hist_mcsum -> Add(hist_omegapi, 1.);
-  hist_mcsum -> Add(hist_eeg, 1.);
-  
-  hist_mcsum -> SetName("hist_mcsum");
-  //format_h(hist_mcsum, 2, 2);
+  // Signal
+  TH1D *hist_isr3pi_sc = (TH1D *) Hlist -> FindObject("hist_isr3pi") -> Clone();
+  hist_isr3pi_sc -> Scale(isr3pi_sfw);
+  hist_isr3pi_sc -> SetName("hist_isr3pi_sc");
+  Hlist_sc -> Add(hist_isr3pi_sc);
 
-  hist_mcsum -> Draw();
+  TH1D *hsig_sc = (TH1D *) Hlist -> FindObject("hsig") -> Clone();
+  hsig_sc -> Scale(sig_sfw);
+  hsig_sc -> SetName("hsig_sc");
+  Hlist_sc -> Add(hsig_sc);
+
+  // MC sum
+  TH1D* hist_mcsum_sc = (TH1D*) hist_mcrest_sc -> Clone();
+  hist_mcsum_sc -> Add(hist_etagam_sc, 1.);
+  hist_mcsum_sc -> Add(hist_ksl_sc, 1.);
+  hist_mcsum_sc -> Add(hist_omegapi_sc, 1.);
+  hist_mcsum_sc -> Add(hist_eeg_sc, 1.);
+  //hist_mcsum_sc -> Add(hsig_sc, 1.);
+  hist_mcsum_sc -> Add(hist_isr3pi_sc, 1.);
+  Hlist_sc -> Add(hist_mcsum_sc);
+  
+  // Data
+  TH1D *hist_data = (TH1D *) Hlist -> FindObject("hist_data");
+  
+  
+  hist_mcsum_sc -> SetName("hist_mcsum_sc");
+  format_h(hist_mcsum_sc, 2, 2);
+
+  // test plot
+  hist_mcsum_sc -> Draw("E");
   hist_data -> Draw("SameHist");
-  */
   
   // save
   TFile *f_out = new TFile("../../hist.root", "recreate");
 
-  Hlist -> Write();
+  hist_data -> Write();
+  
+  //Hlist -> Write();
+  Hlist_sc -> Write();
   //H2dlist.Write();
   //hEisr_gen -> Write();
   //hangle_isr_gen -> Write();

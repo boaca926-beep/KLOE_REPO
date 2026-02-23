@@ -1,0 +1,209 @@
+#include "../header/fitfun.h"
+#include "../header/plot.h"
+
+gROOT->ForceStyle();  
+
+int Getpulls() {
+
+  gErrorIgnoreLevel = kError;
+  TGaxis::SetMaxDigits(4);
+  //gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  //gStyle->SetStatBorderSize(0);
+  gStyle->SetFitFormat("6.3g");
+
+  cout << "Get pulls from the kin. fit output ...\n";
+
+  TFile* f_input = new TFile("../../input_norm_TDATA/cut/tree_pre.root");
+  	
+  TTree* TCUT = (TTree*)f_input -> Get("TISR3PI_SIG");
+  
+  const int hist_size = 4;
+  const int bins = 200;
+  const double x_min = -5.;
+  const double x_max = 5.;
+  
+  int recon_indx = 999, bkg_indx = 999;
+  double pull_list[hist_size] = {};
+  double chi2_7c = 0.;
+  
+  TH1D* HPullList[hist_size];
+
+  HPullList[0] = new TH1D("hpull_0", "", bins, x_min, x_max);
+
+  TString indx_str = "";
+  
+  for (int i = 1; i < hist_size; i ++) {
+
+    indx_str = Form("%d", i);
+
+    //cout << indx_str << endl;
+
+    HPullList[i] = (TH1D*) HPullList[0] -> Clone();
+    HPullList[i] -> SetName("hpull_" + indx_str);
+
+  }
+
+  for (Int_t irow = 0; irow < TCUT -> GetEntries(); irow ++) {// loop trees
+
+    if (irow > 1e5) break;
+    
+    TCUT -> GetEntry(irow);
+
+    chi2_7c = TCUT -> GetLeaf("Br_lagvalue_min_7C") -> GetValue(0); // chi2 distr. from the 7C kin. fit
+    bkg_indx = TCUT -> GetLeaf("Br_bkg_indx") -> GetValue(0);
+    recon_indx = TCUT -> GetLeaf("Br_recon_indx") -> GetValue(0);
+
+    
+    pull_list[0] = TCUT -> GetLeaf("Br_pull_E1") -> GetValue(0);
+    pull_list[1] = TCUT -> GetLeaf("Br_pull_x1") -> GetValue(0);
+    pull_list[2] = TCUT -> GetLeaf("Br_pull_y1") -> GetValue(0);
+    pull_list[3] = TCUT -> GetLeaf("Br_pull_z1") -> GetValue(0);
+    
+    //if (recon_indx == 2 && bkg_indx == 1 && chi2_7c < 20.) {
+    if (recon_indx == 2 && bkg_indx == 1) {
+      HPullList[0] -> Fill(pull_list[0]);
+      HPullList[1] -> Fill(pull_list[1]);
+      HPullList[2] -> Fill(pull_list[2]);
+      HPullList[3] -> Fill(pull_list[3]);
+    }
+    //cout << irow << endl;
+    
+  }
+
+  //HPullList[9] -> Draw();
+
+  // histo. normalization
+  double entries1  = HPullList[0] -> Integral(1, bins);
+  
+  // plot block
+  TCanvas *cv_pull = new TCanvas("cv_pull", "cv_pull", 1200, 700);
+  //cv_pull -> SetLeftMargin(0.3);
+  //cv_h1 -> SetLeftMargin(0.15);
+
+  const int nx = 4, ny = 1; //nx = 3, ny = 5
+  const double fit_range = 1.;
+    
+  cv_pull -> Divide(nx, ny);
+
+  int number = 0;
+  TString row_str = "";
+  TString tit_str[5] = {"E", "x", "y", "z", "t"};
+    
+  for (int i = 0; i < nx * ny; i ++) {
+
+    row_str = Form("%d", (i / nx) + 1);
+    cout << "i = " << i << ", i % nx = " << i % nx << ", x_tit = " << tit_str[i % nx] << endl;
+   
+    number ++;
+
+    cv_pull -> cd(number);
+    gPad -> SetBottomMargin(0.2);
+    gPad -> SetLeftMargin(0.2);
+  
+    TH1D* hpull_tmp = (TH1D*) HPullList[i] -> Clone();
+    hpull_tmp -> Scale(1. / entries1);
+  
+    // fit resolution
+    double xmin = hpull_tmp -> GetXaxis() -> GetXmin();
+    double xmax = hpull_tmp -> GetXaxis() -> GetXmax();
+    const int npar = 3;
+    double rms = hpull_tmp -> GetRMS();
+    double mean = hpull_tmp -> GetMean();
+    double peak = hpull_tmp -> GetMaximum();
+    double bin_width = getbinwidth(hpull_tmp);
+    double fitpara[npar] = {peak, mean, rms};
+    
+    cout << "rms = " << rms << ", mean = " << mean << ", peak = " << peak << "\n";
+
+    TF1 *fitfun = new TF1("fitfun", gauss1d, xmin, xmax, npar);
+    fitfun -> SetParNames("peak","mean","#sigma");
+    fitfun -> SetParameters(fitpara);
+    fitfun -> SetLineColor(kRed);
+    fitfun -> SetLineWidth(1);
+    fitfun -> SetNpx(5000);
+    
+    TFitResultPtr r = hpull_tmp -> Fit(fitfun, "LM0", " ", fit_range * xmin, fit_range * xmax); //LMQ0
+    
+    TF1 *fit_fun = hpull_tmp -> GetFunction("fitfun");
+    fit_fun -> SetLineColor(kRed);
+    fit_fun -> SetLineStyle(1);
+    fit_fun -> SetLineWidth(1);
+    fit_fun -> SetNpx(5000);
+
+    //TPaveText *pt1 = new TPaveText(0.55, 0.82, 0.8, 0.83, "NDC");
+    //TPaveText *pt2 = new TPaveText(0.55, 0.79, 0.8, 0.80, "NDC");
+    
+    //pt1 -> SetTextSize(0.04); pt1 -> SetFillColor(0); pt1 -> SetTextAlign(12);
+    //pt2 -> SetTextSize(0.04); pt2 -> SetFillColor(0); pt2 -> SetTextAlign(12);
+    
+    //pt1 -> AddText(Form("mean \t%0.2f", fitfun -> GetParameter(1)));
+    //pt2 -> AddText(Form("#sigma \t%0.2f", fitfun -> GetParameter(2)));
+    
+    cout << "xmin = " << xmin << ", xmax = " << xmax << "\n";
+
+    //const char text_test = "weff";
+    
+    TPaveText *pt1 = new TPaveText(0.11, 0.8, 0.65, 0.82, "NDC");
+    PteAttr(pt1);
+    pt1 -> SetTextSize(0.045);
+    pt1 -> SetTextColor(kRed);
+    
+    hpull_tmp -> GetXaxis() -> SetTitle("pull " + tit_str[i % nx] + "_{" + row_str + "}");
+    hpull_tmp -> GetXaxis() -> CenterTitle();
+    hpull_tmp -> GetXaxis() -> SetTitleSize(0.1);
+    hpull_tmp -> GetXaxis() -> SetLabelSize(0.07);
+    hpull_tmp -> GetXaxis() -> SetTitleOffset(0.8);
+
+    hpull_tmp -> GetYaxis() -> SetLabelSize(0.07);
+    hpull_tmp -> GetYaxis() -> SetTitleOffset(1.);
+    hpull_tmp -> GetYaxis() -> SetNdivisions(510);
+    hpull_tmp -> GetYaxis() -> SetRangeUser(0., peak * 1.4);
+
+    hpull_tmp -> Draw("Hist");
+    fit_fun -> Draw("Same");
+    //pt1 -> Draw("Same");
+    //pt2 -> Draw("Same");
+    gStyle->SetOptTitle(0);
+    gStyle->SetOptStat(0);
+    //gStyle->SetOptStat(1111);
+    gStyle->SetOptFit(111);
+    gStyle->SetStatX(0.95);
+    gStyle->SetStatY(0.95);
+   
+    //gPad->Update();
+    
+    TPaveStats *p1 = (TPaveStats*)hpull_tmp -> GetListOfFunctions() -> FindObject("stats");
+    p1 -> SetName("mystats");
+    p1 -> SetX1NDC(0.2);
+    p1 -> SetX2NDC(0.9);
+    p1 -> SetY1NDC(0.75);
+    p1 -> SetY2NDC(1.);
+    
+    p1 -> SetTextSize(0.065);
+    gPad -> Modified();
+    
+    //hpull_tmp -> SetStats(0);
+    
+    gPad -> Modified();
+    gPad -> Update();
+    
+    //p1 -> GetLineWith("#sigma") -> SetTextColor(kRed);
+
+   
+    //cv_pull -> Modified();
+    
+    
+  }
+  
+  // save
+  TFile *f_out = new TFile("../..//hpulls.root", "recreate");
+
+  HPullList[0] -> Write();
+  HPullList[1] -> Write();
+
+  cv_pull -> SaveAs("../../cv_pull.pdf");
+  
+  return 0;
+  
+}

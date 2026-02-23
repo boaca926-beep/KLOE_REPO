@@ -1,0 +1,22 @@
+#include "../header/fitfun.h"
+#include "../header/plot.h"
+
+gROOT->ForceStyle();  
+
+int Getpulls() {
+
+  gErrorIgnoreLevel = kError;
+  TGaxis::SetMaxDigits(4);
+  //gStyle->SetOptStat(0);
+  gStyle->SetOptTitle(0);
+  //gStyle->SetStatBorderSize(0);
+  gStyle->SetFitFormat("6.3g");
+
+  cout << "Get pulls from the kin. fit output ...\n";
+
+  TFile* f_input = new TFile("../../input_norm_TDATA/cut/tree_pre.root");
+
+
+  return 0;
+
+}

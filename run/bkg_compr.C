@@ -309,12 +309,12 @@ int bkg_compr(){
   TH1D * hist_isr3pi_sc = (TH1D*) hist_isr3pi -> Clone();
   hist_isr3pi_sc -> Scale(1); //sfw1d_isr3pi
   hist_isr3pi_sc -> SetName("hist_isr3pi_sc");
-
+  cout << "sfw1d_isr3pi = " << sfw1d_isr3pi << endl;
+  
   TH2D * h2d_discrp_isr3pi_sc = (TH2D*) h2d_discrp_isr3pi -> Clone();
   //h2d_discrp_isr3pi_sc -> Scale(sfw1d_isr3pi);
   h2d_discrp_isr3pi_sc -> SetName("h2d_discrp_isr3pi_sc");
 
-  //cout << "sfw1d_isr3pi = " << sfw1d_isr3pi << endl;
   
   // omegapi
   TH1D * hist_omegapi_sc = (TH1D*) hist_omegapi -> Clone();

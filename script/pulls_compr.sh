@@ -8,14 +8,14 @@ XMIN=(-5 -5)
 XMAX=(5 5) 
 BINS=(200 200) 
 
-output_folder="../../pulls_compr_"${VAR_NM[0]}
+output_folder="../../pulls_compr"
 
 #check output folder and update output files
 if [[ -d $output_folder ]]; then
     
     echo updating $output_folder
     #rm $output_folder/*.pdf
-    #rm $output_folder/*.root
+    rm $output_folder/*.root
     
 else
     

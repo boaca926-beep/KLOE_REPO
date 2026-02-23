@@ -27,46 +27,7 @@ void inspect_input(TFile *f){// File inspection
 }
 
 TFile* f_cut = new TFile("../../input_norm_TDATA/cut/tree_pre.root");
-TH1D* HPullList[100];
-TObjArray *Hlist = new TObjArray(100);
 
-void fillHist() {
-
-  // data and MC background
-  TIter next_tree(f_cut -> GetListOfKeys());
-
-  TString objnm_tree, classnm_tree;
-
-  const int hist_size = 4;
-  const int bins = 200;
-  const double x_min = -5.;
-  const double x_max = 5.;
-  
-  TKey *key;
-
-  int hist_indx = 0;
-  
-  while ( (key = (TKey *) next_tree() ) ) {// start tree while loop
-
-    objnm_tree   =  key -> GetName();
-    classnm_tree = key -> GetClassName();
-    key -> GetSeekKey();
-
-    //cout << "classnm = " << classnm_tree << ", objnm = " << objnm_tree << endl;
-
-    TTree *tree_tmp = (TTree*)f_cut -> Get(objnm_tree);
-    //cout << tree_tmp -> GetName() << endl;
-
-    //TString name = TString::Format("hpull_%d", hist_indx);
-    TString name = TString::Format("hist_%s", tree_tmp -> GetName());
-    HPullList[hist_indx] = new TH1D(name, "", bins, x_min, x_max);
-    cout << "Filling histo " << hist_indx + 1 << ", name: " << HPullList[hist_indx] -> GetName() << endl;
-
-    hist_indx += 1;
-    
-  }
-  
-}
 
 int Getpulls_compr() {
 
@@ -81,8 +42,39 @@ int Getpulls_compr() {
 
   //inspect_input(f_cut);
 
-  fillHist();
+  // Create a list of input root files from folder named after branch names:
+  // pull_E1, pull_x1
+
+  const int list_size = 2;
+  TString BR_LIST[list_size] = {"pull_E1", "pull_x1"};
+
+  for (int i = 0; i < list_size; i++) {// Loop over branches
+
+    TString f_nm = "../../pulls_compr/" + BR_LIST[i] + ".root";  
+    cout << i << ": " << f_nm << endl;
+
+    TFile* f_input = new TFile(f_nm);
   
+    TIter next_tree1(f_input -> GetListOfKeys());
+
+    TString objnm_tree, classnm_tree;
+
+    int j = 0;
+    TKey *key;
+  
+    while ( (key = (TKey *) next_tree1() ) ) {// Loop over trees
+    
+      j ++;
+    
+      objnm_tree   =  key -> GetName();
+      classnm_tree = key -> GetClassName();
+      //key -> GetSeekKey();
+      
+      cout << "tree" << j << ": classnm = " << classnm_tree << ", objnm = " << objnm_tree << endl;
+    
+    } // end loop trees
+    
+  }// end loop files
   return 0;
 
 }

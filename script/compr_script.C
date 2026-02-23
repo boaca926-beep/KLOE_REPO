@@ -1,5 +1,5 @@
 #include <iostream>
 void compr_script() {
-  gROOT->ProcessLine(".L ../run/bkg_compr.C");
-  gROOT->ProcessLine("bkg_compr()");
+  gROOT->ProcessLine(".L ../run/pulls_compr.C");
+  gROOT->ProcessLine("pulls_compr()");
 }

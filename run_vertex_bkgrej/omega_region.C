@@ -190,8 +190,8 @@ int omega_region() {
   gStyle->SetOptTitle(0);
   TH1::SetDefaultSumw2(); // switch on histogram errors
 
-  //const TString input_folder = "/home/bo/Desktop/analysis_root_v6/input_norm_TDATA";
-  const TString input_folder = "/home/bo/Desktop/input_norm_TDATA";
+  const TString input_folder = "/home/bo/Desktop/analysis_root_v6/input_norm_TDATA";
+  //const TString input_folder = "/home/bo/Desktop/input_norm_TDATA";
   
   //gROOT->SetBatch(kTRUE);  
   gErrorIgnoreLevel = kError;
@@ -302,17 +302,6 @@ int omega_region() {
   hist_mcrest_sc -> SetName("hist_mcrest_sc");
   Hlist_sc -> Add(hist_mcrest_sc);
 
-  // mcsum
-  TH1D* hist_mcsum = (TH1D*) hist_mcrest -> Clone();
-  hist_mcsum -> Add(hist_isr3pi, 1.);
-  hist_mcsum -> Add(hist_etagam, 1.);
-  hist_mcsum -> Add(hist_ksl, 1.);
-  hist_mcsum -> Add(hist_omegapi, 1.);
-  hist_mcsum -> Add(hist_eeg, 1.);
-  
-  hist_mcsum -> SetName("hist_mcsum");
-  //format_h(hist_mcsum, 2, 2);
-
   // Signal
   TH1D *hist_isr3pi_sc = (TH1D *) Hlist -> FindObject("hist_isr3pi") -> Clone();
   hist_isr3pi_sc -> Scale(isr3pi_sfw);
@@ -342,9 +331,9 @@ int omega_region() {
   format_h(hist_mcsum_sc, 2, 2);
 
   // test plot
-  hist_mcsum_sc -> Draw("E");
-  hist_data -> Draw("SameHist");
-  
+  hist_data -> Draw();
+  hist_mcsum_sc -> Draw("SameHist");
+    
   // save
   TFile *f_out = new TFile("../../hist.root", "recreate");
 
@@ -352,9 +341,6 @@ int omega_region() {
   
   //Hlist -> Write();
   Hlist_sc -> Write();
-  //H2dlist.Write();
-  //hEisr_gen -> Write();
-  //hangle_isr_gen -> Write();
     
   f_out -> Close();
   

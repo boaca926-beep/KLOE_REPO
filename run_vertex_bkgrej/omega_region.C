@@ -50,11 +50,12 @@ void fill_hist(TString TrNm[], TTree *TrList[], int TLSize, int color_list[]) {/
   double betapi0 = 0., IM2pi = 0.;
   double chi2 = 0., pvalue = 0.;
 
-  const double mass_min = 380.; //770;
-  const double mass_max = 1020; //800;
-  const double mass_sigma_nb = 1;
-  const double IM3pi_sigma = 2.65;
-  const int binsize = TMath::Nint((mass_max - mass_min) / mass_sigma_nb / IM3pi_sigma);
+  const double mass_min = 770; //380, 770
+  const double mass_max = 800; //1020, 800
+  const double mass_sigma_nb = 1; //1, 0.25
+  const double IM3pi_sigma = 2.65; //2.615, 2.65
+  //const int binsize = TMath::Nint((mass_max - mass_min) / mass_sigma_nb / IM3pi_sigma);
+  const int binsize = 60;
   const TString var_nm = "IM3pi_7C";
 
   TH1D* h;
@@ -279,7 +280,6 @@ int omega_region() {
   hist_mcrest -> Scale(mcrest_sfw);
   */
 
-  /*
   // mcsum
   TH1D* hist_mcsum = (TH1D*) hist_mcrest -> Clone();
   hist_mcsum -> Add(hist_isr3pi, 1.);
@@ -293,7 +293,6 @@ int omega_region() {
 
   hist_mcsum -> Draw();
   hist_data -> Draw("SameHist");
-  */
   
   // save
   TFile *f_out = new TFile("../../hist.root", "recreate");

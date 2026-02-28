@@ -1,11 +1,11 @@
-const TString output_folder = "../../bkg_compr_Eprompt_max";
-const TString var_nm = "Eprompt_max";
-const TString unit = "[MeV]";
-const TString var_symb = "E_{#gamma}^{max}";
+const TString output_folder = "../../bkg_compr_pull_E1";
+const TString var_nm = "pull_x1";
+const TString unit = "";
+const TString var_symb = "pull x1";
 
-const int binsize = 300;
-const double var_min = 150;
-const double var_max = 450;
+const int binsize = 200;
+const double var_min = -5;
+const double var_max = 5;
 const double sfw1d_isr3pi = 4.60022e-02;
 
 void checkList(TList *list_tmp){

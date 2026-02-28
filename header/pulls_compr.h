@@ -1,7 +1,7 @@
-const TString output_folder = "../../pulls_compr_pull_E1";
-const TString var_nm = "pull_E1";
-const TString unit = "[MeV]";
-const TString var_symb = "pull E1";
+const TString output_folder = "../../pulls_compr";
+const TString var_nm = "pull_x1";
+const TString unit = "";
+const TString var_symb = "pull x1";
 
 const int binsize = 200;
 const double var_min = -5;

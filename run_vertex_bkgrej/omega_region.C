@@ -56,11 +56,12 @@ void fill_hist(TString TrNm[], TTree *TrList[], int TLSize, int color_list[]) {/
   double betapi0 = 0., IM2pi = 0.;
   double chi2 = 0., pvalue = 0.;
 
-  const double mass_min = 380.; //770;
-  const double mass_max = 1020; //800;
-  const double mass_sigma_nb = 1;
-  const double IM3pi_sigma = 2.65;
-  const int binsize = TMath::Nint((mass_max - mass_min) / mass_sigma_nb / IM3pi_sigma);
+  const double mass_min = 770; //380, 770
+  const double mass_max = 800; //1020, 800
+  const double mass_sigma_nb = 1; //1, 0.25
+  const double IM3pi_sigma = 2.65; //2.615, 2.65
+  //const int binsize = TMath::Nint((mass_max - mass_min) / mass_sigma_nb / IM3pi_sigma);
+  const int binsize = 60;
   const TString var_nm = "IM3pi_7C";
 
   TH1D* h, *hsig;
@@ -189,8 +190,8 @@ int omega_region() {
   gStyle->SetOptTitle(0);
   TH1::SetDefaultSumw2(); // switch on histogram errors
 
-  //const TString input_folder = "/home/bo/Desktop/analysis_root_v6/input_norm_TDATA";
-  const TString input_folder = "/home/bo/Desktop/input_norm_TDATA";
+  const TString input_folder = "/home/bo/Desktop/analysis_root_v6/input_norm_TDATA";
+  //const TString input_folder = "/home/bo/Desktop/input_norm_TDATA";
   
   //gROOT->SetBatch(kTRUE);  
   gErrorIgnoreLevel = kError;
@@ -330,9 +331,9 @@ int omega_region() {
   format_h(hist_mcsum_sc, 2, 2);
 
   // test plot
-  hist_mcsum_sc -> Draw("E");
-  hist_data -> Draw("SameHist");
-  
+  hist_data -> Draw();
+  hist_mcsum_sc -> Draw("SameHist");
+    
   // save
   TFile *f_out = new TFile("../../hist.root", "recreate");
 
@@ -340,9 +341,6 @@ int omega_region() {
   
   //Hlist -> Write();
   Hlist_sc -> Write();
-  //H2dlist.Write();
-  //hEisr_gen -> Write();
-  //hangle_isr_gen -> Write();
     
   f_out -> Close();
   

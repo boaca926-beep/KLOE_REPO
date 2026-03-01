@@ -13,10 +13,12 @@ TLorentzVector Get4vector(double E, double px, double py, double pz) {
 
 }
 
-int signal_sample() {
+int get_sample(const TString data_type = "sig", const TString br_type = "TISR3PI_SIG") {
   // from e+ e- -> omega gamma get 3 photon final state 4-momentum
 
-  TString sampleFile = "/home/bo/Desktop/analysis_root_v6/sig.root";
+  // Proceed.C
+  //TString sampleFile = "/home/bo/Desktop/analysis_root_v6/" + data_type + ".root";
+  TString sampleFile = "/home/bo/Desktop/" + data_type + ".root";
   
   cout << "Input root file: " << sampleFile << endl;
 
@@ -24,10 +26,10 @@ int signal_sample() {
 
   TTree *ALLCHAIN_CUT = (TTree*)f_input -> Get("ALLCHAIN_CUT");
 
-  TFile *f_output = new TFile("../../signal_sample.root", "recreate");
+  TFile *f_output = new TFile("../../" + data_type + "_sample.root", "recreate");
 
   const int list_size = 1;
-  const TString TNM[list_size] = {"TISR3PI_SIG"};
+  const TString TNM[list_size] = {br_type};
 
   TTree *TTList[list_size];
   
@@ -52,7 +54,10 @@ int signal_sample() {
   double m3pi = 0., m3pi_good = 0., m3pi_bad = 0.;
   
   double lagvalue_min_7C = 0.;
-  
+  double deltaE = 0.;
+  double angle_pi0gam12 = 0.;
+  double betapi0 = 0.;
+    
   int phid = -1, sig_type = -1;
   int recon_indx = -1, bkg_indx = -1;
   
@@ -104,6 +109,9 @@ int signal_sample() {
     tree_tmp -> Branch("Br_bkg_indx", &bkg_indx, "Br_bkg_indx/I");
     
     tree_tmp -> Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
+    tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
+    tree_tmp -> Branch("Br_deltaE", &deltaE, "Br_deltaE/D");
+    tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     
   }
 
@@ -129,6 +137,9 @@ int signal_sample() {
     bkg_indx = ALLCHAIN_CUT -> GetLeaf("Br_bkg_indx") -> GetValue(0);
 
     lagvalue_min_7C = ALLCHAIN_CUT -> GetLeaf("Br_lagvalue_min_7C") -> GetValue(0);
+    betapi0 = ALLCHAIN_CUT -> GetLeaf("Br_betapi0") -> GetValue(0);
+    deltaE = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(2); 
+    angle_pi0gam12 = ALLCHAIN_CUT -> GetLeaf("Br_ANGLELIST") -> GetValue(0);
     
     pho_E1 = ALLCHAIN_CUT -> GetLeaf("Br_E1") -> GetValue(0);
     pho_px1 = ALLCHAIN_CUT -> GetLeaf("Br_px1") -> GetValue(0);

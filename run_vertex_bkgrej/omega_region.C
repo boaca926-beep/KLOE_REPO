@@ -190,8 +190,8 @@ int omega_region() {
   gStyle->SetOptTitle(0);
   TH1::SetDefaultSumw2(); // switch on histogram errors
 
-  const TString input_folder = "/home/bo/Desktop/analysis_root_v6/input_norm_TDATA";
-  //const TString input_folder = "/home/bo/Desktop/input_norm_TDATA";
+  //const TString input_folder = "/home/bo/Desktop/analysis_root_v6/input_norm_TDATA";
+  const TString input_folder = "/home/bo/Desktop/input_norm_TDATA";
   
   //gROOT->SetBatch(kTRUE);  
   gErrorIgnoreLevel = kError;

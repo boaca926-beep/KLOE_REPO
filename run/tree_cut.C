@@ -102,8 +102,8 @@ int tree_cut(){
 
     tree_tmp -> Branch("Br_lagvalue_min_7C", &lagvalue_min_7C, "Br_lagvalue_min_7C/D");
     tree_tmp -> Branch("Br_deltaE", &deltaE, "Br_deltaE/D");
-    tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
-    tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
+    //tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
+    //tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
     
   }
   

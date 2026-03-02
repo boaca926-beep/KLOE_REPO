@@ -6,7 +6,20 @@
 
 TStopwatch timer;
 timer.Start();
+
+TLorentzVector Get4vector(double E, double px, double py, double pz) {
+
+  //given a cluster index returns the 4-mom of a photon
+  TVector3 gamma(px, py, pz);
   
+  Double_t scale1;
+  scale1=E/gamma.Mag();
+  TLorentzVector gamma4mom(scale1*gamma, E);
+  //cout << gamma4mom.M() << endl;
+  return gamma4mom;
+
+}
+
 int tree_cut_bkgrej(){
 
   //const TString f_path = folder_in + "/" + data_type + ".root";
@@ -24,7 +37,8 @@ int tree_cut_bkgrej(){
   double pho_E3 = 0., pho_px3 = 0., pho_py3 = 0., pho_pz3 = 0.;
   double ppl_E = 0., ppl_px = 0., ppl_py = 0., ppl_pz = 0.;
   double pmi_E = 0., pmi_px = 0., pmi_py = 0., pmi_pz = 0.;
-  
+  double mpi0 = 0., m3pi = 0.;
+    
   double lagvalue_min_7C = 0.;
   double deltaE = 0.;
   double angle_pi0gam12 = 0.;  
@@ -111,6 +125,9 @@ int tree_cut_bkgrej(){
     tree_tmp -> Branch("Br_pmi_px", &pmi_px, "Br_pmi_px/D");
     tree_tmp -> Branch("Br_pmi_py", &pmi_py, "Br_pmi_py/D");
     tree_tmp -> Branch("Br_pmi_pz", &pmi_pz, "Br_pmi_pz/D");
+
+    tree_tmp -> Branch("Br_mpi0", &mpi0, "Br_mpi0/D");
+    tree_tmp -> Branch("Br_m3pi", &m3pi, "Br_m3pi/D");
     
     tree_tmp -> Branch("Br_pull_E1", &pull_E1, "Br_pull_E1/D");
     tree_tmp -> Branch("Br_pull_x1", &pull_x1, "Br_pull_x1/D");
@@ -149,7 +166,8 @@ int tree_cut_bkgrej(){
     tree_tmp -> Branch("Br_Eprompt_max", &Eprompt_max, "Br_Eprompt_max/D");
 	  
   }
-  
+
+  TLorentzVector pi0gam1, pi0gam2, isrgam, trkplus, trkmin;
 
   for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow ++) {// loop trees
 	  
@@ -180,6 +198,12 @@ int tree_cut_bkgrej(){
     pmi_py = ALLCHAIN_CUT -> GetLeaf("Br_pmi_py") -> GetValue(0);
     pmi_pz = ALLCHAIN_CUT -> GetLeaf("Br_pmi_pz") -> GetValue(0);
 
+    pi0gam1 = Get4vector(pho_E1, pho_px1, pho_py1, pho_pz1);
+    pi0gam2 = Get4vector(pho_E2, pho_px2, pho_py2, pho_pz2);
+    isrgam = Get4vector(pho_E3, pho_px3, pho_py3, pho_pz3);
+    trkplus = Get4vector(ppl_E, ppl_px, ppl_py, ppl_pz);
+    trkmin = Get4vector(pmi_E, pmi_px, pmi_py, pmi_pz);
+  
     pull_E1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(0);
     pull_x1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(1);
     pull_y1 = ALLCHAIN_CUT -> GetLeaf("Br_PULLIST") -> GetValue(2);
@@ -204,11 +228,15 @@ int tree_cut_bkgrej(){
     ppIM = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(5);
     m02 = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(10);
     mplus2 = ALLCHAIN_CUT -> GetLeaf("Br_MASSLIST") -> GetValue(11);
+    mpi0 = (pi0gam1 + pi0gam2).M();
+    m3pi = (pi0gam1 + pi0gam2 + trkplus + trkmin).M();
+
+    cout << mpi0 << ", " << m3pi << endl;
     
     IM3pi_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_7C") -> GetValue(0);
     IM_pi0_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM_pi0_7C") -> GetValue(0);
     IM3pi_true = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_true") -> GetValue(0);
-
+    
     Eisr = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(0);
     Epi0_pho1 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(1);
     Epi0_pho2 = ALLCHAIN_CUT -> GetLeaf("Br_ENERGYLIST") -> GetValue(3);

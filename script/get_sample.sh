@@ -2,7 +2,7 @@
 
 # Samples
 #DATA_TYPE=("sig" "ksl" "exp" "eeg" "ufo")
-DATA_TYPE=("sig" "ksl")
+DATA_TYPE=("sig" "ksl" "exp" "eeg")
 
 cut_path=../../
 input_path=../../kloe_sample

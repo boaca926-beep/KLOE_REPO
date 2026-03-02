@@ -2,10 +2,10 @@
 
 # Samples
 #DATA_TYPE=("sig" "ksl" "exp" "eeg" "ufo")
-DATA_TYPE=("sig" "ksl" "exp" "eeg")
+DATA_TYPE=("sig")
 
 cut_path=../../
-input_path=../../kloe_sample
+input_path=../../input_vertex_TDATA_bkgrej
 #input_path=../../input_norm_TDATA
 
 if [[ -d "$input_path" ]]; then

@@ -1,3 +1,3 @@
-const TString data_type = "sig";
-const TString sampleFile = "../../kloe_sample/input/sig";
+const TString data_type = "ksl";
+const TString sampleFile = "../../kloe_sample/input/ksl";
 const TString outputCut = "../../";

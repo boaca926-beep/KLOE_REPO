@@ -1,4 +1,6 @@
 #include "../header/cut_para.h"
+#include "../header/path_sample.h"
+
 
 TLorentzVector Get4vector(double E, double px, double py, double pz) {
 
@@ -13,14 +15,14 @@ TLorentzVector Get4vector(double E, double px, double py, double pz) {
 
 }
 
-//int get_sample(const TString data_type = "sig", const TString br_type = "TISR3PI_SIG") {
-int get_sample(const TString data_type = "ksl", const TString br_type = "TKSL") {
+int get_sample(const TString data_type = "sig", const TString br_type = "TISR3PI_SIG") {
+//int get_sample(const TString data_type = "ksl", const TString br_type = "TKSL") {
 
   // from e+ e- -> omega gamma get 3 photon final state 4-momentum
 
   // Proceed.C
-  //TString sampleFile = "/home/bo/Desktop/analysis_root_v6/" + data_type + ".root";
-  TString sampleFile = "/home/bo/Desktop/" + data_type + ".root";
+  TString sampleFile = "/home/bo/Desktop/analysis_root_v6/" + data_type + ".root";
+  //TString sampleFile = "/home/bo/Desktop/" + data_type + ".root";
   
   cout << "Input root file: " << sampleFile << endl;
 
@@ -119,15 +121,16 @@ int get_sample(const TString data_type = "ksl", const TString br_type = "TKSL") 
 
   TLorentzVector pi0gam1, pi0gam2, isrgam, trkplus, trkmin;
 
-  const double m3pi_min = 600., m3pi_max = 1000.;
+  const double m3pi_min = 0., m3pi_max = 1000.;
+  const int bins = 300;
   
-  TH1D *hmpi0 = new TH1D("hmpi0", "hmpi0", 200, m3pi_min, m3pi_max);
-  TH1D *hmpi0_good = new TH1D("hmpi0_good", "hmpi0_good", 200, m3pi_min, m3pi_max);
-  TH1D *hmpi0_bad = new TH1D("hmpi0_bad", "hmpi0_bad", 200, m3pi_min, m3pi_max);
+  TH1D *hmpi0 = new TH1D("hmpi0", "hmpi0", bins, m3pi_min, m3pi_max);
+  TH1D *hmpi0_good = new TH1D("hmpi0_good", "hmpi0_good", bins, m3pi_min, m3pi_max);
+  TH1D *hmpi0_bad = new TH1D("hmpi0_bad", "hmpi0_bad", bins, m3pi_min, m3pi_max);
 
-  TH1D *hm3pi = new TH1D("hm3pi", "hm3pi", 200, m3pi_min, m3pi_max);
-  TH1D *hm3pi_good = new TH1D("hm3pi_good", "hm3pi_good", 200, m3pi_min, m3pi_max);
-  TH1D *hm3pi_bad = new TH1D("hm3pi_bad", "hm3pi_bad", 200, m3pi_min, m3pi_max);
+  TH1D *hm3pi = new TH1D("hm3pi", "hm3pi", bins, m3pi_min, m3pi_max);
+  TH1D *hm3pi_good = new TH1D("hm3pi_good", "hm3pi_good", bins, m3pi_min, m3pi_max);
+  TH1D *hm3pi_bad = new TH1D("hm3pi_bad", "hm3pi_bad", bins, m3pi_min, m3pi_max);
   
   for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow ++) {// loop trees
 	  

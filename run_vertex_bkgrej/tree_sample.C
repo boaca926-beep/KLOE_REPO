@@ -1,5 +1,5 @@
 #include "../header/sm_para.h"
-#include "../header/path.h"
+#include "../header/path_sample.h"
 #include "../header/cut_para.h"
 #include "../header/method.h"
 #include <TStopwatch.h>
@@ -7,7 +7,7 @@
 TStopwatch timer;
 timer.Start();
   
-int tree_cut_bkgrej(){
+int tree_sample(){
 
   //const TString f_path = folder_in + "/" + data_type + ".root";
   cout << "input path: " << sampleFile << endl;
@@ -245,7 +245,7 @@ int tree_cut_bkgrej(){
     
       sel_indx = 0;
       //cout << sel_indx << endl;
-      cout << lagvalue_min_7C << endl;
+      //cout << lagvalue_min_7C << endl;
     }
     else {
       sel_indx = 1;

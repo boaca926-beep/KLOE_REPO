@@ -1,4 +1,4 @@
-const TString input_folder = "../../efficy_evtcls";
+const TString input_folder = "../../efficy_evtcls_TDATA_bkgrej";
 const TString systType = "evtcls";
 
 const double mass_min = 760., mass_max = 800.;

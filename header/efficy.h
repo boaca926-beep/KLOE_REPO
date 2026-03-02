@@ -1,5 +1,5 @@
-const TString inputFile = "../../input_chain_TUFO/cut/tree_pre";
-const TString outputCut = "../../efficy_evtcls/";
+const TString inputFile = "../../input_vertex_TDATA_bkgrej/cut/tree_pre";
+const TString outputCut = "../../efficy_evtcls_TDATA_bkgrej/";
 const TString treeType = "TUFO";
 
 const double mass_sigma_nb = 1;

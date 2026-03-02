@@ -1,2 +1,2 @@
-const TString input_folder = "../../SYST/syst_presel/BB";
-const TString para_label = "BB";
+const TString input_folder = "../../SYST/syst_presel/omega_mass";
+const TString para_label = "omega_mass";

@@ -13,13 +13,13 @@ if [[ -d "$input_path" ]]; then
     #rm -rf $input_path
 fi    
 
-cut_file="${cut_path}tree_pre.root"
+cut_file="${cut_path}kloe_sample.root"
 if [[ -f "$cut_file" ]]; then
     echo "$cut_file exists"
     rm -rf $cut_file
 else
     echo "Error: $cut_file not found!"
-    exit 1
+    #exit 1
 fi    
 
 mkdir ${input_path} # result folder
@@ -34,7 +34,7 @@ echo "Looping over data samples ..."
 input_path=${input_path}/input/
 cut_path=${cut_path}
 
-sed -i 's|\(const TString outputCut =\)\(.*\)|\1 "'"${cut_path}"'";|' "$path_header"
+sed -i 's|\(const TString outputCut =\)\(.*\)|\1 "'"${cut_file}"'";|' "$path_header"
     
 # Loop over data smaples
 for ((i=0;i<${#DATA_TYPE[@]};++i)); do

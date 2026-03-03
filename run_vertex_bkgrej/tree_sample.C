@@ -6,7 +6,20 @@
 
 TStopwatch timer;
 timer.Start();
+
+TLorentzVector Get4vector(double E, double px, double py, double pz) {
+
+  //given a cluster index returns the 4-mom of a photon
+  TVector3 gamma(px, py, pz);
   
+  Double_t scale1;
+  scale1=E/gamma.Mag();
+  TLorentzVector gamma4mom(scale1*gamma, E);
+  //cout << gamma4mom.M() << endl;
+  return gamma4mom;
+
+}
+
 int tree_sample(){
 
   //const TString f_path = folder_in + "/" + data_type + ".root";
@@ -24,6 +37,7 @@ int tree_sample(){
   double pho_E3 = 0., pho_px3 = 0., pho_py3 = 0., pho_pz3 = 0.;
   double ppl_E = 0., ppl_px = 0., ppl_py = 0., ppl_pz = 0.;
   double pmi_E = 0., pmi_px = 0., pmi_py = 0., pmi_pz = 0.;
+  double mpi0 = 0., m3pi = 0.;
   
   double lagvalue_min_7C = 0.;
   double deltaE = 0.;
@@ -59,7 +73,7 @@ int tree_sample(){
   
   double Eprompt_max = 0.;
   
-  TFile *f_output = new TFile(outputCut + "tree_pre.root", "update");
+  TFile *f_output = new TFile(outputCut, "update");
 
   // ksl stream
   const int list_size = 11;
@@ -138,6 +152,8 @@ int tree_sample(){
     tree_tmp -> Branch("Br_Eisr", &Eisr, "Br_Eisr/D");
     tree_tmp -> Branch("Br_Epi0_pho1", &Epi0_pho1, "Br_Epi0_pho1/D");
     tree_tmp -> Branch("Br_Epi0_pho2", &Epi0_pho2, "Br_Epi0_pho2/D");
+    tree_tmp -> Branch("Br_mpi0", &mpi0, "Br_mpi0/D");
+    tree_tmp -> Branch("Br_m3pi", &m3pi, "Br_m3pi/D");
     
     tree_tmp -> Branch("Br_angle_pi0gam12", &angle_pi0gam12, "Br_angle_pi0gam12/D");
     tree_tmp -> Branch("Br_betapi0", &betapi0, "Br_betapi0/D");
@@ -151,6 +167,8 @@ int tree_sample(){
   }
   
 
+  TLorentzVector pi0gam1, pi0gam2, isrgam, trkplus, trkmin;
+  
   for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow ++) {// loop trees
 	  
     ALLCHAIN_CUT -> GetEntry(irow);
@@ -219,6 +237,17 @@ int tree_sample(){
     if (Epi0_pho2 > Eprompt_max) Eprompt_max = Epi0_pho2;
 
     //cout << Epi0_pho1 << ", " << Epi0_pho2 << ", " << Eisr << ", Eprompt_max = " << Eprompt_max << endl;
+
+    pi0gam1 = Get4vector(pho_E1, pho_px1, pho_py1, pho_pz1);
+    pi0gam2 = Get4vector(pho_E2, pho_px2, pho_py2, pho_pz2);
+    isrgam = Get4vector(pho_E3, pho_px3, pho_py3, pho_pz3);
+    trkplus = Get4vector(ppl_E, ppl_px, ppl_py, ppl_pz);
+    trkmin = Get4vector(pmi_E, pmi_px, pmi_py, pmi_pz);
+  
+    mpi0 = (pi0gam1 + pi0gam2).M();
+    m3pi = (pi0gam1 + pi0gam2 + trkplus + trkmin).M();
+
+    //cout << mpi0 << ", " << m3pi << endl;
     
     evnt_tot ++;
 

@@ -37,8 +37,9 @@ int tree_cut_bkgrej(){
   double pho_E3 = 0., pho_px3 = 0., pho_py3 = 0., pho_pz3 = 0.;
   double ppl_E = 0., ppl_px = 0., ppl_py = 0., ppl_pz = 0.;
   double pmi_E = 0., pmi_px = 0., pmi_py = 0., pmi_pz = 0.;
+
   double mpi0 = 0., m3pi = 0.;
-    
+  
   double lagvalue_min_7C = 0.;
   double deltaE = 0.;
   double angle_pi0gam12 = 0.;  
@@ -168,7 +169,7 @@ int tree_cut_bkgrej(){
   }
 
   TLorentzVector pi0gam1, pi0gam2, isrgam, trkplus, trkmin;
-
+    
   for (Int_t irow = 0; irow < ALLCHAIN_CUT -> GetEntries(); irow ++) {// loop trees
 	  
     ALLCHAIN_CUT -> GetEntry(irow);
@@ -231,7 +232,7 @@ int tree_cut_bkgrej(){
     mpi0 = (pi0gam1 + pi0gam2).M();
     m3pi = (pi0gam1 + pi0gam2 + trkplus + trkmin).M();
 
-    cout << mpi0 << ", " << m3pi << endl;
+    //cout << mpi0 << ", " << m3pi << endl;
     
     IM3pi_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM3pi_7C") -> GetValue(0);
     IM_pi0_7C = ALLCHAIN_CUT -> GetLeaf("Br_IM_pi0_7C") -> GetValue(0);

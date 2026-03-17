@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Samples
-#DATA_TYPE=("sig" "ksl" "exp" "eeg" "ufo")
-DATA_TYPE=("sig")
+DATA_TYPE=("sig" "ksl" "exp" "eeg" "ufo")
+#DATA_TYPE=("sig")
 
 cut_path=../../
 input_path=../../input_vertex_TDATA_bkgrej
@@ -13,7 +13,8 @@ if [[ -d "$input_path" ]]; then
     #rm -rf $input_path
 fi    
 
-cut_file="${cut_path}kloe_sample.root"
+#cut_file="${cut_path}kloe_sample.root"
+cut_file="${cut_path}kloe_sample_chain.root"
 if [[ -f "$cut_file" ]]; then
     echo "$cut_file exists"
     rm -rf $cut_file

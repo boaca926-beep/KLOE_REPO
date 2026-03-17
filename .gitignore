@@ -1,1 +1,3 @@
-header/path.h
+*.h
+*.txt
+*.~

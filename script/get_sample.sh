@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Samples
-DATA_TYPE=("sig" "ksl" "exp" "eeg" "ufo")
-#DATA_TYPE=("sig")
+#DATA_TYPE=("sig" "ksl" "exp" "eeg" "ufo")
+DATA_TYPE=("sig" "ksl" "exp" "eeg")
 
 cut_path=../../
 input_path=../../input_vertex_TDATA_bkgrej

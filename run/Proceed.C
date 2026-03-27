@@ -5,7 +5,7 @@
 //void Proceed(const TString input_str = "Analys_class(\"../../path_small/sig_tmp\",\"../../sig_tmp1\")"){
 //void Proceed(const TString input_str = "Analys_class(\"../path_chain/exp_path\",\"../../exp\")"){
 //void Proceed(const TString input_str = "Analys_class(\"../path_chain/sig_path_tmp\",\"../../sig\")"){
-void Proceed(const TString input_str = "Analys_class(\"../path_small/sig_path\",\"../../sig\")"){
+void Proceed(const TString input_str = "Analys_class(\"../path_chain/sig_path_small\",\"../../sig\")"){
 //void Proceed(const TString input_str = "Analys_class(\"../path_chain/eeg_path_temp\",\"../../sig\")"){
 
   cout << "READING INPUT FILES !" << endl;

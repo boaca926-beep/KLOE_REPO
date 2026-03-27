@@ -53,10 +53,10 @@ void MyClass::Main()
   double ppIM_true = 0., ppIM = 0., ppIM_beta = 0.;
   double IMisrpho_miss = 0.;
   double IM3pi_pi12 = 0., IM3pi_pi13 = 0., IM3pi_pi23 = 0.; 
-  double MASSLIST[100];
-  double ANGLELIST[100];
-  double PULLIST[100];
-  double RESOLIST[100];
+  //double MASSLIST[100];
+  //double ANGLELIST[100];
+  //double PULLIST[100];
+  //double RESOLIST[100];
   double MOM4PHO1[4];
   double MOM4PHO2[4];
   double MOM4PHO3[4];
@@ -64,14 +64,17 @@ void MyClass::Main()
   double MOM4TRKMINS[4];
   
   // energy
-  double ENERGYLIST[100];
-  double PI0PHORESD[100];
+  //double ENERGYLIST[100];
+  //double PI0PHORESD[100];
   double E_pho_isr = 0., Emax_pho = 0.;
-  double EPI0GAM[2], EPI0NTMC[2], E_pi0gam1 = 0., E_pi0gam2 = 0.;
+  double EPI0GAM[2], E_pi0gam1 = 0., E_pi0gam2 = 0.;
   double deltaE_true = 0.;
   double Emax_clust = 0., Esum_clust = 0.;
   double Esum = 0., E_radiv1 = 0., E_radiv2 = 0.;
   double deltaE = 0.;
+
+  int EPI0NTMC[2];
+  
   // angle
   double Angle_pho_isr = 0.;
   double Angle_clust = 0.;
@@ -102,7 +105,7 @@ void MyClass::Main()
   ALLCHAIN_GEN.Branch("Br_IM_3pi", &IM_3pi, "Br_IM_3pi/D");
   ALLCHAIN_GEN.Branch("Br_E_pho_isr", &E_pho_isr, "Br_E_pho_isr/D");
   ALLCHAIN_GEN.Branch("Br_Angle_pho_isr", &Angle_pho_isr, "Br_Angle_pho_isr/D");
-  ALLCHAIN_GEN.Branch("Br_bpx", &bpx, "Br_bpx/F");
+  ALLCHAIN_GEN.Branch("Br_bpx", &bpx, "Br_bpx/D");
   ALLCHAIN_GEN.Branch("Br_Esum", &Esum, "Br_Esum/D");
 
   TTree ALLCHAIN_STR2("ALLCHAIN_STR2", "recreate"); ALLCHAIN_STR2.SetAutoSave(0);
@@ -116,7 +119,7 @@ void MyClass::Main()
   TrSample.Branch("Br_IM_3pi", &IM_3pi, "Br_IM_3pi/D");
   TrSample.Branch("Br_E_pho_isr", &E_pho_isr, "Br_E_pho_isr/D");
   TrSample.Branch("Br_Angle_pho_isr", &Angle_pho_isr, "Br_Angle_pho_isr/D");
-  TrSample.Branch("Br_bpx", &bpx, "Br_bpx/F");
+  TrSample.Branch("Br_bpx", &bpx, "Br_bpx/D");
   TrSample.Branch("Br_Esum", &Esum, "Br_Esum/D");
 
   double pho_E1 = 0., pho_px1 = 0., pho_py1 = 0., pho_pz1 = 0.;
@@ -124,6 +127,10 @@ void MyClass::Main()
   double pho_E3 = 0., pho_px3 = 0., pho_py3 = 0., pho_pz3 = 0.;
   double ppl_E = 0., ppl_px = 0., ppl_py = 0., ppl_pz = 0.;
   double pmi_E = 0., pmi_px = 0., pmi_py = 0., pmi_pz = 0.;
+
+  double pho_E1_true = 0., pho_px1_true = 0., pho_py1_true = 0., pho_pz1_true = 0.;
+  double pho_E2_true = 0., pho_px2_true = 0., pho_py2_true = 0., pho_pz2_true = 0.;
+  double pho_E3_true = 0., pho_px3_true = 0., pho_py3_true = 0., pho_pz3_true = 0.;
   
   //
   TTree ALLCHAIN_CUT ("ALLCHAIN_CUT", "recreate");
@@ -229,6 +236,22 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_pmi_px", &pmi_px, "Br_pmi_px/D");
   ALLCHAIN_CUT.Branch("Br_pmi_py", &pmi_py, "Br_pmi_py/D");
   ALLCHAIN_CUT.Branch("Br_pmi_pz", &pmi_pz, "Br_pmi_pz/D");
+
+  // mc truth
+  ALLCHAIN_CUT.Branch("Br_E1_true", &pho_E1_true, "Br_E1_true/D");
+  ALLCHAIN_CUT.Branch("Br_px1_true", &pho_px1_true, "Br_px1_true/D");
+  ALLCHAIN_CUT.Branch("Br_py1_true", &pho_py1_true, "Br_py1_true/D");
+  ALLCHAIN_CUT.Branch("Br_pz1_true", &pho_pz1_true, "Br_pz1_true/D");
+
+  ALLCHAIN_CUT.Branch("Br_E2_true", &pho_E2_true, "Br_E2_true/D");
+  ALLCHAIN_CUT.Branch("Br_px2_true", &pho_px2_true, "Br_px2_true/D");
+  ALLCHAIN_CUT.Branch("Br_py2_true", &pho_py2_true, "Br_py2_true/D");
+  ALLCHAIN_CUT.Branch("Br_pz2_true", &pho_pz2_true, "Br_pz2_true/D");
+
+  ALLCHAIN_CUT.Branch("Br_E3_true", &pho_E3_true, "Br_E3_true/D");
+  ALLCHAIN_CUT.Branch("Br_px3_true", &pho_px3_true, "Br_px3_true/D");
+  ALLCHAIN_CUT.Branch("Br_py3_true", &pho_py3_true, "Br_py3_true/D");
+  ALLCHAIN_CUT.Branch("Br_pz3_true", &pho_pz3_true, "Br_pz3_true/D");
 
   //
   TTree ALLCHAIN_TEST ("ALLCHAIN_TEST", "recreate");
@@ -1008,17 +1031,20 @@ void MyClass::Main()
     */
     
     //
-    TVector3 pi0gam1_vect, pi0gam2_vect; // selected pi0 photon, 3pi mc true four vectors
-    TLorentzVector TLVector_pi0pho1_true, TLVector_pi0pho2_true, TLVector_3pi_true;
+    TVector3 pi0gam1_vect, pi0gam2_vect, pi0gam3_vect; // selected pi0 photon, 3pi mc true four vectors
+    TLorentzVector TLVector_pi0pho1_true, TLVector_pi0pho2_true, TLVector_isrpho3_true;
+    TLorentzVector TLVector_3pi_true;
 
     if (kineid != -999) {
       pi0gam1_vect.SetXYZ(pxmc[pho_indx[pi0gam1_indx]], pymc[pho_indx[pi0gam1_indx]], pzmc[pho_indx[pi0gam1_indx]]);
-      pi0gam2_vect.SetXYZ(pxmc[pho_indx[pi0gam2_indx]], pymc[pho_indx[pi0gam2_indx]], pzmc[pho_indx[pi0gam2_indx]]);
+      pi0gam2_vect.SetXYZ(pxmc[pho_indx[pi0gam2_indx]], pymc[pho_indx[pi0gam2_indx]], pzmc[pho_indx[pi0gam2_indx]]); //isrgam_indx
+      pi0gam3_vect.SetXYZ(pxmc[pho_indx[isrgam_indx]], pymc[pho_indx[isrgam_indx]], pzmc[pho_indx[isrgam_indx]]);
     }
     
     TLVector_pi0pho1_true = GetLorentzVector(pi0gam1_vect, 0.);
     TLVector_pi0pho2_true = GetLorentzVector(pi0gam2_vect, 0.);
-
+    TLVector_isrpho3_true = GetLorentzVector(pi0gam3_vect, 0.);
+      
     TLVector_3pi_true = piminusMC_TLvect + piplusMC_TLvect + TLVector_pi0pho1_true + TLVector_pi0pho2_true;
     IM3pi_true = TLVector_3pi_true.M();
     
@@ -1476,6 +1502,11 @@ void MyClass::Main()
     pho_px1 = TLVector_pi0pho1_kinfit7C.X();
     pho_py1 = TLVector_pi0pho1_kinfit7C.Y();
     pho_pz1 = TLVector_pi0pho1_kinfit7C.Z();
+
+    pho_E1_true = TLVector_pi0pho1_true.E();
+    pho_px1_true = TLVector_pi0pho1_true.X();
+    pho_py1_true = TLVector_pi0pho1_true.Y();
+    pho_pz1_true = TLVector_pi0pho1_true.Z();
     
     // photon 2 4-mom: true pi0 photon
     pho_E2 = TLVector_pi0pho2_kinfit7C.E();
@@ -1483,12 +1514,22 @@ void MyClass::Main()
     pho_py2 = TLVector_pi0pho2_kinfit7C.Y();
     pho_pz2 = TLVector_pi0pho2_kinfit7C.Z();
 
+    pho_E2_true = TLVector_pi0pho2_true.E();
+    pho_px2_true = TLVector_pi0pho2_true.X();
+    pho_py2_true = TLVector_pi0pho2_true.Y();
+    pho_pz2_true = TLVector_pi0pho2_true.Z();
+    
     // photon 3 4-mom: unpaired photon
     pho_E3 = TLVector_isrpho_kinfit7C.E();
     pho_px3 = TLVector_isrpho_kinfit7C.X();
     pho_py3 = TLVector_isrpho_kinfit7C.Y();
     pho_pz3 = TLVector_isrpho_kinfit7C.Z();
 
+    pho_E3_true = TLVector_isrpho3_true.E();
+    pho_px3_true = TLVector_isrpho3_true.X();
+    pho_py3_true = TLVector_isrpho3_true.Y();
+    pho_pz3_true = TLVector_isrpho3_true.Z();
+    
     // positive track
     ppl_E = TLVector_ppl.E();
     ppl_px = TLVector_ppl.X();

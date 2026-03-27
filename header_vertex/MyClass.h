@@ -383,6 +383,14 @@ public :
    int kvip[30];
   
    double E_list[100], E_true_list[100], X_list[100], Y_list[100], Z_list[100], T_list[100];
+   double MASSLIST[100];
+   double ANGLELIST[100];
+   double PULLIST[100];
+   double RESOLIST[100];
+   double ENERGYLIST[100];
+   double PI0PHORESD[100];
+  
+  
    double Sigma2_E_list[100], Sigma2_X_list[100], Sigma2_Y_list[100], Sigma2_Z_list[100], Sigma2_T_list[100];
    double etakinfit_min_7C[15];   
    double Trkmass(TLorentzVector bestppl, TLorentzVector bestpmi);
@@ -467,7 +475,14 @@ MyClass::MyClass(TTree *tree) : fChain(0)
      pho_indx[i] = 0;
      clu_indx[i] = 0;
      pid_indx[i] = 0;
-     
+
+     // Initialize new arrays
+     MASSLIST[i] = 0.;
+     ANGLELIST[i] = 0.;
+     PULLIST[i] = 0.;
+     RESOLIST[i] = 0.;
+     ENERGYLIST[i] = 0.;
+     PI0PHORESD[i] = 0.;
    }
 
    for (int i = 0; i < 30; i ++) {
@@ -514,6 +529,37 @@ MyClass::~MyClass()
 {
    if (!fChain) return;
    delete fChain->GetCurrentFile();
+
+   // Clean up histograms
+   delete hprompt_distr;
+   delete hstr_distr;
+   delete hmpi0_iden;
+   delete hmpi0_sel;
+   delete hTof_clust;
+   delete hRhov;
+   delete hZv;
+   delete h_iv_ip;
+   delete h_iv_indx;
+   delete h_iv_ip_1;
+   delete h_iv_indx_1;
+   delete h_iv_ntv;
+   delete hIM3pi;
+   delete hIM3pi_bkg_indx_rest;
+   delete hIM3pi_bkg_indx0;
+   delete hrecon_typeI;
+   delete hsmearmatr_clust;
+   delete hsmearmatr_typeI;
+   delete hsmearmatr_typeII;
+   delete hsmearmatr_trk;
+   delete herror_type;
+   delete h_nv_ip;
+   delete h_nv_ip_1;
+   delete h_xpca;
+   delete h_ypca;
+   delete h_zpca;
+   
+   // Clean up generator
+   if (generator) delete generator;
 }
 
 Int_t MyClass::GetEntry(Long64_t entry)

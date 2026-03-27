@@ -98,7 +98,8 @@ void MyClass::Main()
   double test_value = 0.;
 
   // define tree
-  TTree ALLCHAIN_GEN("ALLCHAIN_GEN", "recreate"); ALLCHAIN_GEN.SetAutoSave(0);
+  TTree ALLCHAIN_GEN("ALLCHAIN_GEN", "recreate");
+  ALLCHAIN_GEN.SetAutoSave(0);
   
   ALLCHAIN_GEN.Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
   ALLCHAIN_GEN.Branch("Br_sel_type", &bit_select, "Br_sel_type/I");
@@ -108,7 +109,8 @@ void MyClass::Main()
   ALLCHAIN_GEN.Branch("Br_bpx", &bpx, "Br_bpx/D");
   ALLCHAIN_GEN.Branch("Br_Esum", &Esum, "Br_Esum/D");
 
-  TTree ALLCHAIN_STR2("ALLCHAIN_STR2", "recreate"); ALLCHAIN_STR2.SetAutoSave(0);
+  TTree ALLCHAIN_STR2("ALLCHAIN_STR2", "recreate");
+  ALLCHAIN_STR2.SetAutoSave(0);
   
   ALLCHAIN_STR2.Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
   ALLCHAIN_STR2.Branch("Br_sel_type", &bit_select, "Br_sel_type/I");
@@ -217,6 +219,7 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_py1", &pho_py1, "Br_py1/D");
   ALLCHAIN_CUT.Branch("Br_pz1", &pho_pz1, "Br_pz1/D");
 
+  /*
   ALLCHAIN_CUT.Branch("Br_E2", &pho_E2, "Br_E2/D");
   ALLCHAIN_CUT.Branch("Br_px2", &pho_px2, "Br_px2/D");
   ALLCHAIN_CUT.Branch("Br_py2", &pho_py2, "Br_py2/D");
@@ -236,7 +239,9 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_pmi_px", &pmi_px, "Br_pmi_px/D");
   ALLCHAIN_CUT.Branch("Br_pmi_py", &pmi_py, "Br_pmi_py/D");
   ALLCHAIN_CUT.Branch("Br_pmi_pz", &pmi_pz, "Br_pmi_pz/D");
-
+  */
+  
+  /*
   // mc truth
   ALLCHAIN_CUT.Branch("Br_E1_true", &pho_E1_true, "Br_E1_true/D");
   ALLCHAIN_CUT.Branch("Br_px1_true", &pho_px1_true, "Br_px1_true/D");
@@ -252,7 +257,8 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_px3_true", &pho_px3_true, "Br_px3_true/D");
   ALLCHAIN_CUT.Branch("Br_py3_true", &pho_py3_true, "Br_py3_true/D");
   ALLCHAIN_CUT.Branch("Br_pz3_true", &pho_pz3_true, "Br_pz3_true/D");
-
+  */
+  
   //
   TTree ALLCHAIN_TEST ("ALLCHAIN_TEST", "recreate");
   ALLCHAIN_TEST.SetAutoSave(0);
@@ -262,8 +268,9 @@ void MyClass::Main()
   ALLCHAIN_TEST.Branch("Br_angle_ppl_3piboost", &angle_ppl_3piboost, "Br_angle_ppl_3piboost/D");
 
   // chain store identified photons: pho1 (pi0 photon 1), pho2 (pi0 photon 2), pho3 (upaired)
-  TTree FINALSTATES ("FINALSTATES", "recreate");
-  FINALSTATES.SetAutoSave(0);
+  //TTree FINALSTATES ("FINALSTATES", "FINALSTATES"");
+  //FINALSTATES.SetDirectory(0);  // Detach from current directory
+  //FINALSTATES.SetAutoSave(0);
   
   ///
   if (fChain == 0) return;
@@ -1497,16 +1504,18 @@ void MyClass::Main()
     }
     */
 
+
+    /*
     // photon 1 4-mom: true pi0 photon
     pho_E1 = TLVector_pi0pho1_kinfit7C.E();
     pho_px1 = TLVector_pi0pho1_kinfit7C.X();
     pho_py1 = TLVector_pi0pho1_kinfit7C.Y();
     pho_pz1 = TLVector_pi0pho1_kinfit7C.Z();
 
-    pho_E1_true = TLVector_pi0pho1_true.E();
-    pho_px1_true = TLVector_pi0pho1_true.X();
-    pho_py1_true = TLVector_pi0pho1_true.Y();
-    pho_pz1_true = TLVector_pi0pho1_true.Z();
+    //pho_E1_true = TLVector_pi0pho1_true.E();
+    //pho_px1_true = TLVector_pi0pho1_true.X();
+    //pho_py1_true = TLVector_pi0pho1_true.Y();
+    //pho_pz1_true = TLVector_pi0pho1_true.Z();
     
     // photon 2 4-mom: true pi0 photon
     pho_E2 = TLVector_pi0pho2_kinfit7C.E();
@@ -1514,10 +1523,10 @@ void MyClass::Main()
     pho_py2 = TLVector_pi0pho2_kinfit7C.Y();
     pho_pz2 = TLVector_pi0pho2_kinfit7C.Z();
 
-    pho_E2_true = TLVector_pi0pho2_true.E();
-    pho_px2_true = TLVector_pi0pho2_true.X();
-    pho_py2_true = TLVector_pi0pho2_true.Y();
-    pho_pz2_true = TLVector_pi0pho2_true.Z();
+    //pho_E2_true = TLVector_pi0pho2_true.E();
+    //pho_px2_true = TLVector_pi0pho2_true.X();
+    //pho_py2_true = TLVector_pi0pho2_true.Y();
+    //pho_pz2_true = TLVector_pi0pho2_true.Z();
     
     // photon 3 4-mom: unpaired photon
     pho_E3 = TLVector_isrpho_kinfit7C.E();
@@ -1525,10 +1534,10 @@ void MyClass::Main()
     pho_py3 = TLVector_isrpho_kinfit7C.Y();
     pho_pz3 = TLVector_isrpho_kinfit7C.Z();
 
-    pho_E3_true = TLVector_isrpho3_true.E();
-    pho_px3_true = TLVector_isrpho3_true.X();
-    pho_py3_true = TLVector_isrpho3_true.Y();
-    pho_pz3_true = TLVector_isrpho3_true.Z();
+    //pho_E3_true = TLVector_isrpho3_true.E();
+    //pho_px3_true = TLVector_isrpho3_true.X();
+    //pho_py3_true = TLVector_isrpho3_true.Y();
+    //pho_pz3_true = TLVector_isrpho3_true.Z();
     
     // positive track
     ppl_E = TLVector_ppl.E();
@@ -1542,7 +1551,8 @@ void MyClass::Main()
     pmi_py = TLVector_pmi.Y();
     pmi_pz = TLVector_pmi.Z();
 
-    FINALSTATES.Fill();
+    //FINALSTATES.Fill();
+    */
     
     
     if (recon_indx == 0) {
@@ -1565,12 +1575,17 @@ void MyClass::Main()
   }
   
   // save trees
+  //outFile -> cd();
   //TrSample.Write();
   //ALLCHAIN_TEST.Write();
   ALLCHAIN_GEN.Write();
   ALLCHAIN_STR2.Write();
   ALLCHAIN_CUT.Write();
-  FINALSTATES.Write();
+  //FINALSTATES.Write();
+
+  // Close and cleanup
+  //outFile->Close();
+  //delete outFile;
   
   // summary
   ofstream myfile;

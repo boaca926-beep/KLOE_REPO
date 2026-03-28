@@ -15,14 +15,14 @@ TLorentzVector Get4vector(double E, double px, double py, double pz) {
 
 }
 
-int get_sample(const TString data_type = "sig", const TString br_type = "TISR3PI_SIG") {
+int get_bdt_sample(const TString data_type = "sig", const TString br_type = "TISR3PI_SIG") {
 //int get_sample(const TString data_type = "ksl", const TString br_type = "TKSL") {
 
   // from e+ e- -> omega gamma get 3 photon final state 4-momentum
 
   // Proceed.C
-  TString sampleFile = "/home/bo/Desktop/analysis_root_v6/" + data_type + ".root";
-  //TString sampleFile = "/home/bo/Desktop/" + data_type + ".root";
+  //TString sampleFile = "/home/bo/Desktop/analysis_root_v6/" + data_type + ".root";
+  TString sampleFile = "/home/bo/Desktop/" + data_type + ".root";
   
   cout << "Input root file: " << sampleFile << endl;
 

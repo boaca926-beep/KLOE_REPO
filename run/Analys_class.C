@@ -46,7 +46,8 @@ int Analys_class(TString rootFile, TString sampleFile) {
 
   TFile *myfile;
   myfile = new TFile(sampleFile + ".root","RECREATE");
-
+  myfile->cd();
+  
   MyClass *analysis = new MyClass(tree);
   analysis->Main();
 

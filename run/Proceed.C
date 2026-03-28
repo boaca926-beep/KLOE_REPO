@@ -13,9 +13,13 @@ void Proceed(const TString input_str = "Analys_class(\"../path_chain/sig_path_sm
   //gROOT -> ProcessLine(".L ../run/MyClass.C");
   //gROOT -> ProcessLine(".L ../run/Analys_class.C");
 
-  // further bkg rejection, seems crashed
-  gROOT -> ProcessLine(".L ../run_vertex_bkgrej/MyClass.C");
+  // BDT
+  gROOT -> ProcessLine(".L ../run_bdt/MyClass.C");
   gROOT -> ProcessLine(".L ../run/Analys_class.C");
+
+  // further bkg rejection, seems crashed
+  //gROOT -> ProcessLine(".L ../run_vertex_bkgrej/MyClass.C");
+  //gROOT -> ProcessLine(".L ../run/Analys_class.C");
 
   // ML training, pi0 mass, smearing pi0 decay photons
   //gROOT -> ProcessLine(".L ../run_vertex/MyClass.C");

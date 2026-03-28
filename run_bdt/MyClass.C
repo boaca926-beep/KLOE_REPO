@@ -1,5 +1,5 @@
 #define MyClass_cxx
-#include "../header_vertex/MyClass.h"
+#include "../header_bdt/MyClass.h"
 #include "TMatrixD.h"
 #include "TVectorD.h"
 #include <TH2.h>
@@ -15,30 +15,27 @@ void MyClass::Main()
   gErrorIgnoreLevel = kFatal; //kFatal;
 
   cout << "PROCESSING ..." << endl;
-  bool pho1_status = kTRUE;
-  bool pho2_status = kTRUE;
-  bool pho3_status = kTRUE;
-   
   int sig_type = -1;
   int bkg_indx = -1;
   int recon_indx = -1;
-  
+
+
   int fiduial_indx = -1;
   int trigger_indx = -1;
   int filfo_indx = -1;
-  int filfo28_indx = -1; 
   int evtcls_indx = -1;
 
-  double evnt_sum = 0;
+  int test_indx = 0;     
+
+  double evnt_sum = 0, evnt_pre_filtred = 0, evnt_pre_pass = 0;
   double evnt_unstr = 0, evnt_cls = 0;
   double evnt_sig = 0, evnt_bkg = 0;
-  double evnt_pre = 0, evnt_trig = 0, evnt_filfo = 0, evnt_str = 0;
-  double evnt_vert = 0., evnt_trk = 0, evnt_photon = 0, evnt_final = 0.;
+  double evnt_pre = 0, evnt_str = 0, evnt_trig = 0, evnt_filfo = 0, evnt_trk = 0, evnt_class = 0, evnt_final = 0.;
   double evnt_phi5 = 0;
   double evnt_recon_type0 = 0., evnt_recon_type1 = 0., evnt_recon_type2 = 0.;
   // reconstruction
   int trknb_prompt = 0, trkindx1 = 0, trkindx2 = 0;
-  
+
   int promptnb = 0;
   int evt_indx = -1;
   
@@ -53,10 +50,10 @@ void MyClass::Main()
   double ppIM_true = 0., ppIM = 0., ppIM_beta = 0.;
   double IMisrpho_miss = 0.;
   double IM3pi_pi12 = 0., IM3pi_pi13 = 0., IM3pi_pi23 = 0.; 
-  //double MASSLIST[100];
-  //double ANGLELIST[100];
-  //double PULLIST[100];
-  //double RESOLIST[100];
+  double MASSLIST[100];
+  double ANGLELIST[100];
+  double PULLIST[100];
+  double RESOLIST[100];
   double MOM4PHO1[4];
   double MOM4PHO2[4];
   double MOM4PHO3[4];
@@ -64,17 +61,14 @@ void MyClass::Main()
   double MOM4TRKMINS[4];
   
   // energy
-  //double ENERGYLIST[100];
-  //double PI0PHORESD[100];
+  double ENERGYLIST[100];
+  double PI0PHORESD[100];
   double E_pho_isr = 0., Emax_pho = 0.;
-  double EPI0GAM[2], E_pi0gam1 = 0., E_pi0gam2 = 0.;
+  double EPI0GAM[2], EPI0NTMC[2], E_pi0gam1 = 0., E_pi0gam2 = 0.;
   double deltaE_true = 0.;
   double Emax_clust = 0., Esum_clust = 0.;
   double Esum = 0., E_radiv1 = 0., E_radiv2 = 0.;
   double deltaE = 0.;
-
-  int EPI0NTMC[2];
-  
   // angle
   double Angle_pho_isr = 0.;
   double Angle_clust = 0.;
@@ -96,30 +90,30 @@ void MyClass::Main()
   double betapi0 = 0., betapi0_true = 0.;
   //
   double test_value = 0.;
-
+  
   // define tree
-  TTree ALLCHAIN_GEN("ALLCHAIN_GEN", "ALLCHAIN_GEN"); ALLCHAIN_GEN.SetAutoSave(0);
+  TTree ALLCHAIN_GEN("ALLCHAIN_GEN", "recreate"); ALLCHAIN_GEN.SetAutoSave(0);
   
   ALLCHAIN_GEN.Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
   ALLCHAIN_GEN.Branch("Br_sel_type", &bit_select, "Br_sel_type/I");
   ALLCHAIN_GEN.Branch("Br_IM_3pi", &IM_3pi, "Br_IM_3pi/D");
   ALLCHAIN_GEN.Branch("Br_E_pho_isr", &E_pho_isr, "Br_E_pho_isr/D");
   ALLCHAIN_GEN.Branch("Br_Angle_pho_isr", &Angle_pho_isr, "Br_Angle_pho_isr/D");
-  ALLCHAIN_GEN.Branch("Br_bpx", &bpx, "Br_bpx/D");
+  ALLCHAIN_GEN.Branch("Br_bpx", &bpx, "Br_bpx/F");
   ALLCHAIN_GEN.Branch("Br_Esum", &Esum, "Br_Esum/D");
 
-  TTree ALLCHAIN_STR2("ALLCHAIN_STR2", "ALLCHAIN_STR2"); ALLCHAIN_STR2.SetAutoSave(0);
+  TTree ALLCHAIN_STR2("ALLCHAIN_STR2", "recreate"); ALLCHAIN_STR2.SetAutoSave(0);
   
   ALLCHAIN_STR2.Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
   ALLCHAIN_STR2.Branch("Br_sel_type", &bit_select, "Br_sel_type/I");
   ALLCHAIN_STR2.Branch("Br_IM_3pi", &IM_3pi, "Br_IM_3pi/D");
   
-  TTree TrSample ("TrSample", "TrSample");
+  TTree TrSample ("TrSample", "recreate");
   TrSample.SetAutoSave(0);
   TrSample.Branch("Br_IM_3pi", &IM_3pi, "Br_IM_3pi/D");
   TrSample.Branch("Br_E_pho_isr", &E_pho_isr, "Br_E_pho_isr/D");
   TrSample.Branch("Br_Angle_pho_isr", &Angle_pho_isr, "Br_Angle_pho_isr/D");
-  TrSample.Branch("Br_bpx", &bpx, "Br_bpx/D");
+  TrSample.Branch("Br_bpx", &bpx, "Br_bpx/F");
   TrSample.Branch("Br_Esum", &Esum, "Br_Esum/D");
 
   double pho_E1 = 0., pho_px1 = 0., pho_py1 = 0., pho_pz1 = 0.;
@@ -127,13 +121,9 @@ void MyClass::Main()
   double pho_E3 = 0., pho_px3 = 0., pho_py3 = 0., pho_pz3 = 0.;
   double ppl_E = 0., ppl_px = 0., ppl_py = 0., ppl_pz = 0.;
   double pmi_E = 0., pmi_px = 0., pmi_py = 0., pmi_pz = 0.;
-
-  double pho_E1_true = 0., pho_px1_true = 0., pho_py1_true = 0., pho_pz1_true = 0.;
-  double pho_E2_true = 0., pho_px2_true = 0., pho_py2_true = 0., pho_pz2_true = 0.;
-  double pho_E3_true = 0., pho_px3_true = 0., pho_py3_true = 0., pho_pz3_true = 0.;
   
   //
-  TTree ALLCHAIN_CUT("ALLCHAIN_CUT", "ALLCHAIN_CUT");
+  TTree ALLCHAIN_CUT ("ALLCHAIN_CUT", "recreate");
   ALLCHAIN_CUT.SetAutoSave(0);
   ALLCHAIN_CUT.Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
   ALLCHAIN_CUT.Branch("Br_sel_type", &bit_select, "Br_sel_type/I");
@@ -144,7 +134,6 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_trigger_indx", &trigger_indx, "Br_trigger_indx/I");
   ALLCHAIN_CUT.Branch("Br_evtcls_indx", &evtcls_indx, "Br_evtcls_indx/I");
   ALLCHAIN_CUT.Branch("Br_filfo_indx", &filfo_indx, "Br_filfo_indx/I");
-  ALLCHAIN_CUT.Branch("Br_filfo28_indx", &filfo28_indx, "Br_filfo28_indx/I");
   
   //
   //ALLCHAIN_CUT.Branch("Br_Rhov", &Rhov, "Br_Rhov/D");  
@@ -236,34 +225,13 @@ void MyClass::Main()
   ALLCHAIN_CUT.Branch("Br_pmi_px", &pmi_px, "Br_pmi_px/D");
   ALLCHAIN_CUT.Branch("Br_pmi_py", &pmi_py, "Br_pmi_py/D");
   ALLCHAIN_CUT.Branch("Br_pmi_pz", &pmi_pz, "Br_pmi_pz/D");
-
-  // mc truth
-  ALLCHAIN_CUT.Branch("Br_E1_true", &pho_E1_true, "Br_E1_true/D");
-  ALLCHAIN_CUT.Branch("Br_px1_true", &pho_px1_true, "Br_px1_true/D");
-  ALLCHAIN_CUT.Branch("Br_py1_true", &pho_py1_true, "Br_py1_true/D");
-  ALLCHAIN_CUT.Branch("Br_pz1_true", &pho_pz1_true, "Br_pz1_true/D");
-
-  ALLCHAIN_CUT.Branch("Br_E2_true", &pho_E2_true, "Br_E2_true/D");
-  ALLCHAIN_CUT.Branch("Br_px2_true", &pho_px2_true, "Br_px2_true/D");
-  ALLCHAIN_CUT.Branch("Br_py2_true", &pho_py2_true, "Br_py2_true/D");
-  ALLCHAIN_CUT.Branch("Br_pz2_true", &pho_pz2_true, "Br_pz2_true/D");
-
-  ALLCHAIN_CUT.Branch("Br_E3_true", &pho_E3_true, "Br_E3_true/D");
-  ALLCHAIN_CUT.Branch("Br_px3_true", &pho_px3_true, "Br_px3_true/D");
-  ALLCHAIN_CUT.Branch("Br_py3_true", &pho_py3_true, "Br_py3_true/D");
-  ALLCHAIN_CUT.Branch("Br_pz3_true", &pho_pz3_true, "Br_pz3_true/D");
-
+  
   //
-  TTree ALLCHAIN_TEST("ALLCHAIN_TEST", "ALLCHAIN_TEST");
-  ALLCHAIN_TEST.SetAutoSave(0);
+  TTree ALLCHAIN_TEST ("ALLCHAIN_TEST", "recreate"); ALLCHAIN_TEST.SetAutoSave(0);
   ALLCHAIN_TEST.Branch("Br_bkg_indx", &bkg_indx, "Br_bkg_indx/I");
   ALLCHAIN_TEST.Branch("Br_IM3pi_7C", &IM3pi_7C, "Br_IM3pi_7C/D");
   ALLCHAIN_TEST.Branch("Br_IMisrpho_miss", &IMisrpho_miss, "Br_IMisrpho_miss/D");
   ALLCHAIN_TEST.Branch("Br_angle_ppl_3piboost", &angle_ppl_3piboost, "Br_angle_ppl_3piboost/D");
-
-  // chain store identified photons: pho1 (pi0 photon 1), pho2 (pi0 photon 2), pho3 (upaired)
-  //TTree FINALSTATES("FINALSTATES", "FINALSTATES");
-  //FINALSTATES.SetAutoSave(0);
   
   ///
   if (fChain == 0) return;
@@ -278,47 +246,30 @@ void MyClass::Main()
     // if (Cut(ientry) < 0) continue;
     //if (jentry != 228610) continue;
     //if (jentry > 1) continue; 
-
+    
     //cout << "jentry = " << jentry << endl;
 
     evnt_sum ++;
+    
+    if (bit_select == 1) {// pre-filtred
+      evnt_pre_filtred ++;
+    }
+    else {
+      evnt_pre_pass ++;
+    }
 
-    //TLVector_pi0pho1_true = TLorentzVector(0,0,0,0);
-    //TLVector_pi0pho2_true = TLorentzVector(0,0,0,0);
-    //TLVector_isrpho3_true = TLorentzVector(0,0,0,0);
- 
+    /// beam
     Beam.SetPxPyPzE(bpx, bpy, bpz, bene);
     //TVector3 Boost3vector = -Beam.BoostVector();
+    
     //cout << "beam (bpx, bpy, bpz, bene) = " << "(" << bpx << ", " << bpy << ", " << bpz << ", " << bene << ") \n";
 
-    /// select signal events (according to Antonio)
-    //cout << "nvtxmc = " << nvtxmc << endl;
-    
-    for (int kv = 0; kv < nvtxmc; kv ++) {
-
-      //cout << "mother[" << kv << "] = " << mother[kv] << ", kinmom = " << kinmom[kv] << ", trkvtxmc = " << trkvtxmc[kv] << endl;
-
-    }
-
-    //cout << "ntmc = " << ntmc << endl;
-    
-    for (int i = 0; i < ntmc; i ++) {// loop over number of MC "tracks==particles"
-
-      if (pidmc[i] == 8) {// pi+, kine = 1
-      //if (pidmc[i] == 9) {// pi-, kine = 2
-      //if (pidmc[i] == 7) {// pi0, kine = 3
-      //if (kine[i] == 4 && pidmc[i] == 1) {// pi0 photons
-	//cout << "pidmc[i] = " << pidmc[i] << ", kine[i] = " << kine[i]  << ", virmom[i] = " << virmom[i] << ", indv[i] = " << indv[i] << endl;
-      }
-      
-    }
-
-    
     /// define isr 3pi signals
     double nb_pho_radiv = 0, nb_pi = 0, nb_pi0pho = 0;
     int pi0gam1_ntmc = 0, pi0gam2_ntmc = 0; 
     TVector3 MC_vect;
     TLorentzVector pi0MC_TLvect, piplusMC_TLvect, piminusMC_TLvect, threepi_TLvect, isrpho_TLvect, finalstate_TLvect, pho_radiv1_TLvect, pho_radiv2_TLvect, pi0gam1_TLvect, pi0gam2_TLvect;
+   
       
     /// paticle infomation
     //cout << "\n\n" << endl;
@@ -453,14 +404,10 @@ void MyClass::Main()
       
     /// define ISR signal
 
-    //if (nb_pho_radiv > 0 && nb_pi == 3 && nb_pi0pho == 2) {
-    if (nb_pi == 3 && nb_pi0pho == 2) {
-    
+    if (nb_pho_radiv > 0 && nb_pi == 3 && nb_pi0pho == 2) {
       sig_type = 1;
       evnt_sig ++;
-
-      ALLCHAIN_GEN.Fill();
-
+      
       //cout << phid << endl;
       //cout << nb_pho_radiv << endl;
       //cout << pho_radiv1_TLvect.E() << "," << pho_radiv2_TLvect.E() << ", checked " << E_radiv1 << ", " << E_radiv2 << "\n";
@@ -474,174 +421,14 @@ void MyClass::Main()
       evnt_bkg ++;
     }
     
+    // check etagam->3pigamma
+    //if (phid == 5) {
+    //}
+
     //cout << sig_type << endl;
-    
-    /// Pre-selection cuts
-    // CUT0, reject redundant events saved at KLOE
-    if(bit_select == 1) continue; 
+    ALLCHAIN_GEN.Fill();
 
-    // CUT1, trigger
-    if (IfTriggered()) {
-      trigger_indx = 0;
-    }
-    else {
-      trigger_indx = 1;
-    }
-    
-    evnt_trig ++;
-
-    // CUT2, FILFO
-    if (IfFilfoed()) {// bit 20, standard FILFO cut
-      filfo_indx = 0;
-    }
-    else {
-      filfo_indx = 1;
-    }
-
-    if (((eclfilfo & ( 1 << 28 )) >> 28) == 1) {// bit 28 on, work also for UFO
-      filfo28_indx = 1;
-    }
-    else {// bit 28 off
-      filfo28_indx = 0;
-    }
-    
-    evnt_filfo ++;
-
-    /// Event classification
-    if (necls == 0) {// UFO
-      evnt_unstr ++;
-    }
-    else {// streamed
-      evnt_cls ++;
-      for (int NrEC=0; NrEC<necls; NrEC++) {     
-
-	//if (eclstream[NrEC] == 2) {
-	hstr_distr->Fill(eclstream[NrEC]);
-	//}
-	//cout<<eclstream[NrEC]<<endl;
-	//if (eclstream[NrEC]==4) {
-
-	//}
-      }
-    }
-
-    // CUT3, ksl stream
-    if (!IfStreamed(pstrnb)) {
-      evtcls_indx = 0;
-    }
-    else {
-      evtcls_indx = 1;
-    }
-    
-    evnt_str ++;
-    //cout << pstrnb << endl;
-    
-    /// Vertex Info
-    // fiducial parameters
-    //cout << "Zvmax = " << Zvmax << ", Rhovmax = " << Rhovmax << endl;
-
-    int nvip = 0; // number of vertices at IP (vip) within the fiducial volume 
-    //int kvip[3]; // index of vip
-    //double XV[3], YV[3], ZV[3];
-
-    for (int kv = 0; kv < nv; kv++) {// loop on vertices
-      
-      if (TMath::Abs(zv[kv] - bz) < Zvmax && TMath::Sqrt((xv[kv] - bx) * (xv[kv] - bx) + (yv[kv] - by) * (yv[kv] - by)) < Rhovmax) { // fiducial volume
-	nvip ++;
-	kvip[nvip] = kv + 1; // shift needed?
-	
-	XV[nvip] = xv[kv];
-	YV[nvip] = yv[kv];
-	ZV[nvip] = zv[kv];
-	  
-	//cout << "nvip = " << nvip << ", kv = " << kv << ", kvip[" << nvip << "] = " << kvip[nvip] << ", (xv, yv, zv) = (" << xv[kv] << ", " << yv[kv] << ", " << zv[kv] << ")" << endl;
-	
-      }// end fiducial volume
-
-    } // end loop on vertices
-
-    if (nvip != 1) continue; // select events with only 1 vertex within the fiducial volume
-    fiduial_indx = 1;
-
-    int kvip_nvip1 = kvip[nvip]; // index of vertex with nvip equal 1
-    double xv_nvip1 = XV[nvip]; // index of vertex x position with nvip equal 1
-    double yv_nvip1 = YV[nvip]; // index of vertex y position with nvip equal 1
-    double zv_nvip1 = ZV[nvip]; // index of vertex z position with nvip equal 1
-
-    evnt_vert ++;
-
-    //cout << "nvip = " << nvip << ", kvip = " << kvip_nvip1 << ", (xv, yv, zv) = (" << xv_nvip1 << ", " << yv_nvip1 << ", " << zv_nvip1 << ")" << ", (bx, by, bz) = (" << bx << ", " << by << ", " << bz << ")" << endl;
-    
-    /// track info
-    int ntv_vtxid = 0; // number of tracks (nvt) accociated with given index of vertex (vtxid)
-
-    std::vector<TVector3> trkv_momenta; // track 3-momentum
-    std::vector<Int_t> trkv_charge; // track charge
-    std::vector<Int_t> trkv_index; // track index
-
-    for (int ktv = 0; ktv < ntv; ktv ++) { // loop over tracks connected to vertices
-
-      //cout << "vertex id = " << iv[ktv] << ", track id = " << kvip_nvip1 << endl;
-
-      if (iv[ktv] == kvip_nvip1) { // these tracks are the one connected to my vertex
-	ntv_vtxid ++;          // just to check that two tracks only have been found
-
-	if (curv[ktv] > 0) {
-	  trkv_charge.push_back(1);
-	  //cout << "find a positive charged track," << " curv = " << curv[ktv] << endl;
-	}
-	else {
-	  //cout << "find a negative charged track," << " curv = " << curv[ktv] << endl;
-	  trkv_charge.push_back(-1);
-	}
-	
-	TVector3 momentum(pxtv[ktv],pytv[ktv],pztv[ktv]);
-	trkv_momenta.push_back(momentum);
-	trkv_index.push_back(ktv);
-
-      }
-
-    }// end loop over tracks connected to vertices
-
-    // CUT4, two tracks
-    if (ntv_vtxid != 2 || trkv_charge[0] * trkv_charge[1] >= 0) continue; // select 2 tracks with opposite signs
-
-    TVector2 trkv_sel; // initialize selected vertex associated tracks
-    trkv_sel.SetX(-1); // X: index of pi+, with positive curvature
-    trkv_sel.SetY(-1); // Y: index of pi-, wiht negative curvature
-
-    TVector3 trkmom_plus;
-    TVector3 trkmom_nega;
-	
-    if (trkv_charge[0]>0) {
-      trkv_sel.SetX(trkv_index[0]); // pi+ track index in NTV block 
-      trkv_sel.SetY(trkv_index[1]); // pi- track index in NTV block
-
-      trkmom_plus = trkv_momenta[0];
-      trkmom_nega = trkv_momenta[1];
-    }
-    else {
-      trkv_sel.SetX(trkv_index[1]); //pi+ in the NTV track block 
-      trkv_sel.SetY(trkv_index[0]); //pi- in the NTV track block
-
-      trkmom_plus = trkv_momenta[1];
-      trkmom_nega = trkv_momenta[0];
-    }
-
-    // get 4-vector using track-vertex parameters
-    trkindx1 = trkv_sel.X();
-    trkindx2 = trkv_sel.Y();
-    
-    TLorentzVector TLVector_ppl = Gettrack4vectorkinfit(trkindx1);
-    TLorentzVector TLVector_pmi = Gettrack4vectorkinfit(trkindx2);
-
-    // broken tracks
-    Bool_t ifbroken = IfBroken(trkindx1, trkindx2);
-    if (ifbroken) continue; // select good pair of tracks
-
-    evnt_trk ++; 
-
-    /// Cluster Info
+    /// cluster info
     TVector3 Pos_clust(0., 0., 0.);
     int promptnb = 0;
     double Emax_clust_tmp = 0., rt_clust_tmp = 0.;
@@ -649,8 +436,8 @@ void MyClass::Main()
     
     for (int i = 0; i < nclu; i ++) {// looping over clusters
 
-      Pos_clust.SetXYZ(xcl[i] - xv_nvip1, ycl[i] - yv_nvip1, zcl[i] - zv_nvip1); // cluster position vector
-      //Pos_clust.SetXYZ(xcl[i], ycl[i], zcl[i]); // cluster position vector
+      //Pos_clust.SetXYZ(xcl[i] - bx, ycl[i] - by, zcl[i] - bz); // cluster position vector
+      Pos_clust.SetXYZ(xcl[i], ycl[i], zcl[i]); // cluster position vector
       
       Angle_clust = Pos_clust.Theta() * TMath::RadToDeg(); // cluster polar angle
       Tof_clust = tcl[i] - Pos_clust.Mag() / speedc; // cluster tof
@@ -665,7 +452,8 @@ void MyClass::Main()
       //cout << "enecl[" << i << "] = " << enecl[i] << ", Emax_clust = " << Emax_clust << "\n";
 
       //cout << promptnb << ", " << Pnum1[i]-1 << ", pxmc=" << pxmc[Pnum1[i]-1] << ", pymc=" << pymc[Pnum1[i]-1] << ", pzmc=" << pzmc[Pnum1[i]-1] << ", E= " << TMath::Sqrt(pxmc[Pnum1[i]-1]*pxmc[Pnum1[i]-1]+pymc[Pnum1[i]-1]*pymc[Pnum1[i]-1]+pzmc[Pnum1[i]-1]*pzmc[Pnum1[i]-1]) << "\n";
-   	
+      
+	
       // select prompt clusters
       if (charged_new[i] == 0 && intime[i] && enecl[i] > egammamin && Angle_clust > minangle && Angle_clust < (180. - minangle) && TMath::Abs(Tof_clust) < nb_sigma_T_clust * Sigma_T_clust && mmclu[i] != 5) {
 
@@ -679,9 +467,9 @@ void MyClass::Main()
 
 	// fill prompt cluster info: E, X, Y, Z and T
 	E_list[promptnb] = enecl[i]; 
-	X_list[promptnb] = xcl[i] - xv_nvip1; 
-	Y_list[promptnb] = ycl[i] - yv_nvip1;
-	Z_list[promptnb] = zcl[i] - zv_nvip1;
+	X_list[promptnb] = xcl[i]; 
+	Y_list[promptnb] = ycl[i];
+	Z_list[promptnb] = zcl[i];
 	T_list[promptnb] = tcl[i];
 
 	pho_indx[promptnb] = Pnum1[i] - 1;
@@ -712,23 +500,124 @@ void MyClass::Main()
       
       
     }// end looping over clusters
-
     Emax_clust = Emax_clust_tmp;
     Esum_clust = Esum_clust_tmp;
-    hprompt_distr -> Fill(promptnb);
+    //cout << "promptnb = " << promptnb << "\n";
+      
+    /// track info
+    TVectorD trkvect(3);
+    trkvect = Getpiontrnb();
+    trknb_prompt = trkvect(0);
+    trkindx1 = trkvect(1);
+    trkindx2 = trkvect(2);
+    Bool_t ifbroken = IfBroken(trkindx1, trkindx2);
+    
+    // CUT5: cut vertex in confined region
+    //if (Zv > Zvmax || Rhov > Rhovmax) continue;
+      
+    //cout << "jentry: " << jentry << ", Zv_max = " << Zv << ", Rhov_max = " << Rhov << "\n" << endl;
+  
+    /// select classified event
+    
+    /*
+    Bool_t bTagged = false;
+    Bool_t chrad = false;
+    for(Int_t NrEC=0; NrEC<necls; NrEC++){
+      if(eclstream[NrEC]==pstrnb){
+	//only interested in the tag if the stream is 4
+	bTagged=true;
+	if((ecltagnum[NrEC] &  1 )==1) chrad = true;
+      }
+    }
+    
+    
+    if(!bTagged) continue;
+    */
 
-    // CUT4, 3 prompt photons
-    if (promptnb != 3 ) continue; 
-    evnt_photon ++;
+    // CUT0, bit cut
+    if(bit_select == 1) continue; 
+    evnt_pre ++;
+
+    //cout << "!!!!!!!!!!!!!!!!!!!!!!!!!" << promptnb << endl;
+    hprompt_distr -> Fill(promptnb);
+    
+    // Event classification
+
+    if (necls == 0) {// UFO
+      evnt_unstr ++;
+    }
+    else {// streamed
+      evnt_cls ++;
+      for (int NrEC=0; NrEC<necls; NrEC++) {     
+
+	//if (eclstream[NrEC] == 2) {
+	hstr_distr -> Fill(eclstream[NrEC]);
+	//}
+	//cout<<eclstream[NrEC]<<endl;
+	//if (eclstream[NrEC]==4) {
+
+	//}
+      }
+    }
+
+    // CUT1, trigger
+    if (IfTriggered()) continue; // SYST. CHECK _EMC: pass EMC trigger,  _DC(): pass DC trigger, _EMCandDC(): pass EMC AND DC triggers     
+    trigger_indx = 1;
+    evnt_trig ++;
+    
+    // CUT2, FILFO
+    if (IfFilfoed()) continue; // SYST. CHECK, bit 20, standard FILFO cut
+    filfo_indx = 1;
+    evnt_filfo ++;
+
+    // CUT3, ksl stream
+    if (!IfStreamed(pstrnb)) continue; 
+    evtcls_indx = 1;
+    evnt_str ++;
+    //cout << pstrnb << endl;
+
+    double Zv_tmp = 0., Rhov_tmp = 0.;
+    int iv_ip = 0, iv_indx = -1;
+   
+    for (int k = 0; k < nv; k++) {// begin loop
+      Zv_tmp = TMath::Abs(zv[k] - bz);
+      Rhov_tmp = TMath::Sqrt((xv[k] - bx) * (xv[k] - bx) + (yv[k] - by) * (yv[k] - by));
+      //cout << "Zv_tmp = " << Zv_tmp << ", Rhov_tmp = " << Rhov_tmp << endl;
+      if (Zv_tmp <= Zvmax && Rhov_tmp <= Rhovmax) { // fiducial volume
+	iv_ip ++;
+	iv_indx = k;
+      }
+    }
+
+    // fill histos
+    h_iv_ip -> Fill(iv_ip);
+    h_iv_indx -> Fill(iv_indx);
+
+    //nv .vs. iv_ip
+    h_nv_ip -> Fill(nv, iv_ip);
+
+    //cout << "iv_ip = " << iv_ip << ", iv_indx = " << iv_indx << endl;
+    
+    //if (iv_ip != 1) continue; // select events with only 1 vertex in the fiducial volume
+    //fiduial_indx = 1;
+    
+    //h_iv_ip_1 -> Fill(iv_ip);
+    h_iv_indx_1 -> Fill(iv_indx);
+
+    // CUT4, two tracks and 3 prompt photons
+    if (trknb_prompt != 2 || ifbroken ) continue; evnt_trk ++; 
+    if (promptnb != 3 ) continue; evnt_class ++;
 
     //nv .vs. iv_ip after the track and prompt photon selection
-    //h_nv_ip_1 -> Fill(nv, iv_ip);
+    h_nv_ip_1 -> Fill(nv, iv_ip);
 
     //x/y/zpca(1) .vs. x/y/zpaca(2) for the two tracks
-    //h_xpca -> Fill(xpca[trkindx1],xpca[trkindx2]);
-    //h_ypca -> Fill(ypca[trkindx1],ypca[trkindx2]);
-    //h_zpca -> Fill(zpca[trkindx1],zpca[trkindx2]);
+    h_xpca -> Fill(xpca[trkindx1],xpca[trkindx2]);
+    h_ypca -> Fill(ypca[trkindx1],ypca[trkindx2]);
+    h_zpca -> Fill(zpca[trkindx1],zpca[trkindx2]);
     
+    //ALLCHAIN_STR2.Fill();
+
     /// 7C kinematical fit
     const int Row = 15, Col = 15, row = 7;
     const int nfloop_7C = 5;
@@ -750,11 +639,11 @@ void MyClass::Main()
   
 	  TMatrixD Getakinfitloop(row, Col), Getakinfittransloop(Col, row), Vmatrixloop(Row, Col), Skinfitloop(row, row), InSkinfitloop(row, row), Vkinfitloop(Row, Col);
 
-	  inputvect = FillInputvector_7C(Row, nr1, nr2, nr3);
+	  inputvect = FillInputvector_7C(Row, nr1, nr2, nr3, trkindx1, trkindx2);
 	  //cout << "!!!! inspect inputvector before kin. fit. " << endl;
 	  //cout << "nr1 = " << nr1 << ", nr2 = " << nr2 << ", nr3 = " << nr3 << endl;
 	  //inputvect.Print();
-	  sigma2vector = FillSigma2vector_7C(Row, nr1, nr2, nr3); //sigma2vector.Print();
+	  sigma2vector = FillSigma2vector_7C(Row, nr1, nr2, nr3, trkindx1, trkindx2); //sigma2vector.Print();
 
 	  // initialization
 	  etakinfitloop_temp = inputvect, etakinfitloop = inputvect;
@@ -818,8 +707,10 @@ void MyClass::Main()
     /// fill reconstructed final state particles: pi+, pi-, pi0, pi0 photons, isr photon candidate
 
     // fill pi+ and pi-
-    //TLorentzVector TLVector_pmi = Gettrack4vectorkinfit(trkindx1);
-    //TLorentzVector TLVector_ppl = Gettrack4vectorkinfit(trkindx2);
+    //TLorentzVector TLVector_pmi = Gettrack4vectorkinfit(curpca[trkindx1], cotpca[trkindx1], phipca[trkindx1]);
+    //TLorentzVector TLVector_ppl = Gettrack4vectorkinfit(curpca[trkindx2], cotpca[trkindx2], phipca[trkindx2]);
+    TLorentzVector TLVector_pmi = Gettrack4vectorkinfit(trkindx1);
+    TLorentzVector TLVector_ppl = Gettrack4vectorkinfit(trkindx2);
 
     //cout << TLVector_pmi.M() << endl;
 
@@ -867,7 +758,7 @@ void MyClass::Main()
 
       // filling pi0 photon candidates in permutation
       pionphoton1_tmp = Getphoton4vector(inputvect_permut(5), inputvect_permut(6), inputvect_permut(7), inputvect_permut(8));
-      pionphoton2_tmp = Getphoton4vector(inputvect_permut(10), inputvect_permut(11), inputvect_permut(12), inputvect_permut(13));
+      pionphoton2_tmp = Getphoton4vector(inputvect_permut(10),inputvect_permut(11),inputvect_permut(12),inputvect_permut(13));
       //pionphoton1_tmp.Print();
       //pionphoton2_tmp.Print();
 
@@ -915,7 +806,7 @@ void MyClass::Main()
     //cout << "!!!! chi2mgg_min = " << chi2mgg_min << endl;
     
     // without kin.fit
-    TLorentzVector TLVector_isrpho = Getphoton4vector(inputvect_ordered(0), inputvect_ordered(1), inputvect_ordered(2), inputvect_ordered(3));
+    TLorentzVector TLVector_isrpho = Getphoton4vector(inputvect_ordered(0),inputvect_ordered(1), inputvect_ordered(2), inputvect_ordered(3));
     TLorentzVector TLVector_pi0pho1 = Getphoton4vector(inputvect_ordered(5), inputvect_ordered(6), inputvect_ordered(7), inputvect_ordered(8));
     TLorentzVector TLVector_pi0pho2 = Getphoton4vector(inputvect_ordered(10), inputvect_ordered(11), inputvect_ordered(12), inputvect_ordered(13));
     TLorentzVector TLvector_isrpho_miss = Beam - (TLVector_pi0pho1 + TLVector_pi0pho2 + TLVector_ppl + TLVector_pmi);
@@ -936,10 +827,9 @@ void MyClass::Main()
     
     // fill 7C kin.fitted values
     //inputvect_fitted_ordered.Print();
-    TLorentzVector TLVector_isrpho_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(0), inputvect_fitted_ordered(1), inputvect_fitted_ordered(2), inputvect_fitted_ordered(3));
+    TLorentzVector TLVector_isrpho_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(0),inputvect_fitted_ordered(1), inputvect_fitted_ordered(2), inputvect_fitted_ordered(3));
     TLorentzVector TLVector_pi0pho1_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(5), inputvect_fitted_ordered(6), inputvect_fitted_ordered(7), inputvect_fitted_ordered(8));
     TLorentzVector TLVector_pi0pho2_kinfit7C = Getphoton4vector(inputvect_fitted_ordered(10), inputvect_fitted_ordered(11), inputvect_fitted_ordered(12), inputvect_fitted_ordered(13));
-
     TLorentzVector TLVector_pi0gg12_kinfit7C = TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C;
     TLorentzVector TLVector_3pi_kinfit7C = TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C + TLVector_ppl + TLVector_pmi;
     TLorentzVector TLVector_2pi_kinfit7C = TLVector_ppl + TLVector_pmi;
@@ -1034,24 +924,19 @@ void MyClass::Main()
     */
     
     //
-    TVector3 pi0gam1_vect, pi0gam2_vect, pi0gam3_vect; // selected pi0 photon, 3pi mc true four vectors
-    TLorentzVector TLVector_pi0pho1_true, TLVector_pi0pho2_true, TLVector_isrpho3_true;
-    TLorentzVector TLVector_3pi_true;
+    TVector3 pi0gam1_vect, pi0gam2_vect; // selected pi0 photon, 3pi mc true four vectors
+    TLorentzVector TLVector_pi0pho1_true, TLVector_pi0pho2_true, TLVector_3pi_true;
 
     if (kineid != -999) {
       pi0gam1_vect.SetXYZ(pxmc[pho_indx[pi0gam1_indx]], pymc[pho_indx[pi0gam1_indx]], pzmc[pho_indx[pi0gam1_indx]]);
-      pi0gam2_vect.SetXYZ(pxmc[pho_indx[pi0gam2_indx]], pymc[pho_indx[pi0gam2_indx]], pzmc[pho_indx[pi0gam2_indx]]); //isrgam_indx
-      //pi0gam3_vect.SetXYZ(pxmc[pho_indx[isrgam_indx]], pymc[pho_indx[isrgam_indx]], pzmc[pho_indx[isrgam_indx]]);
-
+      pi0gam2_vect.SetXYZ(pxmc[pho_indx[pi0gam2_indx]], pymc[pho_indx[pi0gam2_indx]], pzmc[pho_indx[pi0gam2_indx]]);
     }
-
+    
     TLVector_pi0pho1_true = GetLorentzVector(pi0gam1_vect, 0.);
     TLVector_pi0pho2_true = GetLorentzVector(pi0gam2_vect, 0.);
-    //TLVector_isrpho3_true = GetLorentzVector(pi0gam3_vect, 0.);
-    
+
     TLVector_3pi_true = piminusMC_TLvect + piplusMC_TLvect + TLVector_pi0pho1_true + TLVector_pi0pho2_true;
     IM3pi_true = TLVector_3pi_true.M();
-    
     
     // energy
     ENERGYLIST[0] = TLVector_isrpho_kinfit7C.E();
@@ -1061,7 +946,7 @@ void MyClass::Main()
     ENERGYLIST[4] = TLVector_isrpho.E();
     //cout << "!!!!!!!!!!!!!!!!! " << ENERGYLIST[3] << endl;
 
-    // photons 4 vectors plus true pi0 photon flag
+    // photons 4 vectors
     // pi0 photon1
     MOM4PHO1[0] = TLVector_pi0pho1_kinfit7C.E();
     MOM4PHO1[1] = TLVector_pi0pho1_kinfit7C.X();
@@ -1091,59 +976,11 @@ void MyClass::Main()
     MOM4TRKMINS[2] = TLVector_pmi.Y();
     MOM4TRKMINS[3] = TLVector_pmi.Z();
 
-    // clean data
-    // check photon 1
-    if (TMath::IsNaN(MOM4PHO1[0]) || TMath::IsNaN(MOM4PHO1[1]) || TMath::IsNaN(MOM4PHO1[2]) || TMath::IsNaN(MOM4PHO1[3])) {
-      pho1_status = kFALSE;
-      MOM4PHO1[0] = 0.;
-      MOM4PHO1[1] = 0.;
-      MOM4PHO1[2] = 0.;
-      MOM4PHO1[3] = 0.;
-      //cout << "event index: " << jentry << ", E: " << MOM4PHO1[0] << ", px: "<< MOM4PHO1[1] << ", py: "<< MOM4PHO1[2] << ", pz: "<< MOM4PHO1[3] << "\n";
-    }
-    else {
-      pho1_status = kTRUE;
-    }
-
-    // check photon 2
-    if (TMath::IsNaN(MOM4PHO2[0]) || TMath::IsNaN(MOM4PHO2[1]) || TMath::IsNaN(MOM4PHO2[2]) || TMath::IsNaN(MOM4PHO2[3])) {
-      pho2_status = kFALSE;
-      MOM4PHO2[0] = 0.;
-      MOM4PHO2[1] = 0.;
-      MOM4PHO2[2] = 0.;
-      MOM4PHO2[3] = 0.;
-      //cout << "event index: " << jentry << ", E: "<< MOM4PHO2[0] << ", px: "<< MOM4PHO2[1] << ", py: "<< MOM4PHO2[2] << ", pz: "<< MOM4PHO2[3] << "\n";
-    }
-    else {
-      pho2_status = kTRUE;
-    }
-
-    // check photon 3
-    if (TMath::IsNaN(MOM4PHO3[0]) || TMath::IsNaN(MOM4PHO3[1]) || TMath::IsNaN(MOM4PHO3[2]) || TMath::IsNaN(MOM4PHO3[3])) {
-      pho3_status = kFALSE;
-      MOM4PHO3[0] = 0.;
-      MOM4PHO3[1] = 0.;
-      MOM4PHO3[2] = 0.;
-      MOM4PHO3[3] = 0.;
-      //cout << "event index: " << jentry << ", E: "<< MOM4PHO3[0] << ", px: "<< MOM4PHO3[1] << ", py: "<< MOM4PHO3[2] << ", pz: "<< MOM4PHO3[3] << "\n";
-    }
-    else {
-      pho3_status = kTRUE;
-    }
-
-    //if (!pho1_status || !pho2_status || !pho3_status) continue;
-
     /*
-    cout << "photon status: 1: " << pho1_status << ", 2: " << pho2_status << ", 3: " << pho3_status << "\n"
-	 << "recons. stauts: recon_indx: " << recon_indx << ", bkg_indx : " << bkg_indx << endl;
+    cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
+	 << "ppl (E, px, py, pz) = (" << MOM4TRKPLUS[0] << ", " << MOM4TRKPLUS[1] << ", " << MOM4TRKPLUS[2] << ", " << MOM4TRKPLUS[3] << ")\n";
     */
-    
-    //cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n"
-      //<< "photon 1: E = " << MOM4PHO1[0] << ", px = " << MOM4PHO1[1] << ", py = " << MOM4PHO1[2] << ", pz = " << MOM4PHO1[3] << ")\n";
-      //<< "track1: E = " << MOM4TRKPLUS[0] << ", px = " << MOM4TRKPLUS[1] << ", py = " << MOM4TRKPLUS[2] << ", pz = " << MOM4TRKPLUS[3] << ")\n"
-      //<< "track2: E = " << MOM4TRKMINS[0] << ", px = " << MOM4TRKMINS[1] << ", py = " << MOM4TRKMINS[2] << ", pz = " << MOM4TRKMINS[3] << ")\n";
-      
-	 
+
     
     // masses
     trkmass = Trkmass(TLVector_ppl, TLVector_pmi);
@@ -1222,11 +1059,77 @@ void MyClass::Main()
 
     //cout << "trkmass = " << ANGLELIST[0] << ", true = " << angle_pi0gam12_true << endl;
 
-    /// fill trees
-    //if (lagvalue_min_7C > 100.) continue; // cut 6
-    evnt_final ++;
+    ///
+    /*
+    TLorentzVector TVect_clust_test1; 
+    if (IM_3pi < 820. && IM_3pi > 760. && IM3pi_7C < 750. && IM3pi_7C > 500.  ) {
+    //if (E_radiv2 == 0.) {
+      hsmearmatr -> Fill(IM_3pi, IM3pi_7C);
+      //htestI -> Fill(Angle_pho_isr);
+      htestI -> Fill(ppIM_true);
+      
+      cout << "typeI" << "\n"
+	   << "Esum = " << Esum << "\n"
+	   << "ppIM = " << ppIM_true << "\n"
+	   << "Angle_pho_isr = " << Angle_pho_isr << "\n"
+	   << "E_radiv1 = " << E_radiv1 << ", E_radiv2 = " << E_radiv2 << "\n";
 
-    //cout << "SELECTED FINALSTATES\n";
+      for (int i = 0; i < ntmc; i ++) {
+	cout << "ntmc=" << i << ", pidmc=" << pidmc[i] << ", pxmc=" << pxmc[i] << ", pymc=" << pymc[i] << ", pzmc=" << pzmc[i] << "\n";
+      }
+      cout << "RECON\n";
+      //Getphoton4vector(double E, double x, double y, double z)
+      for (int i = 0; i < nclu; i ++) {
+	TVect_clust_test1 = Getphoton4vector(enecl[i], xcl[i] - bx, ycl[i] - by, zcl[i] - bz); //SetPxPyPzE(xcl[i]-bx, ycl[i]-by, zcl[i]-bz, enecl[i]);
+	//cout << xcl[i] - bx << ", " << ycl[i] - by << ", " <<  zcl[i] - bz << ", " << TVect_clust_test.M() << endl;
+	cout << "nclu=" << i << ", px=" << TVect_clust_test1.X() << ", py=" << TVect_clust_test1.Y() << ", pz=" << TVect_clust_test1.Z() << ", E=" << TVect_clust_test1.E() << "\n";
+      }
+      
+    }
+    else {
+
+      //htestII -> Fill(Angle_pho_isr);
+      htestII -> Fill(ppIM_true);
+
+      cout << "typeII" << "\n"
+	   << "Esum = " << Esum << "\n"
+	   << "ppIM = " << ppIM_true << "\n"
+	   << "Angle_pho_isr = " << Angle_pho_isr << "\n"
+	   << "E_radiv1 = " << E_radiv1 << ", E_radiv2 = " << E_radiv2 << "\n";
+
+      for (int i = 0; i < ntmc; i ++) {
+	cout << "ntmc=" << i << ", pidmc=" << pidmc[i] << ", pxmc=" << pxmc[i] << ", pymc=" << pymc[i] << ", pzmc=" << pzmc[i] << "\n";
+      }
+
+      cout << "RECON\n";
+      //Getphoton4vector(double E, double x, double y, double z)
+      for (int i = 0; i < nclu; i ++) {
+	TVect_clust_test1 = Getphoton4vector(enecl[i], xcl[i] - bx, ycl[i] - by, zcl[i] - bz); //SetPxPyPzE(xcl[i]-bx, ycl[i]-by, zcl[i]-bz, enecl[i]);
+	//cout << xcl[i] - bx << ", " << ycl[i] - by << ", " <<  zcl[i] - bz << ", " << TVect_clust_test.M() << endl;
+	cout << "nclu=" << i << ", px=" << TVect_clust_test1.X() << ", py=" << TVect_clust_test1.Y() << ", pz=" << TVect_clust_test1.Z() << ", E=" << TVect_clust_test1.E() << "\n";
+      }
+      
+    }
+    cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n";
+    */
+    
+    /// fill trees
+    if (lagvalue_min_7C > 100.) continue; // cut 6
+    //if (IM_3pi > 820. || IM_3pi < 750.) continue;
+    //if (IM3pi_7C > 730. || IM3pi_7C < 440.) continue;
+    evnt_final ++;
+    //hsmearmatr_trk -> Fill(ppIM_true, ppIM);
+    //hsmearmatr_clust -> Fill(IM_pi0, IM_pi0_7C);
+    //hsmearmatr -> Fill(IM_3pi, MASSLIST[1]);
+    
+    //cout << "!!!!!!!!!!!!!1" << IM_3pi << ", " << IM3pi_7C << endl;
+    //cout << "nclu = " << nclu << ", nclumc = " << nclumc << "\n"
+    //	 << "mcflag = " << mcflag << "\n"
+    //	 << "nt = " << nt << ", ntmc = " << ntmc << ", ntfmc = " << ntfmc << "\n\n";
+
+    //IM3pi_7C = MASSLIST[3];
+
+    //cout << "SELECTED PHOTONS\n";
     double clu_Emin = 1e13;
     int clu_indx_Emin = 0;
     int bkg_counter = 1;
@@ -1241,12 +1144,32 @@ void MyClass::Main()
       }
     }
     
+    //for (int i = 0; i < nclumc; i ++) {
+    //if (Pnum1[i] - 1 == -1) bkg_indx ++; 
+    //}
+
+    //int clust_mult = 1; // cluster multiplicity
     if (pho_indx[0] == pho_indx[1] || pho_indx[0] == pho_indx[2] || pho_indx[1] == pho_indx[2]) {
       bkg_counter = bkg_counter + 1;
+      //clust_mult ++;
     }
 
+    //bkg_indx = clust_mult;
     bkg_indx = bkg_counter;
 
+    //if (bkg_indx == 0) {
+      //hIM3pi_bkg_indx0 -> Fill(IM3pi_true);
+    //}
+    //else {
+      //hIM3pi_bkg_indx_rest -> Fill(IM3pi_true);
+    //}
+
+    //if (bkg_indx == 0) continue;
+    
+    //if (phid == 5) {
+    //cout << "\nMC TRUE " << jentry << "\n";
+    //cout << IM3pi_7C << endl;
+    //if (IM3pi_7C > 750.) {
     double E_ntmc;
     TString pid_type = "";
     for (int i = 0; i < ntmc; i ++) {
@@ -1285,6 +1208,8 @@ void MyClass::Main()
     //cout << "\nTRUE\n";
     int Pnum_sum = 0;
     for (int i = 0; i < nclumc; i ++) {
+      //if (i < 3 && Pnum1[i] - 1 == -1) {
+      //if (i == 0 && Pnum1[i] - 1 == -1) {
       if (Pnum1[i] - 1 == -1) {
 	Pnum_sum ++;
 	//cout << Pnum1[i] - 1 << endl;
@@ -1300,129 +1225,92 @@ void MyClass::Main()
       //Pnum2="<< Pnum2[i] - 1 << ", Pid2=" << Pid2[i] << ", Pnum3=" << Pnum3[i] - 1 << ", Pid3=" << Pid3[i] << "\n";
     }
 
+    //cout << "\nRECON\n";
+    TLorentzVector TVect_clust_test; //Getphoton4vector(double E, double x, double y, double z)
+    for (int i = 0; i < nclu; i ++) {
+      TVect_clust_test = Getphoton4vector(enecl[i], xcl[i] - bx, ycl[i] - by, zcl[i] - bz); //SetPxPyPzE(xcl[i]-bx, ycl[i]-by, zcl[i]-bz, enecl[i]);
+      //cout << xcl[i] - bx << ", " << ycl[i] - by << ", " <<  zcl[i] - bz << ", " << TVect_clust_test.M() << endl;
+      
+      //cout << "nclu=" << i << ", px=" << TVect_clust_test.X() << ", py=" << TVect_clust_test.Y() << ", pz=" << TVect_clust_test.Z() << ", E=" << TVect_clust_test.E() << "\n";
+
+    }
+    
+    
+    //cout << "Pnum_sum = " << Pnum_sum << endl;
+    
+    //if (bkg_counter > 0) {
+    //hist1d -> Fill(IM3pi_7C);
+    //ALLCHAIN_TEST.Fill();
+    
+    //cout << "E input: (" << etakinfit_min_7C(0) << ", " << etakinfit_min_7C(5) << ", " << etakinfit_min_7C(10) << ")\n";
+    //etakinfit_min_7C.Print();
+    //inputvect_7C.Print();
+    //cout << "indx ordered: (" << isrgam_indx << ", " << pi0gam1_indx << ", " << pi0gam2_indx << ")\n";
+    //cout << "E input ordered: (" << inputvect_ordered(0) << ", " << inputvect_ordered(5) << ", " << inputvect_ordered(10) << ")\n";
+    //inputvect_ordered.Print();
+
+    //
     //cout << "\nCheck pi0 photons" << endl;
-
-    //=========================================================================================================
-    // Match photon indices
-    //=========================================================================================================
-    // Selected photon indices (isr, pi0_pho1, pi0_pho2) using pesudo chi-square test
-    cout << "\n\tSelected photon indices (isr, pi0_pho1, pi0_pho2) = (" << isrgam_indx << ", " << pi0gam1_indx << ", " << pi0gam2_indx << ")\n"
-	 << "ISR pho 4-mom: (" << TLVector_isrpho_kinfit7C.E() << ", " << TLVector_isrpho_kinfit7C.X() << ", " << TLVector_isrpho_kinfit7C.Y() << ", " << TLVector_isrpho_kinfit7C.Z() << ")\n"
-	 << "pi0_pho1 4-mom: (" << TLVector_pi0pho1_kinfit7C.E() << ", " << TLVector_pi0pho1_kinfit7C.X() << ", " << TLVector_pi0pho1_kinfit7C.Y() << ", " << TLVector_pi0pho1_kinfit7C.Z() << ")\n"
-	 << "pi0_pho2 4-mom: (" << TLVector_pi0pho2_kinfit7C.E() << ", " << TLVector_pi0pho2_kinfit7C.X() << ", " << TLVector_pi0pho2_kinfit7C.Y() << ", " << TLVector_pi0pho2_kinfit7C.Z() << ")" << endl;
-
-    cout << "pho_indx[pi0gam1_indx] = " << pho_indx[pi0gam1_indx] << ", pho_indx[pi0gam2_indx = "<< pho_indx[pi0gam2_indx] << ", pho_indx[pi0gam2_indx] = "<< pho_indx[isrgam_indx] << "\n"
-	 << "EPI0NTMC[0] = " << EPI0NTMC[0] << ", EPI0NTMC[1] = " << EPI0NTMC[1] << endl;
-    
-    /*  
-    // Check with MC true information
-    int photon_index[3] = {-1, -1, -1}; // first two are pi0 photons, and the last is the unparied photon
-    int nb_pi0_pho = 0;
-
-    TLorentzVector TLVector_photon1, TLVector_photon2, TLVector_photon3;
-    
-    if (TMath::IsNaN(TLVector_isrpho_kinfit7C.E()) || TMath::IsNaN(TLVector_pi0pho1_kinfit7C.E()) || TMath::IsNaN(TLVector_pi0pho2_kinfit7C.E())){// invalid photon energies
-      //cout << "Invalid photon energies: E_isrpho = " << TLVector_isrpho_kinfit7C.E() << ", E_pi0pho1 = " << TLVector_pi0pho1_kinfit7C.E() << ", E_pi0pho2 = " << TLVector_pi0pho2_kinfit7C.E() << endl;
-    }
-    else{
-
-      for (int i = 0; i < 2; i ++) {// find the first match
-
-	if (pho_indx[pi0gam1_indx] == EPI0NTMC[i] && photon_index[0] == -1 && photon_index[1] == -1 && photon_index[2] == -1) {// check first position
-	  photon_index[0] = pi0gam1_indx;
-	  // photon 1 4-mom: true pi0 photon
-
-	  TLVector_photon1 = Getphoton4vector(inputvect_fitted_ordered(photon_index[0] * 5), inputvect_fitted_ordered(photon_index[0] * 5 + 1), inputvect_fitted_ordered(photon_index[0] * 5 + 2), inputvect_fitted_ordered(photon_index[0] * 5 + 3));
-      
-	  nb_pi0_pho += 1;
-
-	  cout << "first pi0 photon found at index pho_indx[" << pi0gam1_indx << "] = " << pho_indx[pi0gam1_indx] << ", EPI0NTMC[" << i << "] = " << EPI0NTMC[i] << ", # pi0 photons = " << nb_pi0_pho << ", photon1 4-mom: (" << TLVector_photon1.E() << ", " << TLVector_photon1.X() << ", " << TLVector_photon1.Y() << ", " << TLVector_photon1.Z() << ")\n";
-
-	}
-	else if (pho_indx[pi0gam2_indx] == EPI0NTMC[i] && photon_index[0] == pi0gam1_indx && photon_index[1] == -1 && photon_index[2] == -1) {
-	  photon_index[1] = pi0gam2_indx;
-
-	  TLVector_photon2 = Getphoton4vector(inputvect_fitted_ordered(photon_index[1] * 5), inputvect_fitted_ordered(photon_index[1] * 5 + 1), inputvect_fitted_ordered(photon_index[1] * 5 + 2), inputvect_fitted_ordered(photon_index[1] * 5 + 3));
-
-      	  nb_pi0_pho += 1;
-
-	  cout << "second pi0 photon found at index pho_indx[" << pi0gam2_indx << "] = " << pho_indx[pi0gam2_indx] << ", EPI0NTMC[" << i << "] = " << EPI0NTMC[i] << ", # pi0 photons = " << nb_pi0_pho << ", photon2 4-mom: (" << TLVector_photon2.E() << ", " << TLVector_photon2.X() << ", " << TLVector_photon2.Y() << ", " << TLVector_photon2.Z() << ")\n";
-
-	}
-	else {
-	  //cout << "here! " << endl;
-	}
-	
-
-      }
-
-      
-      if (photon_index[0] == pi0gam1_indx && photon_index[1] == pi0gam2_indx && photon_index[2] == -1){ // unpaired
-
-	  photon_index[2] = isrgam_indx;
-
-	  TLVector_photon3 = Getphoton4vector(inputvect_fitted_ordered(photon_index[2] * 5), inputvect_fitted_ordered(photon_index[2] * 5 + 1), inputvect_fitted_ordered(photon_index[2] * 5 + 2), inputvect_fitted_ordered(photon_index[2] * 5 + 3));
-
-      	  cout << "upaire photon index at pho_indx[" << isrgam_indx << "]" << endl; 
-      }
-
-      
-      //cout << "Valid photon energies: E_isrpho = " << TLVector_isrpho_kinfit7C.E() << ", E_pi0pho1 = " << TLVector_pi0pho1_kinfit7C.E() << ", E_pi0pho2 = " << TLVector_pi0pho2_kinfit7C.E() << "\n"
-      //     << "pi0_pho1 index: " << photon_index[0] << ", pi0_pho2 index: " << photon_index[1] << ", isrpho index: " << photon_index[0] << endl; 
-      
-    }
-
-    // save 3 photons with identified true pi0 photon and isr photon candidate
-    
-    if (nb_pi0_pho == 2) {
-
-      evt_indx = jentry;
-
-      pho_E1 = TLVector_photon1.E();
-      pho_px1 = TLVector_photon1.X();
-      pho_py1 = TLVector_photon1.Y();
-      pho_pz1 = TLVector_photon1.Z();
-      
-      // photon 2 4-mom: true pi0 photon
-      pho_E2 = TLVector_photon2.E();
-      pho_px2 = TLVector_photon2.X();
-      pho_py2 = TLVector_photon2.Y();
-      pho_pz2 = TLVector_photon2.Z();
-
-      hist1d -> Fill((TLVector_photon1 + TLVector_photon2).M());
-    
-      // photon 3 4-mom: unpaired photon
-      pho_E3 = TLVector_photon3.E();
-      pho_px3 = TLVector_photon3.X();
-      pho_py3 = TLVector_photon3.Y();
-      pho_pz3 = TLVector_photon3.Z();
-      
-      cout << "All photons are identifed at evt_indx = " << evt_indx << "\n"
-	   << "\t MC photon index (isr, pi0_pho1, pi0_pho2) = (" << photon_index[2] << ", " << photon_index[1] << ", " << photon_index[0] << ")\n"
-	   << "photon1 4-mom: (" << pho_E1 << ", " << pho_px1 << ", " << pho_py1 << ", " << pho_pz1 << ")\n"
-	   << "photon2 4-mom: (" << pho_E2 << ", " << pho_px2 << ", " << pho_py2 << ", " << pho_pz2 << ")\n"
-	   << "photon3 4-mom: (" << pho_E3 << ", " << pho_px3 << ", " << pho_py3 << ", " << pho_pz3 << ")\n"
-	   << "phid = " << phid << ", sig_type = " << sig_type << "\n"
-	   << "pi0 mass compared: " << (TLVector_photon1 + TLVector_photon2).M() << ", " << (TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C).M() << endl;
-
-      FINALSTATES.Fill();
-      
-    }
-    */
-      
-    //=========================================================================================================
     int recon_indx_tmp = 0;
 
+    /*
+    cout << "pi0gam1_indx = " << pi0gam1_indx << ", pi0gam2_indx = " << pi0gam2_indx << "\n"
+	 << "E_true_list[pi0gam1_indx] = " << E_true_list[pi0gam1_indx] << ", (px, py, pz) = (" << pxmc[pho_indx[pi0gam1_indx]] << ", " << pymc[pho_indx[pi0gam1_indx]] << ", " << pzmc[pho_indx[pi0gam1_indx]] << "), pho_indx = " << pho_indx[pi0gam1_indx] << "\n"
+	 << "E_true_list[pi0gam2_indx] = " << E_true_list[pi0gam2_indx] << ", (px, py, pz) = (" << pxmc[pho_indx[pi0gam2_indx]] << ", " << pymc[pho_indx[pi0gam2_indx]] << ", " << pzmc[pho_indx[pi0gam2_indx]] << "), pho_indx = " << pho_indx[pi0gam2_indx] << "\n";
+    */
     
+    //cout << "TLVector_pimins_true: " << endl; piminusMC_TLvect.Print();
+    //cout << "TLVector_piplus_true: " << endl; piplusMC_TLvect.Print();
+
     PI0PHORESD[0] = TLVector_pi0pho1_true.E() - TLVector_pi0pho1.E();
     PI0PHORESD[1] = TLVector_pi0pho2_true.E() - TLVector_pi0pho2.E();
     PI0PHORESD[2] = TLVector_pi0pho1_true.E() - TLVector_pi0pho1_kinfit7C.E();
     PI0PHORESD[3] = TLVector_pi0pho2_true.E() - TLVector_pi0pho2_kinfit7C.E();
+
+    /*
+    cout<< "\n2 prompt photons seleted as pi0 photons:\n"
+	<< "pi0pho1_true: (px, py, pz, E) = (" << TLVector_pi0pho1_true.X() << ", " << TLVector_pi0pho1_true.Y() << ", " << TLVector_pi0pho1_true.Z() << ", " << TLVector_pi0pho1_true.E() << ")" << "\n"
+	 << "\trecon: (px, py, pz, E) = (" << TLVector_pi0pho1.X() << ", " << TLVector_pi0pho1.Y() << ", " << TLVector_pi0pho1.Z() << ", " << TLVector_pi0pho1.E() << ")" << "\n";
+    cout << "pi0pho2_true: (px, py, pz, E) = (" << TLVector_pi0pho2_true.X() << ", " << TLVector_pi0pho2_true.Y() << ", " << TLVector_pi0pho2_true.Z() << ", " << TLVector_pi0pho2_true.E() << ")" << endl; //TLVector_pi0pho2_true.Print();
+    */
+    
+    //cout << "TLVector_3pi_true: (px, py, pz, E) = (" << TLVector_3pi_true.X() << ", " << TLVector_3pi_true.Y() << ", " << TLVector_3pi_true.Z() << ", " << TLVector_3pi_true.E() << ")" << endl; TLVector_3pi_true.Print();
+
+    //cout << "\npiminusMC_TLvect: " << endl; piminusMC_TLvect.Print();
+    //cout << "piplusMC_TLvect: " << endl; piplusMC_TLvect.Print();
+    //cout << "\nMC pi0pho1_true: (px, py, pz, E) = (" << pi0gam1_TLvect.X() << ", " << pi0gam1_TLvect.Y() << ", " << pi0gam1_TLvect.Z() << ", " << pi0gam1_TLvect.E() << ")" << endl; //pi0gam1_TLvect.Print();
+    //cout << "MC pi0pho2_true: (px, py, pz, E) = (" << pi0gam2_TLvect.X() << ", " << pi0gam2_TLvect.Y() << ", " << pi0gam2_TLvect.Z() << ", " << pi0gam2_TLvect.E() << ")" << endl; //pi0gam2_TLvect.Print();
+
+    //cout << "3pi_true.M = " << TLVector_3pi_true.M() << ", IM_3pi (checked) = " << IM_3pi << "(" << (pi0gam1_TLvect + pi0gam2_TLvect + piminusMC_TLvect + piplusMC_TLvect).M() << ") \n\n";
+    
+    //cout << "\nthreepi_TLvect: " << endl; threepi_TLvect.Print();
+
+    //cout << "NTMC_SEL pi0_pho1 = " << pho_indx[pi0gam1_indx] << ", pi0_pho2 = " << pho_indx[pi0gam2_indx] << "\n";
+
+    /*
+    for (int i = 0; i < 2; i ++) {
+      
+      for (int j = 0; j < 2; j ++) {
+
+	if (j >= i) {
+
+	  cout << "(i, j) = (" << i << ", " << j << ")\n";
+	      
+	}
+	
+      }
+      
+    }
+    */
+
+    /*
+    cout << "pi0gam indx: " << pi0gam1_indx << ", " << pi0gam2_indx << "\n"
+	 << "EPI0NTMC, pho_indx 1: " << EPI0NTMC[0] << ", " << pho_indx[pi0gam1_indx] << "\n"
+	 << "EPI0NTMC, pho_indx 2: " << EPI0NTMC[1] << ", " << pho_indx[pi0gam2_indx] << endl;
+    */
    
     Bool_t checked[2] = {kFALSE, kFALSE};
 
-    TLorentzVector TLVector_isrgam, TLVector_pi0gam1, TLVector_pi0gam2;
-    
     for (int i = 0; i < 2; i ++) {// find the first match
 
       //cout << "EPI0GAM[" << i << "] = " << EPI0GAM[i] << ", EPI0NTMC[" << i << "] = "<< EPI0NTMC[i] << endl;
@@ -1431,11 +1319,6 @@ void MyClass::Main()
       if (pho_indx[pi0gam1_indx] == EPI0NTMC[i]) {
 	recon_indx_tmp ++;
 	checked[i] = kTRUE;
-
-	TLVector_pi0gam1 = Getphoton4vector(inputvect_fitted_ordered(pi0gam1_indx * 5), inputvect_fitted_ordered(pi0gam1_indx * 5 + 1), inputvect_fitted_ordered(pi0gam1_indx * 5 + 2), inputvect_fitted_ordered(pi0gam1_indx * 5 + 3));
-	
-	cout << "Found the first pi0 photon at indx: " << pi0gam1_indx << ", 4-mom indices: " << pi0gam1_indx * 5 << ", " << pi0gam1_indx * 5 + 1 << ", " << pi0gam1_indx * 5 + 2 << ", " << pi0gam1_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam1.E() << ", " << TLVector_pi0gam1.X() << ", " << TLVector_pi0gam1.Y() << ", " << TLVector_pi0gam1.Z() << ")" << endl;
-
 	//cout << E_true_list[pi0gam1_indx] << ", pi0gam1_indx = " << pi0gam1_indx << ", recon1_indx = " << recon_indx_tmp << ", first mathched at EPI0NTMC=" << EPI0NTMC[i] << ", pho_indx[pi0gam1_indx]=" << pho_indx[pi0gam1_indx] << "\n";
       }
      
@@ -1457,50 +1340,13 @@ void MyClass::Main()
       if (pho_indx[pi0gam2_indx] == EPI0NTMC[i] && checked[i]==kFALSE) {
 	recon_indx_tmp ++;
 	checked[i] = kTRUE;
-
-	TLVector_pi0gam2 = Getphoton4vector(inputvect_fitted_ordered(pi0gam2_indx * 5), inputvect_fitted_ordered(pi0gam2_indx * 5 + 1), inputvect_fitted_ordered(pi0gam2_indx * 5 + 2), inputvect_fitted_ordered(pi0gam2_indx * 5 + 3));
-	
-	cout << "Found the second pi0 photon at indx: " << pi0gam2_indx << ", 4-mom indices: " << pi0gam2_indx * 5 << ", " << pi0gam2_indx * 5 + 1 << ", " << pi0gam2_indx * 5 + 2 << ", " << pi0gam2_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_pi0gam2.E() << ", " << TLVector_pi0gam2.X() << ", " << TLVector_pi0gam2.Y() << ", " << TLVector_pi0gam2.Z() << ")" << endl;
-
 	//cout << E_true_list[pi0gam2_indx] << ", pi0gam2_indx = " << pi0gam2_indx << ", recon2_indx = " << recon_indx_tmp << ", first mathched at EPI0NTMC=" << EPI0NTMC[i] << ", pho_indx[pi0gam2_indx]=" << pho_indx[pi0gam2_indx] << "\n";
       }
       
     }
-
+    
     recon_indx = recon_indx_tmp;
     //cout << "Matched recon pi0 photons = " << recon_indx << endl;
-
-    /*
-    if (recon_indx == 2 && bkg_indx == 1) {
-
-      //TLVector_isrgam = Getphoton4vector(inputvect_fitted_ordered(isrgam_indx * 5), inputvect_fitted_ordered(isrgam_indx * 5 + 1), inputvect_fitted_ordered(isrgam_indx * 5 + 2), inputvect_fitted_ordered(isrgam_indx * 5 + 3));
-      //cout << "Found the unpaired photon at indx: " << isrgam_indx << ", 4-mom indices: " << isrgam_indx * 5 << ", " << isrgam_indx * 5 + 1 << ", " << isrgam_indx * 5 + 2 << ", " << isrgam_indx * 5 + 3 << ", (E, px, py, pz) = (" << TLVector_isrgam.E() << ", " << TLVector_isrgam.X() << ", " << TLVector_isrgam.Y() << ", " << TLVector_isrgam.Z() << ")" << endl;
-
-      // photon 1 4-mom: true pi0 photon
-      pho_E1 = TLVector_pi0pho1_kinfit7C.E();
-      pho_px1 = TLVector_pi0pho1_kinfit7C.X();
-      pho_py1 = TLVector_pi0pho1_kinfit7C.Y();
-      pho_pz1 = TLVector_pi0pho1_kinfit7C.Z();
-      
-      // photon 2 4-mom: true pi0 photon
-      pho_E2 = TLVector_pi0pho2_kinfit7C.E();
-      pho_px2 = TLVector_pi0pho2_kinfit7C.X();
-      pho_py2 = TLVector_pi0pho2_kinfit7C.Y();
-      pho_pz2 = TLVector_pi0pho2_kinfit7C.Z();
-      
-      // photon 3 4-mom: unpaired photon
-      //pho_E3 = TLVector_photon3.E();
-      //pho_px3 = TLVector_photon3.X();
-      //pho_py3 = TLVector_photon3.Y();
-      //pho_pz3 = TLVector_photon3.Z();
-
-      FINALSTATES.Fill();
-
-      hmpi0_iden -> Fill((TLVector_pi0pho1_kinfit7C + TLVector_pi0pho2_kinfit7C).M());
-      
-    
-    }
-    */
 
     // photon 1 4-mom: true pi0 photon
     pho_E1 = TLVector_pi0pho1_kinfit7C.E();
@@ -1547,9 +1393,6 @@ void MyClass::Main()
     pmi_py = TLVector_pmi.Y();
     pmi_pz = TLVector_pmi.Z();
 
-    //FINALSTATES.Fill();
-    
-    
     if (recon_indx == 0) {
       evnt_recon_type0 ++;
     }
@@ -1561,48 +1404,122 @@ void MyClass::Main()
           
     }
 
+    if (recon_indx == 2 && bkg_indx == 1) {
+      //cout << recon_indx << ", " << bkg_indx << endl;
+      hmpi0_iden -> Fill((TLVector_pi0pho2 + TLVector_pi0pho1).M()); 
+    }
+    //if (recon_indx == 1 || recon_indx == 0) continue; 
+
+    
+    //if (recon_indx == 2) {
+      //hsmearmatr_typeI -> Fill(IM3pi_true, IM3pi_7C);
+      //hrecon_typeI -> Fill(IM3pi_true);
+      //hIM3pi -> Fill(IM_3pi);
+    //}
+    //else {
+      //hsmearmatr_typeII -> Fill(IM3pi_true, IM3pi_7C);
+    //}
 
     //hsmearmatr_clust -> Fill(IM3pi_true, IM3pi_7C);
     herror_type -> Fill(recon_indx, bkg_indx);
+
+    
+    //if (clu_indx_Emin == -1){
+
+    /*
+    cout << "\nSummary\n"
+	 << "jentry = " << jentry << "\n"
+	 << "indx pid: (" << pid_indx[0] << ", " << pid_indx[1] << ", " << pid_indx[2] << "), ntmc: (" << pho_indx[0] << ", " << pho_indx[1] << ", " << pho_indx[2] << "), cluster: (" << clu_indx[0] << ", " << clu_indx[1] << ", " << clu_indx[2] << ") \n"
+	 << "energy true: (" << E_true_list[0] << ", " << E_true_list[1] << ", " << E_true_list[2] << "), rec: (" << E_list[0] << ", " << E_list[1] << ", " << E_list[2] << ") \n"
+      //<< "energy min: E_min = " << clu_Emin << ", ntmc_indx = " << clu_indx_Emin << "\n"
+      //<< "bkg_indx = " << bkg_indx << "\n"
+      // << "pi0gam1 E = " << E_pi0gam1 << ", pi0gam2 E = " << E_pi0gam2 << "\n"
+      //<< EPI0GAM[0] << ", " << EPI0GAM[1] << "\n"
+      
+	 << "selected pi0gam indx = (" << pi0gam1_indx << ", " << pi0gam2_indx << "), energy = (" << E_true_list[pi0gam1_indx] << ", " << E_true_list[pi0gam2_indx] << ") \n"
+	 << "bkg_indx = " << bkg_indx << "\n\n";
+    */
+      //<< "IM3pi_7C = " << IM3pi_7C << "\n\n";
+    //}
+
+    
+    //if (recon_indx == 2) {
+    //cout << jentry << endl;
+    //break;
+    //}
+    
+    
+    //inputvect_ordered.Print();
+    //}
+    
+    //}
+    //}
+    //cout << "<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<\n" << endl;
+    
+    
+    /*
+      if (phid == 5) {
+      //cout << IM3pi_7C << ", Pnum_sum = " << Pnum_sum << endl;
+      if (IM3pi_7C > 750.) {
+      cout << "combinatorial" << ", " << Pnum_sum << endl;
+      for (int i = 0; i < nclumc; i ++) {
+      cout << "nclumc="<< i << ", Npar=" << Npar[i] << ", Pnum1=" << Pnum1[i] - 1 << ", Pid1=" << Pid1[i] << ", pxmc=" << pxmc[Pnum1[i]-1] << ", pymc=" << pymc[Pnum1[i]-1] << ", pzmc=" << pzmc[Pnum1[i]-1] << ", p2_sqrt= " << TMath::Sqrt(pxmc[Pnum1[i]-1]*pxmc[Pnum1[i]-1]+pymc[Pnum2[i]-1]*pymc[Pnum2[i]-1]+pzmc[Pnum1[i]-1]*pzmc[Pnum1[i]-1]) << ", Pnum2="<< Pnum2[i] - 1 << ", Pid2=" << Pid2[i] << ", Pnum3=" << Pnum3[i] - 1 << ", Pid3=" << Pid3[i] << "\n";
+      }
+      }
+      else {
+      //cout << "eta peak" << ", " << Pnum_sum << endl;
+      for (int i = 0; i < nclumc; i ++) {
+      cout << "nclumc="<< i << ", Npar=" << Npar[i] << ", Pnum1=" << Pnum1[i] - 1 << ", Pid1=" << Pid1[i] << ", pxmc=" << pxmc[Pnum1[i]-1] << ", pymc=" << pymc[Pnum1[i]-1] << ", pzmc=" << pzmc[Pnum1[i]-1] << ", p2_sqrt= " << TMath::Sqrt(pxmc[Pnum1[i]-1]*pxmc[Pnum1[i]-1]+pymc[Pnum2[i]-1]*pymc[Pnum2[i]-1]+pzmc[Pnum1[i]-1]*pzmc[Pnum1[i]-1]) << ", Pnum2="<< Pnum2[i] - 1 << ", Pid2=" << Pid2[i] << ", Pnum3=" << Pnum3[i] - 1 << ", Pid3=" << Pid3[i] << "\n";
+      }
+      }
+      cout << "\n" << endl;
+      
+      if (Pnum_sum > 0){
+      //cout << Pnum_sum << endl;
+      hist1d -> Fill(IM3pi_7C);
+      }
+      //IM3pi_7C = MASSLIST[3];
+      
+      }
+    */
     
     ALLCHAIN_CUT.Fill();
-
   }
   
   // save trees
   //TrSample.Write();
   //ALLCHAIN_TEST.Write();
-  //ALLCHAIN_GEN.Write();
-  //ALLCHAIN_STR2.Write();
-  //ALLCHAIN_CUT.Write();
-  //FINALSTATES.Write();
-  
+  ALLCHAIN_GEN.Write();
+  ALLCHAIN_STR2.Write();
+  ALLCHAIN_CUT.Write();
+
   // summary
-  //ofstream myfile;
-  //TString myfile_nm = "summary.txt";
-  //myfile.open(myfile_nm);
-  
   cout << "SUMMARY" << "\n"
        << "evnt_sum = " << evnt_sum << ": evnt_sig = " << evnt_sig << ", evnt_bkg = " << evnt_bkg << "\n"
-       << "cut1: triger = " << evnt_trig << ", trigger_indx = " << trigger_indx << "\n"
-       << "cut2: filfo = " << evnt_filfo << ", filfo_indx = " << filfo_indx << ", streamed = " << evnt_cls << ", unstr = "<< evnt_unstr << "\n"
-       << "cut3: str2 = " << evnt_str << ", evtcls_indx = " << evtcls_indx << "\n"
-       << "cut4: vertex = " << evnt_vert << ", fiduial_indx = " << fiduial_indx << "\n"
-       << "cut5: 2 trk = " << evnt_trk << "\n"
-       << "cut6: 3 prompt photon = " << evnt_photon << "\n"
-       << "cut7: chi2<100 = " << evnt_final << "\n"
-       << "\t0 correct pi0 photons = " << evnt_recon_type0 << "\n"
-       << "\t1 correct pi0 photons = " << evnt_recon_type1 << "\n"
-       << "\t2 correct pi0 photons = " << evnt_recon_type2 << "\n\n"
-    
-       << "PARMETERS" << "\n"
+       << "evnt_sum = " << evnt_sum << ": evnt_pre_filtred = " << evnt_pre_filtred << ", passed = " << evnt_sum - evnt_pre_filtred << "\n"
+       << "etagam evnts: evnt_phi5 = " << evnt_phi5 << "\n"
+ 
+       << "Pre-selected = " << evnt_pre << ", streamed = " << evnt_cls << ", unstr = "<< evnt_unstr << "\n"
+       << "evnt_trig = " << evnt_trig << ", trigger_indx = " << trigger_indx << "\n"
+       << "evnt_filfo = " << evnt_filfo << ", filfo_indx = " << filfo_indx << "\n"
+       << "evnt str2 = " << evnt_str << ", evtcls_indx = " << evtcls_indx << "\n"
+       << "" << ", fiduial_indx = " << fiduial_indx << "\n"
+       << "evnt_trk = " << evnt_trk << "\n"
+       << "evnt_class = " << evnt_class << "\n"
+       << "evnt_final = " << evnt_final << "\n";
+
+  cout << "test_indx = " << test_indx << endl;
+
+  cout << "find 0 correct pi0 photons = " << evnt_recon_type0 << "\n"
+       << "find 1 correct pi0 photons = " << evnt_recon_type1 << "\n"
+       << "find 2 correct pi0 photons = " << evnt_recon_type2 << "\n";
+
+  cout << "PARMETERS" << "\n"
        << "egammamin = " << egammamin << "\n"
        << "Zvmax = " << Zvmax << "\n"
        << "Rhovmax = " << Rhovmax << "\n"
        << "nb_sigma_T_clust = " << nb_sigma_T_clust << "\n";
-  
-  //myfile.close();
-  
+       
     
   //printf("speed of light c");
 }
@@ -1704,6 +1621,33 @@ Bool_t MyClass::IfFilfoed_28() {
 }
 
 
+TVectorD MyClass::Getpiontrnb() {
+  TVectorD indexvector(3);
+  int svar_pos = 0, svar_neg = 0, index1 = 0, index2 = 0;
+  Float_t distance1 = 1000000.0, distance2 = 100000.0;
+  Float_t dist = 0.0;
+
+  for (int k = 0; k < nt; k++) {// begin loop
+    dist = sqrt((bx-xpca[k])*(bx-xpca[k]) + (by-ypca[k])*(by-ypca[k]) +(bz-zpca[k])*(bz-zpca[k]));
+    if (curpca[k] < 0 && dist < distance1) {
+      distance1 = dist;
+      index1 = k;
+      svar_neg=1;
+    }
+    else if (curpca[k] > 0 && dist < distance2) {
+      distance2 = dist;
+      index2 = k;
+      svar_pos=1;
+    }
+  }// end loop
+
+  indexvector(0) = svar_neg+svar_pos;
+  indexvector(1) = index1;
+  indexvector(2) = index2; //indexvector.Print();
+
+  return indexvector;
+}
+
 bool MyClass::IfBroken(int idx1, int idx2) {
   if (TMath::Abs(cot[idx1] + cot[idx2]) < 0.1 && TMath::Abs((cur[idx1] + cur[idx2]) / cur[idx1]) < 0.2) {
     //cout << TMath::Abs(cot[idx1] + cot[idx2]) << endl;
@@ -1712,7 +1656,7 @@ bool MyClass::IfBroken(int idx1, int idx2) {
   else return kFALSE;
 }
 
-TVectorD MyClass::FillInputvector_7C(int size, int index1, int index2, int index3) {
+TVectorD MyClass::FillInputvector_7C(int size, int index1, int index2, int index3, int indtr1, int indtr2) {
   TVectorD vector(size);
   double inputarray[15] = {0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.};
   double r1sq=0., r2sq=0., r3sq=0., pp1sq=0., pp2sq=0.;
@@ -1737,7 +1681,7 @@ TVectorD MyClass::FillInputvector_7C(int size, int index1, int index2, int index
   return vector.Use(size,inputarray);
 }
 
-TVectorD MyClass::FillSigma2vector_7C(int size, int index1, int index2, int index3) {
+TVectorD MyClass::FillSigma2vector_7C(int size, int index1, int index2, int index3, int indtr1, int indtr2) {
   TVectorD vector(size);
   double sigma2array[15]={0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.,0.};
 
@@ -1745,6 +1689,9 @@ TVectorD MyClass::FillSigma2vector_7C(int size, int index1, int index2, int inde
   sigma2array[0]=Sigma2_E_list[index1], sigma2array[1]=Sigma2_X_list[index1], sigma2array[2]=Sigma2_Y_list[index1], sigma2array[3]=Sigma2_Z_list[index1], sigma2array[4]=Sigma2_T_list[index1];
   sigma2array[5]=Sigma2_E_list[index2], sigma2array[6]=Sigma2_X_list[index2], sigma2array[7]=Sigma2_Y_list[index2], sigma2array[8]=Sigma2_Z_list[index2], sigma2array[9]=Sigma2_T_list[index2];
   sigma2array[10]=Sigma2_E_list[index3], sigma2array[11]=Sigma2_X_list[index3], sigma2array[12]=Sigma2_Y_list[index3], sigma2array[13]=Sigma2_Z_list[index3], sigma2array[14]=Sigma2_T_list[index3];
+
+  //sigma2array[15]=sigcurv[indtr1], sigma2array[16]=sigcot[indtr1], sigma2array[17]=sigphi[indtr1];
+  //sigma2array[18]=sigcurv[indtr2], sigma2array[19]=sigcot[indtr2], sigma2array[20]=sigphi[indtr2];
 
   return vector.Use(size,sigma2array);
 }
@@ -2098,12 +2045,13 @@ TVectorD MyClass::Fillpermutvector(int size, TVectorD input, int index1, int ind
 
 TLorentzVector MyClass::Getphoton4vector(double E, double x, double y, double z) {
   //given a cluster index returns the 4-mom of a photon
-  TVector3 gamma(x, y, z);
-  double mag = gamma.Mag();
-  if (mag < 1e-10) return TLorentzVector(0, 0, 0, 0);
-  Double_t scale1 = E / mag;
-  TLorentzVector gamma4mom(scale1 * gamma, E);
+  TVector3 gamma(x-bx,y-by,z-bz);
+  Double_t scale1;
+  scale1=E/gamma.Mag();
+  TLorentzVector gamma4mom(scale1*gamma, E);
+  //cout << gamma4mom.M() << endl;
   return gamma4mom;
+
 }
 
 double MyClass::DeltaE(TLorentzVector bestppl, TLorentzVector bestpmi) {
@@ -2174,4 +2122,3 @@ double MyClass::Trkmass(TLorentzVector bestppl, TLorentzVector bestpmi) {
 
   return mtrk;
 }
-

@@ -383,7 +383,7 @@ public :
    
    double E_list[100], E_true_list[100], X_list[100], Y_list[100], Z_list[100], T_list[100];
    double Sigma2_E_list[100], Sigma2_X_list[100], Sigma2_Y_list[100], Sigma2_Z_list[100], Sigma2_T_list[100];
-   double etakinfit_min_7C[15];   
+   //double etakinfit_min_7C[15];   
    double Trkmass(TLorentzVector bestppl, TLorentzVector bestpmi);
    double DeltaE(TLorentzVector bestppl, TLorentzVector bestpmi);
 
@@ -469,9 +469,9 @@ MyClass::MyClass(TTree *tree) : fChain(0)
      
    }
 
-   for (int i = 0; i < 15; i ++) {
-     etakinfit_min_7C[i] = 0.;
-   }
+   //for (int i = 0; i < 15; i ++) {
+   //etakinfit_min_7C[i] = 0.;
+   //}
 
    hprompt_distr = new TH1D("prompt_distr", "number of prompt photon distribution", 10, 0, 10);
    hstr_distr = new TH1D("str_distr", "stream distribution", 10, 0, 10);

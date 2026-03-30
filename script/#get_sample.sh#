@@ -26,7 +26,7 @@ fi
 
 mkdir ${input_path} # result folder
 
-path_header=../header_bdt/path_sample.h
+path_header=../header/path_sample.h
 echo -e 'const TString data_type = "";' > $path_header
 echo -e 'const TString sampleFile = "";' >> $path_header
 echo -e 'const TString outputCut = "";' >> $path_header
@@ -52,8 +52,7 @@ for ((i=0;i<${#DATA_TYPE[@]};++i)); do
     tree_sample_script=tree_sample_script.C
     echo '#include <iostream>' > $tree_sample_script
     echo "void tree_sample_script() {" >> $tree_sample_script
-    echo 'gROOT->ProcessLine(".L ../run_bdt/tree_sample.C");' >> $tree_sample_script
-    #echo 'gROOT->ProcessLine(".L ../run_vertex_bkgrej/tree_sample.C");' >> $tree_sample_script
+    echo 'gROOT->ProcessLine(".L ../run_ve/tree_sample.C");' >> $tree_sample_script
     echo 'gROOT->ProcessLine("tree_sample()");' >> $tree_sample_script
     echo '}' >> $tree_sample_script
     root -l -n -q -b $tree_sample_script

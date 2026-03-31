@@ -38,7 +38,7 @@ class MyClass {
 public :
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
-
+  
    // Declaration of leaf types
    Int_t           run_nr;
    Int_t           ev_nr;

@@ -381,6 +381,8 @@ public :
    
    int pho_indx[100], clu_indx[100], pid_indx[100];
    int kvip[30];
+   double XV[30], YV[30], ZV[30];
+
   
    double E_list[100], E_true_list[100], X_list[100], Y_list[100], Z_list[100], T_list[100];
    double MASSLIST[100];
@@ -487,6 +489,9 @@ MyClass::MyClass(TTree *tree) : fChain(0)
 
    for (int i = 0; i < 30; i ++) {
      kvip[i] = -1;
+     XV[i] = -1;
+     YV[i] = -1;
+     ZV[i] = -1;
    }
    
    for (int i = 0; i < 15; i ++) {

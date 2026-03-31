@@ -4,7 +4,7 @@
 #include <fstream>
 #include <string>
 
-#include "../header/path.h"
+#include "../header_bdt/path.h"
 
 using namespace std;
 
@@ -55,7 +55,6 @@ int Analys_class(TString rootFile, TString sampleFile) {
   myfile->Write();
   myfile->Close();
 
-  delete myfile;
   delete analysis;
 
   return 0;

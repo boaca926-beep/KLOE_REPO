@@ -116,7 +116,7 @@ void MyClass::Main()
   ALLCHAIN_STR2.Branch("Br_sel_type", &bit_select, "Br_sel_type/I");
   ALLCHAIN_STR2.Branch("Br_IM_3pi", &IM_3pi, "Br_IM_3pi/D");
   
-  TTree TrSample ("TrSample", "recreate");
+  TTree TrSample ("TrSample", "TrSample");
   TrSample.SetAutoSave(0);
   TrSample.Branch("Br_IM_3pi", &IM_3pi, "Br_IM_3pi/D");
   TrSample.Branch("Br_E_pho_isr", &E_pho_isr, "Br_E_pho_isr/D");
@@ -135,7 +135,7 @@ void MyClass::Main()
   double pho_E3_true = 0., pho_px3_true = 0., pho_py3_true = 0., pho_pz3_true = 0.;
   
   //
-  TTree ALLCHAIN_CUT ("ALLCHAIN_CUT", "recreate");
+  TTree ALLCHAIN_CUT("ALLCHAIN_CUT", "ALLCHAIN_CUT");
   ALLCHAIN_CUT.SetAutoSave(0);
   ALLCHAIN_CUT.Branch("Br_sig_type", &sig_type, "Br_sig_type/I");
   ALLCHAIN_CUT.Branch("Br_sel_type", &bit_select, "Br_sel_type/I");
@@ -260,7 +260,7 @@ void MyClass::Main()
   */
   
   //
-  TTree ALLCHAIN_TEST ("ALLCHAIN_TEST", "recreate");
+  TTree ALLCHAIN_TEST("ALLCHAIN_TEST", "ALLCHAIN_TEST");
   ALLCHAIN_TEST.SetAutoSave(0);
   ALLCHAIN_TEST.Branch("Br_bkg_indx", &bkg_indx, "Br_bkg_indx/I");
   ALLCHAIN_TEST.Branch("Br_IM3pi_7C", &IM3pi_7C, "Br_IM3pi_7C/D");
@@ -268,9 +268,9 @@ void MyClass::Main()
   ALLCHAIN_TEST.Branch("Br_angle_ppl_3piboost", &angle_ppl_3piboost, "Br_angle_ppl_3piboost/D");
 
   // chain store identified photons: pho1 (pi0 photon 1), pho2 (pi0 photon 2), pho3 (upaired)
+
   //TTree FINALSTATES ("FINALSTATES", "FINALSTATES"");
   //FINALSTATES.SetDirectory(0);  // Detach from current directory
-  //FINALSTATES.SetAutoSave(0);
   
   ///
   if (fChain == 0) return;
@@ -289,7 +289,11 @@ void MyClass::Main()
     //cout << "jentry = " << jentry << endl;
 
     evnt_sum ++;
-    
+
+    //TLVector_pi0pho1_true = TLorentzVector(0,0,0,0);
+    //TLVector_pi0pho2_true = TLorentzVector(0,0,0,0);
+    //TLVector_isrpho3_true = TLorentzVector(0,0,0,0);
+ 
     Beam.SetPxPyPzE(bpx, bpy, bpz, bene);
     //TVector3 Boost3vector = -Beam.BoostVector();
     //cout << "beam (bpx, bpy, bpz, bene) = " << "(" << bpx << ", " << bpy << ", " << bpz << ", " << bene << ") \n";
@@ -519,7 +523,7 @@ void MyClass::Main()
       for (int NrEC=0; NrEC<necls; NrEC++) {     
 
 	//if (eclstream[NrEC] == 2) {
-	hstr_distr -> Fill(eclstream[NrEC]);
+	hstr_distr->Fill(eclstream[NrEC]);
 	//}
 	//cout<<eclstream[NrEC]<<endl;
 	//if (eclstream[NrEC]==4) {
@@ -544,13 +548,12 @@ void MyClass::Main()
     //cout << "Zvmax = " << Zvmax << ", Rhovmax = " << Rhovmax << endl;
 
     int nvip = 0; // number of vertices at IP (vip) within the fiducial volume 
-    int kvip[3]; // index of vip
-    double XV[3], YV[3], ZV[3];
+    //int kvip[3]; // index of vip
+    //double XV[3], YV[3], ZV[3];
 
     for (int kv = 0; kv < nv; kv++) {// loop on vertices
       
       if (TMath::Abs(zv[kv] - bz) < Zvmax && TMath::Sqrt((xv[kv] - bx) * (xv[kv] - bx) + (yv[kv] - by) * (yv[kv] - by)) < Rhovmax) { // fiducial volume
-
 	nvip ++;
 	kvip[nvip] = kv + 1; // shift needed?
 	
@@ -1045,15 +1048,17 @@ void MyClass::Main()
     if (kineid != -999) {
       pi0gam1_vect.SetXYZ(pxmc[pho_indx[pi0gam1_indx]], pymc[pho_indx[pi0gam1_indx]], pzmc[pho_indx[pi0gam1_indx]]);
       pi0gam2_vect.SetXYZ(pxmc[pho_indx[pi0gam2_indx]], pymc[pho_indx[pi0gam2_indx]], pzmc[pho_indx[pi0gam2_indx]]); //isrgam_indx
-      pi0gam3_vect.SetXYZ(pxmc[pho_indx[isrgam_indx]], pymc[pho_indx[isrgam_indx]], pzmc[pho_indx[isrgam_indx]]);
+      //pi0gam3_vect.SetXYZ(pxmc[pho_indx[isrgam_indx]], pymc[pho_indx[isrgam_indx]], pzmc[pho_indx[isrgam_indx]]);
+
     }
-    
+
     TLVector_pi0pho1_true = GetLorentzVector(pi0gam1_vect, 0.);
     TLVector_pi0pho2_true = GetLorentzVector(pi0gam2_vect, 0.);
-    TLVector_isrpho3_true = GetLorentzVector(pi0gam3_vect, 0.);
-      
+    //TLVector_isrpho3_true = GetLorentzVector(pi0gam3_vect, 0.);
+    
     TLVector_3pi_true = piminusMC_TLvect + piplusMC_TLvect + TLVector_pi0pho1_true + TLVector_pi0pho2_true;
     IM3pi_true = TLVector_3pi_true.M();
+    
     
     // energy
     ENERGYLIST[0] = TLVector_isrpho_kinfit7C.E();
@@ -1578,6 +1583,7 @@ void MyClass::Main()
   //outFile -> cd();
   //TrSample.Write();
   //ALLCHAIN_TEST.Write();
+
   ALLCHAIN_GEN.Write();
   ALLCHAIN_STR2.Write();
   ALLCHAIN_CUT.Write();
@@ -1588,9 +1594,9 @@ void MyClass::Main()
   //delete outFile;
   
   // summary
-  ofstream myfile;
-  TString myfile_nm = "summary.txt";
-  myfile.open(myfile_nm);
+  //ofstream myfile;
+  //TString myfile_nm = "summary.txt";
+  //myfile.open(myfile_nm);
   
   cout << "SUMMARY" << "\n"
        << "evnt_sum = " << evnt_sum << ": evnt_sig = " << evnt_sig << ", evnt_bkg = " << evnt_bkg << "\n"
@@ -2108,14 +2114,12 @@ TVectorD MyClass::Fillpermutvector(int size, TVectorD input, int index1, int ind
 
 TLorentzVector MyClass::Getphoton4vector(double E, double x, double y, double z) {
   //given a cluster index returns the 4-mom of a photon
-  TVector3 gamma(x,y,z);
-  
-  Double_t scale1;
-  scale1=E/gamma.Mag();
-  TLorentzVector gamma4mom(scale1*gamma, E);
-  //cout << gamma4mom.M() << endl;
+  TVector3 gamma(x, y, z);
+  double mag = gamma.Mag();
+  if (mag < 1e-10) return TLorentzVector(0, 0, 0, 0);
+  Double_t scale1 = E / mag;
+  TLorentzVector gamma4mom(scale1 * gamma, E);
   return gamma4mom;
-
 }
 
 double MyClass::DeltaE(TLorentzVector bestppl, TLorentzVector bestpmi) {

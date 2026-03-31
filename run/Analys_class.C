@@ -44,8 +44,7 @@ int Analys_class(TString rootFile, TString sampleFile) {
  //  //MC del, kommentera bort för att köra data
  //  //open histrogram file here
 
-  TFile *myfile;
-  myfile = new TFile(sampleFile + ".root","RECREATE");
+  TFile *myfile = new TFile(sampleFile + ".root","RECREATE");
 
   MyClass *analysis = new MyClass(tree);
   analysis->Main();
@@ -54,6 +53,7 @@ int Analys_class(TString rootFile, TString sampleFile) {
   myfile->Write();
   myfile->Close();
 
+  delete myfile;
   delete analysis;
 
   return 0;

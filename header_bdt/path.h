@@ -1,0 +1,12 @@
+const TString rootFile = "../path_norm/ufo_path";
+const TString sampleFile = "../../input_bdt_TDATA/input/ufo";
+const TString outputCut = "../../input_bdt_TDATA/cut/";
+const TString sig_path = "../../input_bdt_TDATA/input/";
+const TString outputGen = "../../input_bdt_TDATA/gen/";
+const TString outputHist = "../../input_bdt_TDATA/hist/";
+const TString outputSfw2D = "../../input_bdt_TDATA/sfw2d/";
+const TString outputSfw1D = "../../input_bdt_TDATA/sfw1d/";
+const TString outputOmega = "../../input_bdt_TDATA/omega_fit/";
+const TString data_type = "ufo";
+const TString exp_type = "TDATA";
+double gsf = 1;

@@ -1,12 +1,12 @@
 #!/bin/bash
 
-sample_size=norm # norm; small; mini; chain
+sample_size=chain # norm; small; mini; chain
 sample_path=../path_${sample_size}/ 
 
 exp_type=TDATA # DATA
 gsf=1 # DATA
 
-result_path=../../input_bdt_${exp_type}
+result_path=../../input_bdt_${exp_type}_${sample_size}
 
 ## Initialize the normial conditions
 # Pre-selection

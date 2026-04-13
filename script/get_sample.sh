@@ -1,21 +1,23 @@
 #!/bin/bash
 
 # Samples
-DATA_TYPE=("sig" "ksl" "exp" "eeg" "ufo")
-#DATA_TYPE=("sig")
+#DATA_TYPE=("sig" "ksl" "exp" "eeg" "ufo")
+DATA_TYPE=("sig")
 
 cut_path=../../
 #input_path=../../input_vertex_TDATA_bkgrej/input/
 #input_path=../../input_norm_TDATA/input/
 #input_path=/home/bo/Desktop/
-input_path=/home/bo/Desktop/input_bdt_TDATA/input/
+#input_path=/home/bo/Desktop/input_bdt_TDATA/input/
+input_path=/home/bo/Desktop/analysis_root_v6/
 
 if [[ -d "$input_path" ]]; then
     echo "${input_path} exists"
     #rm -rf $input_path
 fi    
 
-cut_file="${cut_path}KLOE_SAMPLES.root"
+cut_file="${cut_path}test_samples.root"
+#cut_file="${cut_path}KLOE_SAMPLES.root"
 #cut_file="${cut_path}kloe_sample_chain.root"
 if [[ -f "$cut_file" ]]; then
     echo "$cut_file exists"

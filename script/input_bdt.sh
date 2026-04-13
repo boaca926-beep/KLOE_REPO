@@ -6,8 +6,8 @@ sample_path=../path_${sample_size}/
 exp_type=TDATA # DATA
 gsf=1 # DATA
 
-#result_path=../../input_bdt_${exp_type}_${sample_size}
-result_path=/media/bo/Analysis_Disk/
+result_path=../../input_bdt_${exp_type}_${sample_size}
+#result_path=/media/bo/Analysis_Disk/
 
 ## Initialize the normial conditions
 # Pre-selection

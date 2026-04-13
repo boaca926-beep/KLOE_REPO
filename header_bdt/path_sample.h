@@ -1,3 +1,3 @@
-const TString data_type = "ufo";
-const TString sampleFile = "/home/bo/Desktop/input_bdt_TDATA/input/ufo";
-const TString outputCut = "../../KLOE_SAMPLES.root";
+const TString data_type = "sig";
+const TString sampleFile = "/home/bo/Desktop/analysis_root_v6/sig";
+const TString outputCut = "../../test_samples.root";

@@ -1,3 +1,3 @@
-const TString data_type = "eeg";
-const TString sampleFile = "../../input_vertex_TDATA_bkgrej/input/eeg";
-const TString outputCut = "../../kloe_sample_chain.root";
+const TString data_type = "sig";
+const TString sampleFile = "/home/bo/Desktop/sig";
+const TString outputCut = "../../sig_sample.root";

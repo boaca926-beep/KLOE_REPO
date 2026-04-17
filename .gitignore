@@ -1,2 +1,6 @@
 *.txt
 *.~
+path_norm/
+path_chain/
+path_small/
+header/
